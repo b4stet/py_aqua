@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="./src/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/static/css/style.css">
+
+    <title>AQUA</title>
+  </head>
+  <body class="container-fluid">
+    <script src="./src/static/js/jquery.slim.min.js"></script>
+    <script src="./src/static/js/popper.min.js"></script>
+    <script src="./src/static/js/bootstrap.min.js"></script>
+    <div class="row">
+      <h1 id="title" class="col-12">Audit QUiz Application</h1>
+    </div>
+    <div class="row">
+      <div id="menu" class="col-2">
+        <div class="container-fluid">
+          <div class="row"><button type="button" class="col-8 offset-2 btn btn-dark">Fill</button></div>
+          <div class="row"><button type="button" class="col-8 offset-2 btn btn-dark">Review</button></div>
+          <div class="row"><button type="button" class="col-8 offset-2 btn btn-dark">Import</button></div>
+          <div class="row"><button type="button" class="col-8 offset-2 btn btn-dark">Export</button></div>
+          <div class="row"><button type="button" class="col-8 offset-2 btn btn-dark">Generate Quiz</button></div>
+          <div class="row"><button type="button" class="col-8 offset-2 btn btn-dark">Generate Report</button></div>
+        </div>
+      </div>
+
+      <div id="content" class="col-10">
+        <div class="container-fluid">
+          <div class="row">
+            <h2 class="col-12">Help page</h2>
+          </div>
+          <dl id="helper" class="row">
+            <dt class="col-2">Fill</dt><dd class="col-10">Go to the questionnaire and fill it</dd>
+            <dt class="col-2">Review</dt><dd class="col-10">Review and score answers</dd>
+            <dt class="col-2">Import</dt><dd class="col-10">Load answers file, in json format</dd>
+            <dt class="col-2">Export</dt><dd class="col-10">Save answers as json file</dd>
+            <dt class="col-2">Generate Quiz</dt><dd class="col-10">Convert questionnaire in a docx document</dd>
+            <dt class="col-2">Generate Report</dt><dd class="col-10">From review and scoring, generate gap analysis report</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
