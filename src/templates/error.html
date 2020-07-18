@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+    <h2 class="col-12">Error {{error['code']}}</h2>
+</div>
+<div class="row">
+    <p class="col-12">{{error['message']}}</p>
+</div>
+{% endblock %}

@@ -17,9 +17,11 @@ body {
     background-color: #586f7c;
 }
 
-#menu button {
+#menu a {
     margin-top: 5px;
     margin-bottom: 5px;
+    background-color: #333638;
+    color: #ffffff;
 }
 
 .quiz {
