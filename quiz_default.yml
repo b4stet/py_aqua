@@ -1,3 +1,138 @@
 title:
   short: AQUA
   long: Auditing QUiz Application
+
+quiz:
+  sections:
+    - name: 'Section 1'
+      id: 's1'
+      groups:
+        - name: 'Group 1'
+          id: 'g1'
+          description: '... Introduction for items in group 1 of section 1 ...'
+          items:
+            - question: '... question ...'
+              type: 'qcm'
+              id: 'i1'
+              options:
+                - label: 'Option 1'
+                  value: 'option1'
+                - label: 'Option 2'
+                  value: 'option2'
+            - question: '... question ...'
+              type: 'text'
+              id: 'i2'
+              placeholder: 'answer examples'
+            - question: '... question ...'
+              type: 'table'
+              id: 'i3'
+              nb_rows: 3
+              columns:
+                - title: 'Column 1'
+                  type: 'text'
+                  id: 'col1'
+                  size: 8
+                  placeholder: 'Column 1 examples'
+                - title: 'Column 2'
+                  type: 'qcm'
+                  id: 'col2'
+                  size: 4
+                  options:
+                    - label: 'Option A'
+                      value: 'optiona'
+                    - label: 'Option B'
+                      value: 'optionb'
+                    - label: 'Option C'
+                      value: 'optionc'
+
+        - name: 'Group 2'
+          id: 'g2'
+          description: '... Introduction for items in group 2 of section 1 ...'
+          items:
+            - question: '... question ...'
+              type: 'text'
+              id: 'i1'
+              placeholder: 'answer examples'
+            - question: '... question ...'
+              type: 'text'
+              id: 'i2'
+              placeholder: 'answer examples'
+
+        - name: Group 3
+          id: 'g3'
+          description: ... Introduction for items in group 3 of section 1 ...
+          items:
+            - question: '... question ...'
+              type: 'qcm'
+              id: 'i1'
+              options:
+                - label: 'Option 1'
+                  value: 'option1'
+                - label: 'Option 2'
+                  value: 'option2'
+    - name: Section 2
+      id: 's2'
+      groups:
+        - name: Group 1
+          id: 'g1'
+          description: ... Introduction for items in group 1 of section 2 ...
+          items:
+            - question: '... question ...'
+              type: 'qcm'
+              id: 'i1'
+              options:
+                - label: 'Option 1'
+                  value: 'option1'
+                - label: 'Option 2'
+                  value: 'option2'
+        - name: Group 2
+          id: 'g2'
+          description: ... Introduction for items in group 2 of section 2 ...
+          items:
+            - question: '... question ...'
+              type: 'qcm'
+              id: 'i1'
+              options:
+                - label: 'Option 1'
+                  value: 'option1'
+                - label: 'Option 2'
+                  value: 'option2'
+    - name: Section 3
+      id: 's3'
+      groups:
+        - name: Group 1
+          id: 'g1'
+          description: ... Introduction for items in group 1 of section 3 ...
+          items:
+            - question: '... question ...'
+              type: 'qcm'
+              id: 'i1'
+              options:
+                - label: 'Option 1'
+                  value: 'option1'
+                - label: 'Option 2'
+                  value: 'option2'
+        - name: Group 2
+          id: 'g2'
+          description: ... Introduction for items in group 2 of section 3 ...
+          items:
+            - question: '... question ...'
+              type: 'qcm'
+              id: 'i1'
+              options:
+                - label: 'Option 1'
+                  value: 'option1'
+                - label: 'Option 2'
+                  value: 'option2'
+        - name: Group 3
+          id: 'g3'
+          description: ... Introduction for items in group 3 of section 3 ...
+          items:
+            - question: '... question ...'
+              type: 'qcm'
+              id: 'i1'
+              options:
+                - label: 'Option 1'
+                  value: 'option1'
+                - label: 'Option 2'
+                  value: 'option2'

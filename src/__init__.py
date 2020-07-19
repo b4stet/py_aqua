@@ -15,8 +15,8 @@ def bootstrap(quiz_file):
 
     # set config
     quiz_config = config_from_yaml(quiz_file)
-    app.quiz = quiz_config
     app.title = quiz_config['title']
+    app.quiz = quiz_config['quiz']
 
     # register components and return app
     with app.app_context():

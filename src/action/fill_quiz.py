@@ -1,13 +1,14 @@
 from flask import render_template
-from flask.views import MethodView
+from werkzeug.exceptions import BadRequest
+
+from src.action.base import BaseAction
 
 
-class FillQuizAction(MethodView):
-    def __init__(self, logger, title, quiz):
-        super().__init__()
-        self.__logger = logger
-        self.__title = title
-        self.__quiz = quiz
-
+class FillQuizAction(BaseAction):
     def get(self):
-        return render_template('quiz.html', title=self.__title), 200
+        try:
+            self.validate_quiz()
+        except ValueError as err:
+            raise BadRequest('Invalid quiz config. {}'.format(str(err)))
+
+        return render_template('quiz.html', title=self._title, quiz=self._quiz), 200

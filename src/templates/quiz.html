@@ -1,6 +1,78 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="row">
-    Quiz
+<!-- SECTIONS NAVIGATION -->
+<nav class="quiz-nav quiz-section-nav">
+    <div class="nav nav-tabs border-0" role="tablist">
+        {% for section in quiz['sections'] %}
+            {% set class = "" %}
+            {% set aria_selected = "false" %}
+            {% if loop.first %}
+                {% set class = "active" %}
+                {% set aria_selected = "true" %}
+            {% endif%}
+            <a class="nav-item nav-link border border-dark border-bottom-0 {{class}}" href="#{{section['id']}}" data-toggle="tab" role="tab" aria-selected="{{aria_selected}}">{{section['name']}}</a>
+        {% endfor %}
+    </div>
+</nav>
+<!-- END OF SECTIONS NAVIGATION -->
+
+<form id=quiz></form>
+<div class="tab-content quiz-nav">
+    {% for section in quiz['sections'] %}
+        <!-- SECTION CONTENT -->
+        {% set class = "" %}
+        {% if loop.first %}
+            {% set class = "show active" %}
+        {% endif %}
+        <div class="tab-pane fade border border-dark {{class}}" role="tabpanel" id="{{section['id']}}">
+            <!-- GROUPS NAVIGATION -->
+            <nav class="quiz-nav quiz-group-nav">
+                <div class="nav nav-tabs border-0" role="tablist">
+                    {% for group in section['groups'] %}
+                        {% set class = "" %}
+                        {% set aria_selected = "false" %}
+                        {% if loop.first %}
+                            {% set class = "active" %}
+                            {% set aria_selected = "true" %}
+                        {% endif%}
+                        <a class="nav-item nav-link border border-dark border-bottom-0 {{class}}" href="#{{section['id']}}-{{group['id']}}" data-toggle="tab" role="tab" aria-selected="{{aria_selected}}">{{group['name']}}</a>
+                    {% endfor %}
+                </div>
+            </nav>
+            <!-- END OF GROUPS NAVIGATION -->
+
+            <div class="tab-content quiz-nav">
+                {% for group in section['groups'] %}
+                    <!-- GROUP CONTENT -->
+                    {% set class = "" %}
+                    {% if loop.first %}
+                        {% set class = "show active" %}
+                    {% endif %}
+                    <div class="tab-pane fade border border-dark {{class}}" role="tabpanel" id="{{section['id']}}-{{group['id']}}">
+                        <!-- group description -->
+                        <div class="row quiz-group-desc">
+                            <p class="col-12">{{group['description']}}</p>
+                        </div>
+
+                        <!-- group items -->
+                        {% for item in group['items'] %}
+                            {% include './item_layout/' ~ item['type'] ~ '.html' %}
+                        {% endfor %}
+
+                        <!-- group notes -->
+                        <div class="row">
+                            <fieldset form="quiz" class="form-group col-12">
+                                <legend>Additional notes</legend>
+                                <textarea class="form-control" rows="3" name="{{section['id']}}-{{group['id']}}-notes"></textarea>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!-- END OF GROUP CONTENT -->
+                {% endfor %}
+
+            </div>
+        </div>
+        <!-- END OF SECTION CONTENT -->
+    {% endfor %}
 </div>
 {% endblock %}
