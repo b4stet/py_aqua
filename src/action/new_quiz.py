@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequest
 from src.action.base import BaseAction
 
 
-class FillQuizAction(BaseAction):
+class NewQuizAction(BaseAction):
     def get(self):
         try:
             self.validate_quiz()

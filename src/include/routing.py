@@ -1,5 +1,6 @@
 from src.action.get_index import GetIndexAction
-from src.action.fill_quiz import FillQuizAction
+from src.action.new_quiz import NewQuizAction
+from src.action.save_quiz import SaveQuizAction
 
 routing = {
     'quiz': {
@@ -10,30 +11,20 @@ routing = {
                 'methods': ['GET'],
             },
             {
-                'uri': '/quiz/fill',
-                'action': FillQuizAction,
-                'methods': ['GET', 'POST'],
+                'uri': '/quiz/new',
+                'action': NewQuizAction,
+                'methods': ['GET'],
+            },
+            {
+                'uri': '/quiz/save',
+                'action': SaveQuizAction,
+                'methods': ['POST'],
             },
             # {
-            #     'uri': '/quiz/review',
-            #     'action': 'ReviewQuizAction',
-            #     'methods': ['GET', 'POST'],
+            #     'uri': '/quiz/open',
+            #     'action': 'OpenQuizAction',
+            #     'methods': ['GET'],
             # },
         ],
     },
-
-    # 'answers': {
-    #     'routes': [
-    #         {
-    #             'uri': '/answers/import',
-    #             'action': 'ImportAnswersAction',
-    #             'methods': ['GET', 'POST'],
-    #         },
-    #         {
-    #             'uri': '/answers/export',
-    #             'action': 'ExportAnswersAction',
-    #             'methods': ['GET'],
-    #         },
-    #     ]
-    # },
 }

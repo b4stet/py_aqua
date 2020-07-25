@@ -15,23 +15,28 @@
     <script src="../static/js/popper.min.js"></script>
     <script src="../static/js/bootstrap.min.js"></script>
     <div class="row">
-      <h1 id="title" class="col-12">{{title['long']}}</h1>
-    </div>
-    <div class="row">
       <div id="menu" class="col-2">
         <div class="container-fluid">
-          <div class="row"><a type="button" class="col-8 offset-2 btn" href="/">Home</a></div>
-          <div class="row"><a type="button" class="col-8 offset-2 btn" href="/quiz/fill">Fill</a></div>
-          <div class="row"><a type="button" class="col-8 offset-2 btn">Review</a></div>
-          <div class="row"><a type="button" class="col-8 offset-2 btn">Import</a></div>
-          <div class="row"><a type="button" class="col-8 offset-2 btn">Export</a></div>
-          <div class="row"><a type="button" class="col-8 offset-2 btn">Generate Quiz</a></div>
-          <div class="row"><a type="button" class="col-8 offset-2 btn">Generate Report</a></div>
+          <div class="row"><a role="button" class="col-8 offset-2 btn" href="/">Home</a></div>
+          <div class="row"><a role="button" class="col-8 offset-2 btn" href="/quiz/new">New</a></div>
+          <div class="row"><a role="button" class="col-8 offset-2 btn">Open</a></div>
+          <div class="row"><a role="button" class="col-8 offset-2 btn">Review</a></div>
+          <div class="row"><a role="button" class="col-8 offset-2 btn">Generate Report</a></div>
         </div>
       </div>
 
       <div id="content" class="col-10">
         <div class="container-fluid">
+          <div class="row"><h1 id="title" class="col-12">{{title['long']}}</h1></div>
+          {% if message is defined %}
+            <div class="row">
+              <div class="col-12 alert alert-{{message['type']}}" role="alert">
+                {% for line in message['content'] %}
+                  {{line}}<br/>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
           {% block content %}{% endblock %}
         </div>
       </div>

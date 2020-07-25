@@ -1,5 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
+<form id="quiz" action="/quiz/save" method="POST">
+    <input type="hidden" name="quiz-version" value="{{quiz['version']}}"/>
+    <div class="row">
+        <input type="submit" class="col-2 offset-5 btn" value="Save"/>
+    </div>
+</form>
+
 <!-- SECTIONS NAVIGATION -->
 <nav class="quiz-nav quiz-section-nav">
     <div class="nav nav-tabs border-0" role="tablist">
@@ -16,7 +23,6 @@
 </nav>
 <!-- END OF SECTIONS NAVIGATION -->
 
-<form id=quiz></form>
 <div class="tab-content quiz-nav">
     {% for section in quiz['sections'] %}
         <!-- SECTION CONTENT -->
@@ -49,27 +55,28 @@
                         {% set class = "show active" %}
                     {% endif %}
                     <div class="tab-pane fade border border-dark {{class}}" role="tabpanel" id="{{section['id']}}-{{group['id']}}">
-                        <!-- group description -->
-                        <div class="row quiz-group-desc">
-                            <p class="col-12">{{group['description']}}</p>
-                        </div>
+                        <div class="container-fluid">
+                            <!-- group description -->
+                            <div class="row quiz-group-desc">
+                                <p class="col-12">{{group['description']}}</p>
+                            </div>
 
-                        <!-- group items -->
-                        {% for item in group['items'] %}
-                            {% include './item_layout/' ~ item['type'] ~ '.html' %}
-                        {% endfor %}
+                            <!-- group items -->
+                            {% for item in group['items'] %}
+                                {% include './item_layout/' ~ item['type'] ~ '.html' %}
+                            {% endfor %}
 
-                        <!-- group notes -->
-                        <div class="row">
-                            <fieldset form="quiz" class="form-group col-12">
-                                <legend>Additional notes</legend>
-                                <textarea class="form-control" rows="3" name="{{section['id']}}-{{group['id']}}-notes"></textarea>
-                            </fieldset>
+                            <!-- group notes -->
+                            <div class="row">
+                                <fieldset form="quiz" class="form-group col-12">
+                                    <legend>Additional notes</legend>
+                                    <textarea form="quiz" class="form-control" rows="3" name="{{section['id']}}-{{group['id']}}-notes"></textarea>
+                                </fieldset>
+                            </div>
                         </div>
                     </div>
                     <!-- END OF GROUP CONTENT -->
                 {% endfor %}
-
             </div>
         </div>
         <!-- END OF SECTION CONTENT -->

@@ -3,6 +3,7 @@ title:
   long: Auditing QUiz Application
 
 quiz:
+  version: '1.0'
   sections:
     - name: 'Section 1'
       id: 's1'

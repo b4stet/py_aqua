@@ -15,14 +15,19 @@
                     {% for col in item['columns'] %}
                         {% set name = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-l'~ idx ~'-'~ col['id'] %}
                         {% if col['type'] == 'text' %}
-                            <input class="form-control col-{{col['size']}}" type="text" name="{{name}}" placeholder="{{col['placeholder']}}"/>        
+                            <input form="quiz" class="form-control col-{{col['size']}}" type="text" name="{{name}}" placeholder="{{col['placeholder']}}"/>        
                         {% endif%}
 
                         {% if col['type'] == 'qcm' %}
                             <div class="col-{{col['size']}}">
+                                <div class="form-check form-check-inline ">
+                                    <input  form="quiz" class="form-check-input" type="radio" checked="checked" name="{{name}}" value="not_answered"/>
+                                    <label class="form-check-label">Default</label>
+                                </div>
+
                                 {% for option in col['options'] %}
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="{{name}}" value="{{option['value']}}"/>
+                                        <input form="quiz" class="form-check-input" type="radio" name="{{name}}" value="{{option['value']}}"/>
                                         <label class="form-check-label">{{option['label']}}</label>
                                     </div>
                                 {% endfor %}

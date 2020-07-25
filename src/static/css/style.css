@@ -10,11 +10,12 @@ body {
 #title {
     text-align: center;
     margin-top: 25px;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
 }
 
 #menu {
     background-color: #586f7c;
+    margin-top: 100px;
 }
 
 #menu a {
@@ -24,39 +25,47 @@ body {
     color: #ffffff;
 }
 
-.quiz {
+#quiz {
+    margin-bottom: 10px;
+}
+
+#quiz .btn {
+    background-color: #333638;
+    color: #ffffff;
+}
+#content .quiz {
     margin-bottom: 20px;
 }
 
-.quiz-section-nav .nav-tabs .nav-link:not(.active) {
+#content .quiz-section-nav .nav-tabs .nav-link:not(.active) {
     color: #ffffff;
     background-color: #00263D;
     font-weight: bold;
 }
 
-.quiz-group-nav .nav-tabs .nav-link:not(.active) {
+#content .quiz-group-nav .nav-tabs .nav-link:not(.active) {
     color: #ffffff;
     background-color: #2e424d;
     font-weight: bold;
 }
 
-.quiz-nav .nav-tabs .nav-link.active {
+#content .quiz-nav .nav-tabs .nav-link.active {
     color: #000000;
     background-color:#E5E5E5;
     font-weight: bold;
 }
 
-.quiz-nav .tab-pane.active {
+#content .quiz-nav .tab-pane.active {
     background-color:#E5E5E5;
     border-radius: 5px;
     padding: 5px;
 }
 
-.quiz-nav .tab-pane:first-child  {
+#content .quiz-nav .tab-pane:first-child  {
     border-top-left-radius: 0;
 } 
 
-.quiz-group-desc p {
+#content .quiz-group-desc p {
     margin-top: 10px;
     margin-bottom: 30px;
 }

@@ -9,4 +9,4 @@ class GetIndexAction(MethodView):
         self.__title = title
 
     def get(self):
-        return render_template('help.html', title=self.__title), 200
+        return render_template('home.html', title=self.__title), 200

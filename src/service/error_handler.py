@@ -27,8 +27,11 @@ class ErrorHandlerService():
         error_log = '[{}] {}: {}'.format(error_location, error_type, error_value)
         self.__logger.error(error_log, exc_info=True)
 
-        err = {
-            'message': str(error),
-            'code': status_code,
+        message = {
+            'type': 'danger',
+            'content': [
+                'Error {}: {}'.format(status_code, error_type),
+                str(error)
+            ],
         }
-        return render_template('error.html', title=self.__title, error=err), status_code
+        return render_template('layout.html', title=self.__title, message=message), status_code
