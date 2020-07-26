@@ -15,11 +15,10 @@ body {
 
 #menu {
     background-color: #586f7c;
-    margin-top: 100px;
+    margin-top: 98px;
 }
 
 #menu a {
-    margin-top: 5px;
     margin-bottom: 5px;
     background-color: #333638;
     color: #ffffff;
@@ -29,7 +28,7 @@ body {
     margin-bottom: 10px;
 }
 
-#quiz .btn {
+#quiz .btn, #quiz-open .btn {
     background-color: #333638;
     color: #ffffff;
 }

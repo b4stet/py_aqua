@@ -1,6 +1,12 @@
 <div class="row">
     <fieldset form="quiz" class="form-group quiz col-12">
+        {% set name = section['id'] ~"-"~ group['id'] ~"-"~ item['id'] %}
+        {% set text = "" %}
+        {% if answers is defined and answers[name] is defined %}
+            {% set text = answers[name] %}
+        {% endif %}
+
         <legend>{{item['question']}}</legend>
-        <textarea form="quiz" class="form-control" rows="1" name="{{section['id']}}-{{group['id']}}-{{item['id']}}" placeholder="{{item['placeholder']}}"></textarea>
+        <textarea form="quiz" class="form-control" rows="1" name="{{name}}" placeholder="{{item['placeholder']}}">{{text}}</textarea>
     </fieldset>
 </div>

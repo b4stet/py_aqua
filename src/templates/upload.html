@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block head%}
+    <script src="../static/js/bs-custom-file-input.min.js"></script>
+{% endblock %}
+{% block content %}
+
+<form id="quiz-open" action="/quiz/open" method="POST" enctype="multipart/form-data">
+    <div class="form-row">
+        <div class="col-3 offset-4">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" name="answers">
+                <label class="custom-file-label">Choose answers file</label>
+            </div>
+        </div>
+        <div class="col-1">
+            <input type="submit" class="col-12 btn" value="Load"/>
+        </div>
+    </div>
+  </form>
+
+<script type="text/javascript">
+    $(document).ready(function () {bsCustomFileInput.init()})
+</script>
+
+{% endblock %}

@@ -69,8 +69,13 @@
                             <!-- group notes -->
                             <div class="row">
                                 <fieldset form="quiz" class="form-group col-12">
+                                    {% set name = section['id'] ~"-"~ group['id'] ~"-notes" %}
+                                    {% set notes = "" %}
+                                    {% if answers is defined and answers[name] is defined %}
+                                        {% set notes = answers[name] %}
+                                    {% endif %}
                                     <legend>Additional notes</legend>
-                                    <textarea form="quiz" class="form-control" rows="3" name="{{section['id']}}-{{group['id']}}-notes"></textarea>
+                                    <textarea form="quiz" class="form-control" rows="3" name="{{name}}">{{notes}}</textarea>
                                 </fieldset>
                             </div>
                         </div>

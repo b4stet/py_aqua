@@ -3,6 +3,8 @@ from werkzeug.exceptions import default_exceptions
 import sys
 import traceback
 
+from src.action.base import BaseAction
+
 
 class ErrorHandlerService():
     def __init__(self):
@@ -28,7 +30,7 @@ class ErrorHandlerService():
         self.__logger.error(error_log, exc_info=True)
 
         message = {
-            'type': 'danger',
+            'type': BaseAction.MESSAGE_ERROR,
             'content': [
                 'Error {}: {}'.format(status_code, error_type),
                 str(error)

@@ -8,20 +8,20 @@
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/style.css">
 
-    <title>{{title['short']}}</title>
-  </head>
-  <body class="container-fluid">
     <script src="../static/js/jquery.slim.min.js"></script>
     <script src="../static/js/popper.min.js"></script>
     <script src="../static/js/bootstrap.min.js"></script>
+    {% block head %}{% endblock %}
+
+    <title>{{title['short']}}</title>
+  </head>
+  <body class="container-fluid">
     <div class="row">
       <div id="menu" class="col-2">
         <div class="container-fluid">
           <div class="row"><a role="button" class="col-8 offset-2 btn" href="/">Home</a></div>
           <div class="row"><a role="button" class="col-8 offset-2 btn" href="/quiz/new">New</a></div>
-          <div class="row"><a role="button" class="col-8 offset-2 btn">Open</a></div>
-          <div class="row"><a role="button" class="col-8 offset-2 btn">Review</a></div>
-          <div class="row"><a role="button" class="col-8 offset-2 btn">Generate Report</a></div>
+          <div class="row"><a role="button" class="col-8 offset-2 btn" href="/quiz/open">Open</a></div>
         </div>
       </div>
 

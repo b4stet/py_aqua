@@ -1,12 +1,46 @@
 from flask import render_template
-from flask.views import MethodView
+from werkzeug.exceptions import BadRequest
+
+from src.action.base import BaseAction
 
 
-class GetIndexAction(MethodView):
-    def __init__(self, logger, title):
-        super().__init__()
-        self.__logger = logger
+class GetIndexAction(BaseAction):
+    def __init__(self, logger, title, quiz):
+        super().__init__(logger)
         self.__title = title
+        self.__quiz = quiz
 
     def get(self):
-        return render_template('home.html', title=self.__title), 200
+        # validate quiz config
+        try:
+            ids = self.__get_item_ids()
+            duplicates = set('{} ({}x)'.format(i, ids.count(i)) for i in ids if ids.count(i) > 1)
+            if len(duplicates) > 0:
+                raise ValueError('Expected unique identifiers. Got duplicates: {}'.format(', '.join(duplicates)))
+        except Exception as err:
+            raise BadRequest('Invalid quiz config. {}'.format(str(err)))
+
+        message = {
+            'type': self.MESSAGE_SUCCESS,
+            'content': [
+                'Successfully loaded quiz config.',
+                'Running quiz version {}.'.format(self.__quiz['version'])
+            ],
+        }
+
+        return render_template('layout.html', title=self.__title, message=message), 200
+
+    def __get_item_ids(self):
+        ids = []
+        for section in self.__quiz['sections']:
+            sid = section['id']
+            for group in section['groups']:
+                gid = group['id']
+                for item in group['items']:
+                    identifier = '{}-{}-{}'.format(sid, gid, item['id'])
+                    if item['type'] == 'table':
+                        for col in item['columns']:
+                            ids.append('{}-{}'.format(identifier, col['id']))
+                    else:
+                        ids.append(identifier)
+        return ids

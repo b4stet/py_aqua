@@ -1,16 +1,30 @@
 <div class="row">
     <fieldset form="quiz" class="form-group quiz col-12">
-        <legend>{{item['question']}}</legend>
-        <div class="form-check form-check-inline ">
-            <input  form="quiz" class="form-check-input" type="radio" checked="checked" name="{{section['id']}}-{{group['id']}}-{{item['id']}}" value="not_answered"/>
-            <label class="form-check-label">Default</label>
-        </div>
+        {% set name = section['id'] ~"-"~ group['id'] ~"-"~ item['id'] %}
 
+        <legend>{{item['question']}}</legend>
+
+        {% set ns = namespace(answered="false") %}
         {% for option in item['options'] %}
+            {% set checked = "" %}
+            {% if answers is defined and answers[name] is defined and answers[name] == option['value'] %}
+                {% set checked = "checked" %}
+                {% set ns.answered = "true" %}
+            {% endif %}
             <div class="form-check form-check-inline ">
-                <input  form="quiz" class="form-check-input" type="radio" name="{{section['id']}}-{{group['id']}}-{{item['id']}}" value="{{option['value']}}"/>
+                <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="{{option['value']}}" {{checked}}/>
                 <label class="form-check-label">{{option['label']}}</label>
             </div>
         {% endfor %}
+
+        {% set checked = "" %}
+        {% if ns.answered == "false" %}
+            {% set checked = "checked" %}
+        {% endif %}
+        <div class="form-check form-check-inline ">
+            <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="not_answered" {{checked}}/>
+            <label class="form-check-label">Default</label>
+        </div>
+
     </fieldset>
 </div>

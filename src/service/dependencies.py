@@ -3,6 +3,7 @@ import os
 
 from src.action.get_index import GetIndexAction
 from src.action.new_quiz import NewQuizAction
+from src.action.open_quiz import OpenQuizAction
 from src.action.save_quiz import SaveQuizAction
 
 
@@ -18,9 +19,10 @@ class DependenciesService():
     def register(self):
         if 'di_container' not in g:
             g.di_container = {
-                GetIndexAction: GetIndexAction.as_view('get_index', self.__logger, self.__title),
+                GetIndexAction: GetIndexAction.as_view('get_index', self.__logger, self.__title, self.__quiz),
                 NewQuizAction: NewQuizAction.as_view('new_quiz', self.__logger, self.__title, self.__quiz),
-                SaveQuizAction: SaveQuizAction.as_view('save_quiz', self.__logger, self.__title, self.__quiz),
+                OpenQuizAction: OpenQuizAction.as_view('open_quiz', self.__logger, self.__title, self.__quiz),
+                SaveQuizAction: SaveQuizAction.as_view('save_quiz', self.__logger),
             }
 
         return g.di_container

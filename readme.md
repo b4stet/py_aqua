@@ -1,8 +1,9 @@
 # Auditing QUiz Application
-A local web app to drive an audit, analyze answers, score and generate a report.
+A little web app to drive an audit, analyze answers, score and generate a report.
 
 ## Requirements
-- python3-flask
+- python3-flask >= 0.12.2
+- python3-magic >= 0.4.16
 
 ## Run
 From root of application:
@@ -12,7 +13,7 @@ $ python3 -m run
 
 To run with your own quiz config file:
 ```
-$ AQUA_QUIZ=path/to/quiz_config.yml python3 -m run
+$ AQUA_QUIZ=path/to/quiz_config.yml python3 -m web
 ```
 
 The application is then available from `http://localhost:8080`.
@@ -30,12 +31,13 @@ Its structure is as follow:
         - only one option can be ticked
         - `label` is the text displayed near the radio button, 
         - `value` is the content received when the form is posted
+        - `Default` label is automatically added and selected for new quiz, meaning *not_answered* so that all items have a value when posting
     - `text`: 
         - `placeholder`, if not empty string, is the text written by default in the text area
     - `table`: 
         - `nb_rows` is the primary number of rows to create, 
         - columns can be of type `text` or `qcm` (as defined as above),
-        - `size` is the width of a column, using the grid system, hence total of sizes for a table should be 12
+        - `size` is the displayed width of a column, using the grid system, hence total of sizes for a table should be 12
 
 ## Identifiers unicity
 Identifiers in quiz config must be unique within their category:
