@@ -31,7 +31,7 @@ Its structure is as follow:
         - only one option can be ticked
         - `label` is the text displayed near the radio button, 
         - `value` is the content received when the form is posted
-        - `Default` label is automatically added and selected for new quiz, meaning *not_answered* so that all items have a value when posting
+        - `Not Answered` option is automatically added and selected for new quiz, so that all items have a value when posting
     - `text`: 
         - `placeholder`, if not empty string, is the text written by default in the text area
     - `table`: 

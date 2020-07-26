@@ -20,7 +20,7 @@
                             {% if answers is defined and answers[name] is defined %}
                                 {% set text = answers[name] %}
                             {% endif %}
-                            <textarea form="quiz" class="form-control col-{{col['size']}}" rows="1" name="{{name}}" placeholder="{{col['placeholder']}}">{{text}}</textarea>
+                            <input form="quiz" type="text" class="form-control col-{{col['size']}}" name="{{name}}" placeholder="{{col['placeholder']}}" value="{{text}}"/>
                         {% endif%}
 
                         {% if col['type'] == 'qcm' %}
@@ -45,7 +45,7 @@
                                 {% endif %}
                                 <div class="form-check form-check-inline ">
                                     <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="not_answered" {{checked}}/>
-                                    <label class="form-check-label">Default</label>
+                                    <label class="form-check-label">Not Answered</label>
                                 </div>
                             </div>
                         {% endif%}
