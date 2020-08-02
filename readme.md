@@ -1,29 +1,29 @@
 # Auditing QUiz Application
-A little web app to drive an audit, analyze answers, score and generate a report.
+A little web app to fill a quiz, analyze answers, score and generate a report.
 
 ## Requirements
 - python3-flask >= 0.12.2
 - python3-magic >= 0.4.16
 
-## Run
+## Run in user mode
 From root of application:
 ```
-$ python3 -m run
+$ bash bin/web.sh user 
 ```
 
-To run with your own quiz config file:
+To run with your own quiz config:
 ```
-$ AQUA_QUIZ=path/to/quiz_config.yml python3 -m web
+$ bash bin/web.sh user path/to/quiz_config.yml
 ```
 
-The application is then available from `http://localhost:8080`.
+The application is then available at `http://localhost:8080`.
+Application config can be customized following structure of `config/app_default.yml`, and set as `$AQUA_APP` envrionment variable.
 
 ## Quiz config structure
-The application generate the quiz from `quiz_default.yml` or another yaml file if supplied.  
-Its structure is as follow:
+The application renders the quiz from a yaml file as defined in `quiz_default.yml`.  
 - a quiz has one or multiple section(s)
 - each section has one or multiple group(s)
-- each groupe has
+- each group has
     - a description
     - one or multiple item(s)
 - each item is a question of type `qcm`, `text` or `table`
@@ -36,7 +36,7 @@ Its structure is as follow:
         - `placeholder`, if not empty string, is the text written by default in the text area
     - `table`: 
         - `nb_rows` is the primary number of rows to create, 
-        - columns can be of type `text` or `qcm` (as defined as above),
+        - columns can be of type `text` or `qcm`,
         - `size` is the displayed width of a column, using the grid system, hence total of sizes for a table should be 12
 
 ## Identifiers unicity

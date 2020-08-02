@@ -29,11 +29,9 @@ class OpenQuizAction(BaseAction):
 
         # compare versions
         if answers['quiz-version'] != self.__quiz['version']:
-            raise BadRequest('Version mismatch. Quiz runs v{} but answers are for v{}. Do convert answers beforehand.'.format(
+            raise BadRequest('Version mismatch. Quiz runs v{} but answers are v{}. Do convert answers beforehand.'.format(
                 self.__quiz['version'], answers['quiz-version']
             ))
-
-        print(answers["s1-g1-i3-l0-col1"].encode('utf-8'))
 
         # prefill quiz
         return render_template('quiz.html', title=self.__title, quiz=self.__quiz, answers=answers), 200

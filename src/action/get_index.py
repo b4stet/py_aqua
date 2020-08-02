@@ -13,24 +13,21 @@ class GetIndexAction(BaseAction):
     def get(self):
         # validate quiz config
         try:
-            ids = self.__get_item_ids()
-            duplicates = set('{} ({}x)'.format(i, ids.count(i)) for i in ids if ids.count(i) > 1)
-            if len(duplicates) > 0:
-                raise ValueError('Expected unique identifiers. Got duplicates: {}'.format(', '.join(duplicates)))
-        except Exception as err:
+            self.__check_item_ids()
+        except ValueError as err:
             raise BadRequest('Invalid quiz config. {}'.format(str(err)))
 
         message = {
             'type': self.MESSAGE_SUCCESS,
             'content': [
-                'Successfully loaded quiz config.',
-                'Running quiz version {}.'.format(self.__quiz['version'])
+                'Quiz config loaded.',
+                'Running version {}.'.format(self.__quiz['version'])
             ],
         }
 
         return render_template('layout.html', title=self.__title, message=message), 200
 
-    def __get_item_ids(self):
+    def __check_item_ids(self):
         ids = []
         for section in self.__quiz['sections']:
             sid = section['id']
@@ -43,4 +40,6 @@ class GetIndexAction(BaseAction):
                             ids.append('{}-{}'.format(identifier, col['id']))
                     else:
                         ids.append(identifier)
-        return ids
+        duplicates = set('{} ({}x)'.format(i, ids.count(i)) for i in ids if ids.count(i) > 1)
+        if len(duplicates) > 0:
+            raise ValueError('Expected unique identifiers. Got duplicates: {}'.format(', '.join(duplicates)))
