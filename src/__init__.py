@@ -6,7 +6,7 @@ from src.include.services import services
 from src.include.routing import routing
 
 
-def bootstrap(quiz_file):
+def bootstrap(app_config, quiz_config, mode):
     app_root = os.path.dirname(os.path.dirname(__file__))
     app = Flask(
         __name__,
@@ -14,9 +14,13 @@ def bootstrap(quiz_file):
     )
 
     # set config
-    quiz_config = config_from_yaml(quiz_file)
-    app.title = quiz_config['title']
-    app.quiz = quiz_config['quiz']
+    app_config = app_from_yaml(app_config, mode)
+    app.config.update(app_config)
+    app.debug = app.config['debug']
+
+    config_quiz = quiz_from_yaml(quiz_config)
+    app.title = config_quiz['title']
+    app.quiz = config_quiz['quiz']
 
     # register components and return app
     with app.app_context():
@@ -25,10 +29,18 @@ def bootstrap(quiz_file):
         return app
 
 
-def config_from_yaml(quiz_file):
-    with open(quiz_file, mode='r') as f:
+def quiz_from_yaml(quiz_config):
+    with open(quiz_config, mode='r') as f:
         config = yaml.safe_load(f)
     return config
+
+
+def app_from_yaml(app_config, mode):
+    with open(app_config, mode='r') as f:
+        config = yaml.safe_load(f)
+    app_config = config.get(mode, config)
+    app_config['mode'] = mode
+    return app_config
 
 
 def register_services(app):

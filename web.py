@@ -1,14 +1,15 @@
 import os
 from src import bootstrap
 
-quiz_file = os.environ.get('AQUA_QUIZ', 'quiz_default.yml')
+quiz_config = os.environ.get('AQUA_QUIZ', 'config/quiz_default.yml')
+app_config = os.environ.get('AQUA_APP', 'config/app_default.yml')
+mode = os.environ.get('AQUA_MODE', 'user')
 
-app = bootstrap(quiz_file=quiz_file)
+app = bootstrap(app_config=app_config, quiz_config=quiz_config, mode=mode)
 
 if __name__ == '__main__':
     app.run(
-        host='127.0.0.1',
-        port=8080,
+        host=app.config['host'],
+        port=app.config['port'],
         threaded=True,
-        debug='True',
     )
