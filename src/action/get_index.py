@@ -25,7 +25,12 @@ class GetIndexAction(BaseAction):
             ],
         }
 
-        return render_template('layout.html', title=self.__title, message=message), 200
+        data = {
+            'title': self.__title,
+            'message': message,
+        }
+
+        return render_template('layout.html', **data), 200
 
     def __check_item_ids(self):
         ids = []

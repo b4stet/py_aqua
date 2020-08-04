@@ -10,4 +10,8 @@ class NewQuizAction(BaseAction):
         self.__quiz = quiz
 
     def get(self):
-        return render_template('quiz.html', title=self.__title, quiz=self.__quiz), 200
+        data = {
+            'title': self.__title,
+            'quiz': self.__quiz,
+        }
+        return render_template('quiz.html', **data), 200

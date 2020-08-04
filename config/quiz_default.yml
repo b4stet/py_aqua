@@ -19,19 +19,19 @@ quiz:
                 - 'option_1'
                 - 'option_2'
               reviewer:
-                - 'not_answered'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered'
             - question: '... question ...'
               type: 'text'
               id: 'i2'
               placeholder: 'answer examples'
               reviewer:
-                - 'not_answered/no_sense'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered/no_sense'
             - question: '... question ...'
               type: 'table'
               id: 'i3'
@@ -51,10 +51,10 @@ quiz:
                     - 'option_b'
                     - 'option_b'
               reviewer:
-                - 'not_answered/no_sense'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered/no_sense'
 
         - name: 'Group 2'
           id: 'g2'
@@ -65,19 +65,19 @@ quiz:
               id: 'i1'
               placeholder: 'answer examples'
               reviewer:
-                - 'not_answered/no_sense'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered/no_sense'
             - question: '... question ...'
               type: 'text'
               id: 'i2'
               placeholder: 'answer examples'
               reviewer:
-                - 'not_answered/no_sense'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered/no_sense'
 
         - name: Group 3
           id: 'g3'
@@ -90,10 +90,10 @@ quiz:
                 - 'option_1'
                 - 'option_2'
               reviewer:
-                - 'not_answered'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered'
 
     - name: Section 2
       id: 's2'
@@ -109,10 +109,10 @@ quiz:
                 - 'option_1'
                 - 'option_2'
               reviewer:
-                - 'not_answered'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered'
 
         - name: Group 2
           id: 'g2'
@@ -125,10 +125,10 @@ quiz:
                 - 'option_1'
                 - 'option_2'
               reviewer:
-                - 'not_answered'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered'
 
     - name: Section 3
       id: 's3'
@@ -144,10 +144,10 @@ quiz:
                 - 'option_1'
                 - 'option_2'
               reviewer:
-                - 'not_answered'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered'
 
         - name: Group 2
           id: 'g2'
@@ -160,10 +160,10 @@ quiz:
                 - 'option_1'
                 - 'option_2'
               reviewer:
-                - 'not_answered'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered'
 
         - name: Group 3
           id: 'g3'
@@ -176,7 +176,7 @@ quiz:
                 - 'option_1'
                 - 'option_2'
               reviewer:
-                - 'not_answered'
                 - 'ok'
                 - 'ko'
                 - 'partial'
+                - 'not_answered'
