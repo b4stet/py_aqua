@@ -16,14 +16,22 @@ quiz:
               type: 'qcm'
               id: 'i1'
               options:
-                - label: 'Option 1'
-                  value: 'option1'
-                - label: 'Option 2'
-                  value: 'option2'
+                - 'option_1'
+                - 'option_2'
+              reviewer:
+                - 'not_answered'
+                - 'ok'
+                - 'ko'
+                - 'partial'
             - question: '... question ...'
               type: 'text'
               id: 'i2'
               placeholder: 'answer examples'
+              reviewer:
+                - 'not_answered/no_sense'
+                - 'ok'
+                - 'ko'
+                - 'partial'
             - question: '... question ...'
               type: 'table'
               id: 'i3'
@@ -39,12 +47,14 @@ quiz:
                   id: 'col2'
                   size: 4
                   options:
-                    - label: 'Option A'
-                      value: 'optiona'
-                    - label: 'Option B'
-                      value: 'optionb'
-                    - label: 'Option C'
-                      value: 'optionc'
+                    - 'option_a'
+                    - 'option_b'
+                    - 'option_b'
+              reviewer:
+                - 'not_answered/no_sense'
+                - 'ok'
+                - 'ko'
+                - 'partial'
 
         - name: 'Group 2'
           id: 'g2'
@@ -54,10 +64,20 @@ quiz:
               type: 'text'
               id: 'i1'
               placeholder: 'answer examples'
+              reviewer:
+                - 'not_answered/no_sense'
+                - 'ok'
+                - 'ko'
+                - 'partial'
             - question: '... question ...'
               type: 'text'
               id: 'i2'
               placeholder: 'answer examples'
+              reviewer:
+                - 'not_answered/no_sense'
+                - 'ok'
+                - 'ko'
+                - 'partial'
 
         - name: Group 3
           id: 'g3'
@@ -67,10 +87,14 @@ quiz:
               type: 'qcm'
               id: 'i1'
               options:
-                - label: 'Option 1'
-                  value: 'option1'
-                - label: 'Option 2'
-                  value: 'option2'
+                - 'option_1'
+                - 'option_2'
+              reviewer:
+                - 'not_answered'
+                - 'ok'
+                - 'ko'
+                - 'partial'
+
     - name: Section 2
       id: 's2'
       groups:
@@ -82,10 +106,14 @@ quiz:
               type: 'qcm'
               id: 'i1'
               options:
-                - label: 'Option 1'
-                  value: 'option1'
-                - label: 'Option 2'
-                  value: 'option2'
+                - 'option_1'
+                - 'option_2'
+              reviewer:
+                - 'not_answered'
+                - 'ok'
+                - 'ko'
+                - 'partial'
+
         - name: Group 2
           id: 'g2'
           description: ... Introduction for items in group 2 of section 2 ...
@@ -94,10 +122,14 @@ quiz:
               type: 'qcm'
               id: 'i1'
               options:
-                - label: 'Option 1'
-                  value: 'option1'
-                - label: 'Option 2'
-                  value: 'option2'
+                - 'option_1'
+                - 'option_2'
+              reviewer:
+                - 'not_answered'
+                - 'ok'
+                - 'ko'
+                - 'partial'
+
     - name: Section 3
       id: 's3'
       groups:
@@ -109,10 +141,14 @@ quiz:
               type: 'qcm'
               id: 'i1'
               options:
-                - label: 'Option 1'
-                  value: 'option1'
-                - label: 'Option 2'
-                  value: 'option2'
+                - 'option_1'
+                - 'option_2'
+              reviewer:
+                - 'not_answered'
+                - 'ok'
+                - 'ko'
+                - 'partial'
+
         - name: Group 2
           id: 'g2'
           description: ... Introduction for items in group 2 of section 3 ...
@@ -121,10 +157,14 @@ quiz:
               type: 'qcm'
               id: 'i1'
               options:
-                - label: 'Option 1'
-                  value: 'option1'
-                - label: 'Option 2'
-                  value: 'option2'
+                - 'option_1'
+                - 'option_2'
+              reviewer:
+                - 'not_answered'
+                - 'ok'
+                - 'ko'
+                - 'partial'
+
         - name: Group 3
           id: 'g3'
           description: ... Introduction for items in group 3 of section 3 ...
@@ -133,7 +173,10 @@ quiz:
               type: 'qcm'
               id: 'i1'
               options:
-                - label: 'Option 1'
-                  value: 'option1'
-                - label: 'Option 2'
-                  value: 'option2'
+                - 'option_1'
+                - 'option_2'
+              reviewer:
+                - 'not_answered'
+                - 'ok'
+                - 'ko'
+                - 'partial'

@@ -12,6 +12,7 @@ class DependenciesService():
         self.__logger = current_app.logger
         self.__title = current_app.title
         self.__quiz = current_app.quiz
+        self.__mode = current_app.config['mode']
 
     def init_app(self, app):
         self.register()
@@ -21,8 +22,8 @@ class DependenciesService():
             g.di_container = {
                 GetIndexAction: GetIndexAction.as_view('get_index', self.__logger, self.__title, self.__quiz),
                 NewQuizAction: NewQuizAction.as_view('new_quiz', self.__logger, self.__title, self.__quiz),
-                OpenQuizAction: OpenQuizAction.as_view('open_quiz', self.__logger, self.__title, self.__quiz),
-                SaveQuizAction: SaveQuizAction.as_view('save_quiz', self.__logger),
+                OpenQuizAction: OpenQuizAction.as_view('open_quiz', self.__logger, self.__mode, self.__title, self.__quiz),
+                SaveQuizAction: SaveQuizAction.as_view('save_quiz', self.__logger, self.__mode),
             }
 
         return g.di_container

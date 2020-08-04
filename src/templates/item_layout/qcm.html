@@ -7,13 +7,13 @@
         {% set ns = namespace(answered="false") %}
         {% for option in item['options'] %}
             {% set checked = "" %}
-            {% if answers is defined and answers[name] is defined and answers[name] == option['value'] %}
+            {% if answers is defined and answers[name] is defined and answers[name] == option %}
                 {% set checked = "checked" %}
                 {% set ns.answered = "true" %}
             {% endif %}
             <div class="form-check form-check-inline ">
-                <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="{{option['value']}}" {{checked}}/>
-                <label class="form-check-label">{{option['label']}}</label>
+                <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="{{option}}" {{checked}}/>
+                <label class="form-check-label">{{option | replace('_', ' ') | capitalize}}</label>
             </div>
         {% endfor %}
 
@@ -28,3 +28,4 @@
 
     </fieldset>
 </div>
+{% include './review_layout.html' %}

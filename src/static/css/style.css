@@ -60,7 +60,7 @@ body {
     padding: 5px;
 }
 
-#content .quiz-nav .tab-pane:first-child  {
+#content .quiz-nav .tab-pane:first-child {
     border-top-left-radius: 0;
 } 
 

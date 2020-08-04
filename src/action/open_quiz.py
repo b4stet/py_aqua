@@ -6,10 +6,11 @@ from src.action.base import BaseAction
 
 
 class OpenQuizAction(BaseAction):
-    def __init__(self, logger, title, quiz):
+    def __init__(self, logger, mode, title, quiz):
         super().__init__(logger)
         self.__title = title
         self.__quiz = quiz
+        self.__mode = mode
 
     def get(self):
         return render_template('upload.html', title=self.__title), 200
@@ -33,5 +34,10 @@ class OpenQuizAction(BaseAction):
                 self.__quiz['version'], answers['quiz-version']
             ))
 
+        # set review mode
+        review = False
+        if self.__mode == self.MODE_REVIEWER:
+            review = True
+
         # prefill quiz
-        return render_template('quiz.html', title=self.__title, quiz=self.__quiz, answers=answers), 200
+        return render_template('quiz.html', title=self.__title, quiz=self.__quiz, answers=answers, review=review), 200

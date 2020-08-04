@@ -23,3 +23,19 @@ reviewer:
   host: localhost
   port: 8181
   debug: true
+  logger:
+      name: aqua
+      handlers: 
+          stdout: 
+              enabled: true
+              level: info
+          
+          file:
+              enabled: false
+              level: info
+              filename: <absolute_path_to_file>   
+
+          syslog:
+              enabled: false
+              level: error
+              address: /dev/log

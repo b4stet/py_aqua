@@ -1,8 +1,8 @@
 import os
 from src import bootstrap
 
-quiz_config = os.environ.get('AQUA_QUIZ', 'config/quiz_default.yml')
 app_config = os.environ.get('AQUA_APP', 'config/app_default.yml')
+quiz_config = os.environ.get('AQUA_QUIZ', 'config/quiz_default.yml')
 mode = os.environ.get('AQUA_MODE', 'user')
 
 app = bootstrap(app_config=app_config, quiz_config=quiz_config, mode=mode)

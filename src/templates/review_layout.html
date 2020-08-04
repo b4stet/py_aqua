@@ -1,0 +1,19 @@
+{% if review is defined %}
+    <div class="row review-elt invisible d-none alert alert-warning">
+        <fieldset form="quiz" class="form-group quiz col-12">
+            {% set name = section['id'] ~"-"~ group['id'] ~"-"~ item['id'] ~"-review" %}
+
+            {% for option_review in item['reviewer'] %}
+                {% set checked = "" %}
+                {% if loop.first %}
+                    {% set checked = "checked" %}
+                {% endif %}
+                <div class="form-check form-check-inline ">
+                    <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="{{option_review}}" {{checked}}/>
+                    <label class="form-check-label">{{option_review | replace('_', ' ') | capitalize}}</label>
+                </div>
+            {% endfor %}
+
+        </fieldset>
+    </div>
+{% endif %}

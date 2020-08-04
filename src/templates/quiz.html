@@ -1,11 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
-<form id="quiz" action="/quiz/save" method="POST">
-    <input type="hidden" name="quiz-version" value="{{quiz['version']}}"/>
-    <div class="row">
-        <input type="submit" class="col-2 offset-5 btn" value="Save"/>
+<div class="row">
+    <div class="col-2 offset-5">
+        <form id="quiz" action="/quiz/save" method="POST">
+            <input type="hidden" name="quiz-version" value="{{quiz['version']}}"/>
+            <input type="submit" class="btn col-12" value="Save"/>
+        </form>
     </div>
-</form>
+    {% if review is defined %}
+    <div class="col-5">
+        <div class="custom-control custom-switch text-right">
+            <input id="switch-review" type="checkbox" class="custom-control-input">
+            <label for="switch-review" class="custom-control-label" >Swith to review</label>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+
+</div>
 
 <!-- SECTIONS NAVIGATION -->
 <nav class="quiz-nav quiz-section-nav">
@@ -87,4 +101,14 @@
         <!-- END OF SECTION CONTENT -->
     {% endfor %}
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#switch-review").on('click', function (evt){
+            $(".review-elt").toggleClass("invisible")
+            $(".review-elt").toggleClass("d-none")
+        })
+    })
+</script>
+
 {% endblock %}
