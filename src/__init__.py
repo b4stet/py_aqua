@@ -30,6 +30,7 @@ def bootstrap(app_config, quiz_config, mode):
 
 
 def quiz_from_yaml(quiz_config):
+    yaml.add_constructor('!include', yaml_include_constructor, Loader=yaml.SafeLoader)
     with open(quiz_config, mode='r') as f:
         config = yaml.safe_load(f)
     return config
@@ -56,3 +57,10 @@ def register_routes(app, di_container):
             blueprint.add_url_rule(route['uri'], view_func=di_container[route['action']], methods=route['methods'])
 
         app.register_blueprint(blueprint)
+
+
+def yaml_include_constructor(loader, node):
+    root = os.path.dirname(os.path.dirname(__file__))
+    filename = os.path.join(root, 'config', loader.construct_scalar(node))
+    with open(filename, mode='r') as f:
+        return yaml.safe_load(f)
