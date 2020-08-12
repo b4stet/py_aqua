@@ -16,20 +16,74 @@ groups:
         options:
           - 'option_1'
           - 'option_2'
+          - 'option_3'
+        analysis:
+          category: 'c1'
+          priority: 'low'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered'
+        - option: 'review_1'
+          helper: 'if answer is option 1'
+          score: 1
+          status: ok
+          review: 'Option 1 is suitable for ...'
+          remediation: null
+        - option: 'review_2'
+          helper: 'if answer is option 2'
+          score: 0
+          status: ko
+          review: 'Option 2 is not suitable for ...'
+          remediation: 'Option 1 must be implemented'
+        - option: 'review_3'
+          helper: 'if answer is option 3'
+          score: 0.5
+          status: partial
+          review: 'Option 3 is acceptable but not completely suitable for ...'
+          remediation: 'Option 1 must be preferred'
+        - option: 'not_answered'
+          helper: 'if there is no answer'
+          score: -1
+          status: not_answered
+          review: 'Information about X is missing'
+          remediation: 'Option 1 must be implemented'
+
       - question: '... question ...'
         type: 'text'
         id: 'i2'
         placeholder: 'answer examples'
+        analysis:
+          category: 'c2'
+          priority: 'medium'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered/no_sense'
+          - option: 'review_1'
+            helper: 'if answer contains both x and y, x in ..., y in ...'
+            score: 1
+            status: ok
+            review: 'Z is clearly identified and is suitable for ...'
+            remediation: null
+          - option: 'review_2'
+            helper: 'if answer contains x or y, and x in ... or y in ...'
+            score: 0
+            status: ko
+            review: 'Z is not suitable for ...: x is ... and y is ...'
+            remediation: 'Z should be implemented properly, with x in ... and y in ...'
+          - option: 'review_3'
+            helper: 'if answer contains x and y, with x in ... but y in ...'
+            score: 0.6
+            status: partial
+            review: 'Z is implemented, with ... but is lacking of ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'review_4'
+            helper: 'if answer contains x and y, with y in ... but x in ...'
+            score: 0.3
+            status: partial
+            review: 'Z is implemented, with ... but is lacking of ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'not_answered'
+            helper: 'if there is no answer or if the answer is non sense'
+            score: -1
+            status: not_answered
+            review: 'Information about Z is missing'
+            remediation: 'Z should be implemented, preferably with x in ... and y in ...'
       - question: '... question ...'
         type: 'table_simple'
         id: 'i3'
@@ -48,11 +102,41 @@ groups:
               - 'option_a'
               - 'option_b'
               - 'option_b'
+        analysis:
+          category: 'c2'
+          priority: 'low'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered/no_sense'
+          - option: 'review_1'
+            helper: 'if table is complete (col1 exhaustive), with col2 always in ...'
+            score: 1
+            status: ok
+            review: 'X is properly listed, with all element expected as col1, and all configured suitably for ...'
+            remediation: null
+          - option: 'review_2'
+            helper: 'if col1 is exhaustive but col2 never in ...'
+            score: 0
+            status: ko
+            review: 'X configuratin is not suitable for ...'
+            remediation: 'X should be configured properly, with all col2 in ...'
+          - option: 'review_3'
+            helper: 'if col1 is missing y but col2 always in ...'
+            score: 0.6
+            status: partial
+            review: 'X is properly configured with col2 in ..., but is missing y'
+            remediation: 'X should be completed with y element, and configured with col2 in ...'
+          - option: 'review_4'
+            helper: 'if col1 is missing z and/or col2 not always in ...'
+            score: 0.3
+            status: partial
+            review: 'X is deployed but not properly configured: z is not in the list, and some col2 are not in ...'
+            remediation: 'X should be completed with z element, and all elements should be configured with col2 in ...'
+          - option: 'not_answered'
+            helper: 'if table is not filled or element in col1 are not related to the question'
+            score: -1
+            status: not_answered
+            review: 'Information about X is missing'
+            remediation: 'X should be implemented with element y and z, and preferably with col2 in ...'
+
 
   - name: 'Group 2'
     id: 'g2'
@@ -67,20 +151,78 @@ groups:
         type: 'text'
         id: 'i1'
         placeholder: 'answer examples'
+        analysis:
+          category: 'c1'
+          priority: 'medium'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered/no_sense'
+          - option: 'review_1'
+            helper: 'if answer contains both x and y, x in ..., y in ...'
+            score: 1
+            status: ok
+            review: 'Z is clearly identified and is suitable for ...'
+            remediation: null
+          - option: 'review_2'
+            helper: 'if answer contains x or y, and x in ... or y in ...'
+            score: 0
+            status: ko
+            review: 'Z is not suitable for ...: x is ... and y is ...'
+            remediation: 'Z should be implemented properly, with x in ... and y in ...'
+          - option: 'review_3'
+            helper: 'if answer contains x and y, with x in ... but y in ...'
+            score: 0.6
+            status: partial
+            review: 'Z is implemented, with ... but is lacking of ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'review_4'
+            helper: 'if answer contains x and y, with y in ... but x in ...'
+            score: 0.3
+            status: partial
+            review: 'Z is implemented, with ... but is lacking of ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'not_answered'
+            helper: 'if there is no answer or if the answer is non sense'
+            score: -1
+            status: not_answered
+            review: 'Information about Z is missing'
+            remediation: 'Z should be implemented, preferably with x in ... and y in ...'
       - question: '... question ...'
         type: 'text'
         id: 'i2'
         placeholder: 'answer examples'
+        analysis:
+          category: 'c2'
+          priority: 'high'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered/no_sense'
+          - option: 'review_1'
+            helper: 'if answer contains both x and y, x in ..., y in ...'
+            score: 1
+            status: ok
+            review: 'Z is clearly identified and is suitable for ...'
+            remediation: null
+          - option: 'review_2'
+            helper: 'if answer contains x or y, and x in ... or y in ...'
+            score: 0
+            status: ko
+            review: 'Z is not suitable for ...: x is ... and y is ...'
+            remediation: 'Z should be implemented properly, with x in ... and y in ...'
+          - option: 'review_3'
+            helper: 'if answer contains x and y, with x in ... but y in ...'
+            score: 0.6
+            status: partial
+            review: 'Z is implemented, with ... but is lacking of ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'review_4'
+            helper: 'if answer contains x and y, with y in ... but x in ...'
+            score: 0.3
+            status: partial
+            review: 'Z is implemented, with ... but is lacking of ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'not_answered'
+            helper: 'if there is no answer or if the answer is non sense'
+            score: -1
+            status: not_answered
+            review: 'Information about Z is missing'
+            remediation: 'Z should be implemented, preferably with x in ... and y in ...'
 
   - name: Group 3
     id: 'g3'
@@ -97,8 +239,32 @@ groups:
         options:
           - 'option_1'
           - 'option_2'
+          - 'option_3'
+        analysis:
+          category: 'c1'
+          priority: 'high'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered'
+          - option: 'review_1'
+            helper: 'if answer is option 1'
+            score: 1
+            status: ok
+            review: 'Option 1 is suitable for ...'
+            remediation: null
+          - option: 'review_2'
+            helper: 'if answer is option 2'
+            score: 0
+            status: ko
+            review: 'Option 2 is not suitable for ...'
+            remediation: 'Option 1 must be implemented'
+          - option: 'review_3'
+            helper: 'if answer is option 3'
+            score: 0.5
+            status: partial
+            review: 'Option 3 is acceptable but not completely suitable for ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'not_answered'
+            helper: 'if there is no answer'
+            score: -1
+            status: not_answered
+            review: 'Information about X is missing'
+            remediation: 'Option 1 must be implemented'

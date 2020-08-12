@@ -21,6 +21,7 @@ def bootstrap(app_config, quiz_config, mode):
     config_quiz = quiz_from_yaml(quiz_config)
     app.title = config_quiz['title']
     app.quiz = config_quiz['quiz']
+    app.gap_analysis = config_quiz['analysis']
 
     # register components and return app
     with app.app_context():

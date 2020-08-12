@@ -2,6 +2,7 @@ from src.action.get_index import GetIndexAction
 from src.action.new_quiz import NewQuizAction
 from src.action.open_quiz import OpenQuizAction
 from src.action.save_quiz import SaveQuizAction
+from src.action.analyze import AnalyzeAction
 
 routing = {
     'quiz': {
@@ -28,4 +29,13 @@ routing = {
             },
         ],
     },
+    'analysis': {
+        'routes': [
+            {
+                'uri': '/analysis/open',
+                'action': AnalyzeAction,
+                'methods': ['GET', 'POST'],
+            },
+        ]
+    }
 }

@@ -16,11 +16,34 @@ groups:
         options:
           - 'option_1'
           - 'option_2'
+        analysis:
+          category: 'c1'
+          priority: 'high'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered'
+          - option: 'review_1'
+            helper: 'if answer is option 1'
+            score: 1
+            status: ok
+            review: 'Option 1 is suitable for ...'
+            remediation: null
+          - option: 'review_2'
+            helper: 'if answer is option 2'
+            score: 0
+            status: ko
+            review: 'Option 2 is not suitable for ...'
+            remediation: 'Option 1 must be implemented'
+          - option: 'review_3'
+            helper: 'if answer is option 3'
+            score: 0.5
+            status: partial
+            review: 'Option 3 is acceptable but not completely suitable for ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'not_answered'
+            helper: 'if there is no answer'
+            score: -1
+            status: not_answered
+            review: 'Information about X is missing'
+            remediation: 'Option 1 must be implemented'
 
   - name: Group 2
     id: 'g2'
@@ -37,11 +60,34 @@ groups:
         options:
           - 'option_1'
           - 'option_2'
+        analysis:
+          category: 'c2'
+          priority: 'medium'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered'
+          - option: 'review_1'
+            helper: 'if answer is option 1'
+            score: 1
+            status: ok
+            review: 'Option 1 is suitable for ...'
+            remediation: null
+          - option: 'review_2'
+            helper: 'if answer is option 2'
+            score: 0
+            status: ko
+            review: 'Option 2 is not suitable for ...'
+            remediation: 'Option 1 must be implemented'
+          - option: 'review_3'
+            helper: 'if answer is option 3'
+            score: 0.5
+            status: partial
+            review: 'Option 3 is acceptable but not completely suitable for ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'not_answered'
+            helper: 'if there is no answer'
+            score: -1
+            status: not_answered
+            review: 'Information about X is missing'
+            remediation: 'Option 1 must be implemented'
 
   - name: Group 3
     id: 'g3'
@@ -59,7 +105,27 @@ groups:
           - 'option_1'
           - 'option_2'
         reviewer:
-          - 'ok'
-          - 'ko'
-          - 'partial'
-          - 'not_answered'
+          - option: 'review_1'
+            helper: 'if answer is option 1'
+            score: 1
+            status: ok
+            review: 'Option 1 is suitable for ...'
+            remediation: null
+          - option: 'review_2'
+            helper: 'if answer is option 2'
+            score: 0
+            status: ko
+            review: 'Option 2 is not suitable for ...'
+            remediation: 'Option 1 must be implemented'
+          - option: 'review_3'
+            helper: 'if answer is option 3'
+            score: 0.5
+            status: partial
+            review: 'Option 3 is acceptable but not completely suitable for ...'
+            remediation: 'Option 1 must be preferred'
+          - option: 'not_answered'
+            helper: 'if there is no answer'
+            score: -1
+            status: not_answered
+            review: 'Information about X is missing'
+            remediation: 'Option 1 must be implemented'

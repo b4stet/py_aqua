@@ -73,11 +73,14 @@
                             <!-- group description -->
                             <div class="row quiz-group-desc">
                                 <p class="col-12">{{ group['description'] | safe }}</p>
+                                <hr/>
                             </div>
+                            <hr/>
 
                             <!-- group items -->
                             {% for item in group['items'] %}
                                 {% include './item_layout/' ~ item['type'] ~ '.html' %}
+                                {% include './review_layout.html' %}
                             {% endfor %}
 
                             <!-- group notes -->

@@ -9,5 +9,12 @@ class BaseAction(MethodView):
     MODE_USER = 'user'
     MODE_REVIEWER = 'reviewer'
 
-    def __init__(self, logger):
+    def __init__(self, logger, mode, title, quiz):
         self._logger = logger
+        self._quiz = quiz
+        self._data = {
+            'title': title,
+            'quiz': quiz,
+        }
+        if mode == self.MODE_REVIEWER:
+            self._data['review'] = True

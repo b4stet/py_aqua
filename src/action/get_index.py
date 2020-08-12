@@ -5,11 +5,6 @@ from src.action.base import BaseAction
 
 
 class GetIndexAction(BaseAction):
-    def __init__(self, logger, title, quiz):
-        super().__init__(logger)
-        self.__title = title
-        self.__quiz = quiz
-
     def get(self):
         # validate quiz config
         try:
@@ -21,20 +16,16 @@ class GetIndexAction(BaseAction):
             'type': self.MESSAGE_SUCCESS,
             'content': [
                 'Quiz config loaded.',
-                'Running version {}.'.format(self.__quiz['version'])
+                'Running version {}.'.format(self._quiz['version'])
             ],
         }
 
-        data = {
-            'title': self.__title,
-            'message': message,
-        }
-
-        return render_template('layout.html', **data), 200
+        self._data['message'] = message
+        return render_template('layout.html', **self._data), 200
 
     def __check_item_ids(self):
         ids = []
-        for section in self.__quiz['sections']:
+        for section in self._quiz['sections']:
             sid = section['id']
             for group in section['groups']:
                 gid = group['id']

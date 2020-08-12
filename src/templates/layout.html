@@ -22,6 +22,9 @@
           <div class="row"><a role="button" class="col-8 offset-2 btn" href="/">Home</a></div>
           <div class="row"><a role="button" class="col-8 offset-2 btn" href="/quiz/new">New</a></div>
           <div class="row"><a role="button" class="col-8 offset-2 btn" href="/quiz/open">Open</a></div>
+          {% if review is defined %}
+            <div class="row"><a role="button" class="col-8 offset-2 btn" href="/quiz/analyze">Gap Analysis</a></div>
+          {% endif %}
         </div>
       </div>
 

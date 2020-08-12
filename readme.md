@@ -9,7 +9,7 @@ A little web app to fill a quiz, analyze answers, score and generate a report.
 ### User mode versus reviewer mode
 The application is built to run either in `user` mode, either in `reviewer` mode:
 - in `user` mode, user can start a new quiz, load a previous answers file, save its answers
-- in `reviewer` mode, in addition, user can enable and perform the review of answers and generate the gap analysis
+- in `reviewer` mode, user has an additional `gap analysis` menu, can enable/disable the review of answers and generate the gap analysis
 
 In both modes, nothing is stored server side (no database, no file) to avoid complexity and allow running it locally without headache.
 
@@ -47,13 +47,15 @@ With default config
 
 ## Quiz config 
 ### Structure
-The application renders the quiz from a yaml file as defined in `quiz_default.yml`.  
+The application renders the quiz from a yaml file as defined in the sample `quiz_default.yml`.  
 - a quiz has one or multiple section(s)
 - each section has one or multiple group(s)
 - each group has
     - a description
     - one or multiple item(s)
-- each item is a question of type `qcm`, `text` or `table`
+- each item is a question of one of the following types, has a category and a priority:
+    - `category` will be used in the gap analysis, to group items by theme
+    - `priority` (eg. low/medium/high) corresponds to a weight in scoring, and a remediation priority in the report
     - `qcm`: 
         - only one option can be ticked
         - `options` are the list of content received when form is posted, labels displayed are automatically deduced by replacing `_` with space, 
@@ -67,7 +69,6 @@ The application renders the quiz from a yaml file as defined in `quiz_default.ym
 - each item also has a `reviewer` part, listing accepted answers and their associated information for scoring and report:
     - keys are rendered as `qcm`, their name being the value of options, and a default `Not Reviewed` being automatically added
     - `score` is the value assigned to the review option
-    - `priority` (eg. low/medium/high) corresponds to a weight in scoring, and a remediation priority in the report
     - `status` (eg. ok/ko/partial) corresponds to the class of the review option, and will be used to depict quiz performance in the report
     - `helper` is a sentence indicating in which case reviewer should select this option
     - `review` is a sentence interpreting the review option and will appear in the report
