@@ -6,6 +6,7 @@ from src.action.new_quiz import NewQuizAction
 from src.action.open_quiz import OpenQuizAction
 from src.action.save_quiz import SaveQuizAction
 from src.action.analyze import AnalyzeAction
+from src.middleware.localhost_authorization import LocalhostAuthorizationMiddleware
 
 
 class DependenciesService():
@@ -22,6 +23,7 @@ class DependenciesService():
     def register(self):
         if 'di_container' not in g:
             g.di_container = {
+                LocalhostAuthorizationMiddleware: LocalhostAuthorizationMiddleware().check,
                 GetIndexAction: GetIndexAction.as_view('get_index', self.__logger, self.__mode, self.__title, self.__quiz),
                 NewQuizAction: NewQuizAction.as_view('new_quiz', self.__logger, self.__mode, self.__title, self.__quiz),
                 OpenQuizAction: OpenQuizAction.as_view('open_quiz', self.__logger, self.__mode, self.__title, self.__quiz),

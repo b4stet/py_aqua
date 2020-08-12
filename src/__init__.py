@@ -31,7 +31,7 @@ def bootstrap(app_config, quiz_config, mode):
 
 
 def quiz_from_yaml(quiz_config):
-    yaml.add_constructor('!include', yaml_include_constructor, Loader=yaml.SafeLoader)
+    yaml.add_constructor('!include', yaml_include_tag, Loader=yaml.SafeLoader)
     with open(quiz_config, mode='r') as f:
         config = yaml.safe_load(f)
     return config
@@ -45,6 +45,13 @@ def app_from_yaml(app_config, mode):
     return app_config
 
 
+def yaml_include_tag(loader, node):
+    root = os.path.dirname(os.path.dirname(__file__))
+    filename = os.path.join(root, 'config', loader.construct_scalar(node))
+    with open(filename, mode='r') as f:
+        return yaml.safe_load(f)
+
+
 def register_services(app):
     for service in services:
         service().init_app(app)
@@ -54,14 +61,10 @@ def register_routes(app, di_container):
     for bp_name, actions in routing.items():
         blueprint = Blueprint(name=bp_name, import_name=__name__)
 
+        for middleware in actions['middlewares']:
+            blueprint.before_request(di_container[middleware])
+
         for route in actions['routes']:
             blueprint.add_url_rule(route['uri'], view_func=di_container[route['action']], methods=route['methods'])
 
         app.register_blueprint(blueprint)
-
-
-def yaml_include_constructor(loader, node):
-    root = os.path.dirname(os.path.dirname(__file__))
-    filename = os.path.join(root, 'config', loader.construct_scalar(node))
-    with open(filename, mode='r') as f:
-        return yaml.safe_load(f)
