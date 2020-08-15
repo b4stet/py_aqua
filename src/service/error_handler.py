@@ -10,6 +10,7 @@ class ErrorHandlerService():
     def __init__(self):
         self.__logger = current_app.logger
         self.__title = current_app.title
+        self.__mode = current_app.config['mode']
 
     def init_app(self, app):
         app.register_error_handler(Exception, self.handler)
@@ -49,4 +50,12 @@ class ErrorHandlerService():
                 detail,
             ],
         }
-        return render_template('layout.html', title=self.__title, message=message), status_code
+
+        data = {
+            'title': self.__title,
+            'message': message,
+        }
+        if self.__mode == BaseAction.MODE_REVIEWER:
+            data['review'] = True
+
+        return render_template('layout.html', **data), status_code
