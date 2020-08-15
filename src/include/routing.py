@@ -3,7 +3,7 @@ from src.action.new_quiz import NewQuizAction
 from src.action.open_quiz import OpenQuizAction
 from src.action.save_quiz import SaveQuizAction
 from src.action.analyze import AnalyzeAction
-from src.middleware.localhost_authorization import LocalhostAuthorizationMiddleware
+from src.middleware.reviewer_authorization import ReviewerAuthorizationMiddleware
 
 routing = {
     'quiz': {
@@ -32,7 +32,7 @@ routing = {
         ],
     },
     'analysis': {
-        'middlewares': [LocalhostAuthorizationMiddleware],
+        'middlewares': [ReviewerAuthorizationMiddleware],
         'routes': [
             {
                 'uri': '/analysis/open',

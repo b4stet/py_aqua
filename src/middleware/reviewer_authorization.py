@@ -2,7 +2,7 @@ from werkzeug.exceptions import Forbidden
 from src.action.base import BaseAction
 
 
-class LocalhostAuthorizationMiddleware():
+class ReviewerAuthorizationMiddleware():
     def __init__(self, mode):
         self.__mode = mode
 

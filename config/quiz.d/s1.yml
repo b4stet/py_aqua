@@ -101,7 +101,7 @@ groups:
             options:
               - 'option_a'
               - 'option_b'
-              - 'option_b'
+              - 'option_c'
         analysis:
           category: 'c2'
           priority: 'low'
