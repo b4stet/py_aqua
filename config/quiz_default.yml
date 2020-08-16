@@ -10,42 +10,19 @@ quiz:
     - !include quiz.d/s3.yml
 
 analysis:
-  summary:
-    labels: ['strong', 'intermediate', 'weak']
-    values:
-      strong: 'Your overall performance is satisfying.'
-      intermediate: 'Your overall performance shows several good points but is still lacking of important ones.'
-      weak: 'Your overall performance does not reach the expectation.'
-  categories:
-    - id: c1
-      title: 'Category 1'
-      priority: low
-      summary: 
-        strong: 'Your answers reflects a rather good achievement regarding x and y'
-        intermediate: 'Your answers reflects a good basis regarding x and y but require some improvements'
-        weak: 'Your answers point substantial weaknesses regarding x and y, significant efforts should be put to address them'
-      description: |
-        This category covers items related to x and y.
-        More precisely, it measures your performance in:
-        <ul>
-        <li> ... </li>
-        <li> ... </li>
-        </ul>
-
-    - id: c2
-      title: 'Category 2'
-      priority: medium
-      summary: 
-        strong: 'Your answers reflects a rather good achievement regarding x and y'
-        intermediate: 'Your answers reflects a good basis regarding x and y but require some improvements'
-        weak: 'Your answers point substantial weaknesses regarding x and y, significant efforts should be put to address them'
-      description: |
-        This category covers items related to z and t.
-        More precisely, it measures your performance in:
-        <ul>
-        <li> ... </li>
-        <li> ... </li>
-        </ul>
+  scoring:
+    mapping_grade_from_score:
+      A: [90, 100]
+      B: [70, 90]
+      C: [50, 70]
+      D: [30, 50]
+      E: [10, 30]
+      F: [0, 10]
+    
+    mapping_label_from_grade:
+      strong: ['A', 'B']
+      intermediate: ['C']
+      weak: ['D', 'E', 'F']
 
   priorities:
     labels: ['low', 'medium', 'high']
@@ -55,16 +32,41 @@ analysis:
       high: 4
 
   statuses: ['ok', 'ko', 'partial', 'not answered']
-  scoring:
-    grade_mapping:
-      A: [90, 100]
-      B: [70, 90]
-      C: [50, 70]
-      D: [30, 50]
-      E: [10, 30]
-      F: [0, 10]
-    
-    summary_mapping:
-      strong: ['A', 'B']
-      intermediate: ['C']
-      weak: ['D', 'E', 'F']
+
+  summary:
+    labels: ['strong', 'intermediate', 'weak']
+    values:
+      strong: 'your overall performance demonstrates a good coverage.'
+      intermediate: 'your overall performance indicates a good basis but several important items are missing.'
+      weak: 'your overall performance does not reach the bare expectation.'
+
+  categories:
+    - id: c1
+      name: 'Category 1'
+      priority: low
+      summary: 
+        strong: 'your answers reflects a rather good achievement regarding x and y'
+        intermediate: 'your answers reflects a good basis regarding x and y but require some improvements'
+        weak: 'your answers point substantial weaknesses regarding x and y, significant efforts should be put to address them'
+      description: |
+        <p>This category covers items related to x and y.
+        More precisely, it measures your performance in:</p>
+        <ul>
+        <li> ... </li>
+        <li> ... </li>
+        </ul>
+
+    - id: c2
+      name: 'Category 2'
+      priority: medium
+      summary: 
+        strong: 'your answers reflects a rather good achievement regarding z ant t'
+        intermediate: 'your answers reflects a good basis regarding z ant t but require some improvements'
+        weak: 'your answers point substantial weaknesses regarding z ant t, significant efforts should be put to address them'
+      description: |
+        <p>This category covers items related to z and t.
+        More precisely, it measures your performance in:</p>
+        <ul>
+        <li> ... </li>
+        <li> ... </li>
+        </ul>

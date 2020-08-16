@@ -13,6 +13,10 @@ body {
     margin-bottom: 25px;
 }
 
+#subtitle {
+    text-align: center;
+}
+
 #menu {
     background-color: #586f7c;
     margin-top: 98px;
@@ -28,12 +32,9 @@ body {
     margin-bottom: 10px;
 }
 
-#quiz .btn, #quiz-open .btn {
+#quiz .btn, #upload .btn {
     background-color: #333638;
     color: #ffffff;
-}
-#content .quiz {
-    margin-bottom: 20px;
 }
 
 #content .quiz-section-nav .nav-tabs .nav-link:not(.active) {
@@ -67,4 +68,47 @@ body {
 #content .quiz-group-desc p {
     margin-top: 10px;
     margin-bottom: 30px;
+}
+
+#content .report {
+    margin-top: 10px;
+}
+
+#content .report-category-nav .nav-tabs .nav-link:not(.active) {
+    color: #ffffff;
+    background-color: #00263D;
+    font-weight: bold;
+}
+
+#content .report-nav .nav-tabs .nav-link.active {
+    color: #000000;
+    background-color:#E5E5E5;
+    font-weight: bold;
+}
+
+#content .report-nav .tab-pane.active {
+    background-color:#E5E5E5;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#content .report-nav .tab-pane:first-child {
+    border-top-left-radius: 0;
+} 
+
+.table{
+    border: 2px solid #000000;
+}
+
+.table > thead > tr > th{
+    text-align: center;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 2px;
+}
+
+.table > tbody > tr > td{
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px 2px;
 }

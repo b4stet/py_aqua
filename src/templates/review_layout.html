@@ -32,7 +32,7 @@
                 <strong>Helper</strong>
                 <ul>
                     {% for review_elt in item['reviewer'] %}
-                        <li>{{ review_elt['helper'] }}</li>
+                        <li>{{review_elt['option'] | replace('_', ' ') | capitalize}}: {{ review_elt['helper'] }}</li>
                     {% endfor %}
                 </ul>
             </p>

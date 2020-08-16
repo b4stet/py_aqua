@@ -4,7 +4,7 @@ groups:
   - name: Group 1
     id: 'g1'
     description: | 
-      Introduction of items under section 3 - group 1.
+      <p>Introduction of items under section 3 - group 1.</p>
       <ul>
       <li>What</li>
       <li>Why those items</li>
@@ -48,7 +48,7 @@ groups:
   - name: Group 2
     id: 'g2'
     description: | 
-      Introduction of items under section 3 - group 2.
+      <p>Introduction of items under section 3 - group 2.</p>
       <ul>
       <li>What</li>
       <li>Why those items</li>
@@ -92,7 +92,7 @@ groups:
   - name: Group 3
     id: 'g3'
     description: | 
-      Introduction of items under section 3 - group 3.
+      <p>Introduction of items under section 3 - group 3.</p>
       <ul>
       <li>What</li>
       <li>Why those items</li>

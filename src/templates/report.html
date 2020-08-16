@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row"><h2 id="subtitle" class="col-12">Gap Analysis Report</h2></div>
+
+<!-- CATEGORIES NAVIGATION -->
+<nav class="report-nav report-category-nav">
+    <div class="nav nav-tabs border-0" role="tablist">
+        <a class="nav-item nav-link border border-dark border-bottom-0 active" href="#summary" data-toggle="tab" role="tab" aria-selected="true">Summary</a>
+
+        {% for category in analysis['categories'] %}
+            <a class="nav-item nav-link border border-dark border-bottom-0" href="#{{category['id']}}" data-toggle="tab" role="tab" aria-selected="false">{{category['name']}}</a>
+        {% endfor %}
+    </div>
+</nav>
+<!-- END OF CATEGORIES NAVIGATION-->
+
+<!-- CATEGORIES CONTENT-->
+<div class="tab-content report-nav">
+    <div class="tab-pane fade border border-dark show active" role="tabpanel" id="summary">
+        <div class="container-fluid">
+            <div class="row report"></div>
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        Your final score is {{report['grades']['final']}}: {{analysis['summary']['values'][report['labels']['final']]}}<br/>
+                        This outcome stems from the following achievements per category:
+                    </p>
+                    <ul>
+                        {% for category in analysis['categories'] %}
+                            <li>{{category['name']}}: {{report['grades'][category['id']]}}, {{category['summary'][report['labels'][category['id']]]}}</li>
+                        {% endfor %}
+                    </ul>
+                    <p>Client is advised to apply remediations detailed in subsequent chapters, the major ones being listed in the below table.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div  class="col-10 offset-1">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-2">Priority</th>
+                                        <th class="col-6">Remediation</th>
+                                        <th class="col-2">Category</th>
+                                        <th class="col-2">Section</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td></td><td></td><td></td><td></td></tr>
+                                    <tr><td></td><td></td><td></td><td></td></tr>
+                                    <tr><td></td><td></td><td></td><td></td></tr>
+                                    <tr><td></td><td></td><td></td><td></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% for category in analysis['categories'] %}
+        <div class="tab-pane fade border border-dark" role="tabpanel" id="{{category['id']}}">
+            <div class="container-fluid">
+                <div class="row report"></div>
+                <div class="row">
+                    <p class="col-12">pouet</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<!-- END OF CATEGORIES CONTENT-->
+
+{% endblock %}

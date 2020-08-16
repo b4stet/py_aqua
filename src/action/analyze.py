@@ -17,35 +17,24 @@ class AnalyzeAction(BaseAction):
         })
         return render_template('upload.html', **self._data), 200
 
-    # def post(self):
-    #     f = request.files['file']
-    #     content = f.read()
+    def post(self):
+        f = request.files['file']
+        content = f.read()
 
-    #     # load and check key/values
-    #     try:
-    #         answers = json.loads(content)
-    #         assert 'quiz-version' in answers.keys(), 'No key "quiz-version" found.'
-    #         for key, value in answers.items():
-    #             assert isinstance(key, str), 'Expected str keys. Got {}'.format(type(value))
-    #             assert isinstance(value, str), 'Expected str values. Got {}'.format(type(value))
-    #     except Exception as err:
-    #         raise BadRequest('Invalid file. {}'.format(str(err)))
+        self._data.update({
+            'analysis': self.__analysis,
+            'report': {
+                'grades': {
+                    'final': 'C',
+                    'c1': 'B',
+                    'c2': 'C',
+                },
+                'labels': {
+                    'final': 'intermediate',
+                    'c1': 'strong',
+                    'c2': 'intermediate',
+                },
+            },
+        })
 
-    #     # compare versions
-    #     if answers['quiz-version'] != self.__quiz['version']:
-    #         raise BadRequest('Version mismatch. Quiz runs v{} but answers are v{}. Do convert answers beforehand.'.format(
-    #             self.__quiz['version'], answers['quiz-version']
-    #         ))
-
-    #     # prepare rendering
-    #     data = {
-    #         'title': self.__title,
-    #         'quiz': self.__quiz,
-    #         'answers': answers,
-    #     }
-
-    #     if self.__mode == self.MODE_REVIEWER:
-    #         data['review'] = True
-
-    #     # prefill quiz
-    #     return render_template('quiz.html', **data), 200
+        return render_template('report.html', **self._data), 200
