@@ -40,7 +40,7 @@ groups:
             remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer'
-            score: -1
+            score: -0.2
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'Option 1 must be implemented'
@@ -85,7 +85,7 @@ groups:
             remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer'
-            score: -1
+            score: -0.2
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'Option 1 must be implemented'

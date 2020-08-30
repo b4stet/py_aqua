@@ -1,0 +1,14 @@
+id: c1
+name: 'Category 1'
+priority: high
+summary: 
+  strong: 'your answers reflects a rather good achievement regarding x and y'
+  average: 'your answers reflects a good basis regarding x and y but require some improvements'
+  weak: 'your answers point substantial weaknesses regarding x and y, significant efforts should be put to address them'
+description: |
+  <p>This category covers items related to x and y.
+  More precisely, it measures your performance in:</p>
+  <ul>
+  <li> ... </li>
+  <li> ... </li>
+  </ul>

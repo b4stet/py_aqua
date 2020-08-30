@@ -1,0 +1,14 @@
+id: c2
+name: 'Category 2'
+priority: medium
+summary: 
+  strong: 'your answers reflects a rather good achievement regarding z ant t'
+  average: 'your answers reflects a good basis regarding z ant t but require some improvements'
+  weak: 'your answers point substantial weaknesses regarding z ant t, significant efforts should be put to address them'
+description: |
+  <p>This category covers items related to z and t.
+  More precisely, it measures your performance in:</p>
+  <ul>
+  <li> ... </li>
+  <li> ... </li>
+  </ul>

@@ -70,8 +70,9 @@ body {
     margin-bottom: 30px;
 }
 
-#content .report {
+#content .report-viz {
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #content .report-category-nav .nav-tabs .nav-link:not(.active) {
@@ -96,19 +97,20 @@ body {
     border-top-left-radius: 0;
 } 
 
+
 .table{
-    border: 2px solid #000000;
+    border: 2px solid #333638;
 }
 
-.table > thead > tr > th{
+.table thead tr th{
     text-align: center;
     border-style: solid;
-    border-color: #000000;
+    border-color: #333638;
     border-width: 2px;
 }
 
-.table > tbody > tr > td{
+.table tbody tr td{
     border-style: solid;
-    border-color: #000000;
+    border-color: #333638;
     border-width: 1px 2px;
 }

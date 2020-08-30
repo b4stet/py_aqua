@@ -11,62 +11,60 @@ quiz:
 
 analysis:
   scoring:
-    mapping_grade_from_score:
-      A: [90, 100]
-      B: [70, 90]
-      C: [50, 70]
-      D: [30, 50]
-      E: [10, 30]
-      F: [0, 10]
-    
-    mapping_label_from_grade:
-      strong: ['A', 'B']
-      intermediate: ['C']
-      weak: ['D', 'E', 'F']
+    - grade: 'A'
+      tag: 'strong'
+      color: '#577a00'
+      min: 80
+      max: 100
+    - grade: 'B'
+      tag: 'average'
+      color: '#86b300'
+      min: 60
+      max: 80
+    - grade: 'C'
+      tag: 'average'
+      color: '#e6a800'
+      min: 40
+      max: 60
+    - grade: 'D'
+      tag: 'weak'
+      color: '#e36b02'
+      min: 20
+      max: 40
+    - grade: 'E'
+      tag: 'weak'
+      color: '#990000'
+      min: 0
+      max: 20
 
   priorities:
-    labels: ['low', 'medium', 'high']
-    weights: 
-      low: 1
-      medium: 2
-      high: 4
+    - label: 'low'
+      weight: 1
+    - label: 'medium'
+      weight: 2
+    - label: 'high'
+      weight: 4
 
-  statuses: ['ok', 'ko', 'partial', 'not answered']
+  statuses:
+    - label: 'ok'
+      color: '#577a00'
+      icon-fa: 'check-circle'
+    - label: 'partial'
+      color: '#e36b02'
+      icon-fa: 'exclamation-triangle'
+    - label: 'ko'
+      color: '#990000'
+      icon-fa: 'times-circle'
+    - label: 'not_answered'
+      color: '#363636'
+      icon-fa: 'question-circle'
 
   summary:
-    labels: ['strong', 'intermediate', 'weak']
-    values:
-      strong: 'your overall performance demonstrates a good coverage.'
-      intermediate: 'your overall performance indicates a good basis but several important items are missing.'
-      weak: 'your overall performance does not reach the bare expectation.'
+    strong: 'you demonstrated a good coverage in all fields'
+    average: 'you demonstrated strong foundations but some significant items are not suitable'
+    weak: 'basic expectations are not met'
 
   categories:
-    - id: c1
-      name: 'Category 1'
-      priority: low
-      summary: 
-        strong: 'your answers reflects a rather good achievement regarding x and y'
-        intermediate: 'your answers reflects a good basis regarding x and y but require some improvements'
-        weak: 'your answers point substantial weaknesses regarding x and y, significant efforts should be put to address them'
-      description: |
-        <p>This category covers items related to x and y.
-        More precisely, it measures your performance in:</p>
-        <ul>
-        <li> ... </li>
-        <li> ... </li>
-        </ul>
+    - !include quiz.d/c1.yml
+    - !include quiz.d/c2.yml
 
-    - id: c2
-      name: 'Category 2'
-      priority: medium
-      summary: 
-        strong: 'your answers reflects a rather good achievement regarding z ant t'
-        intermediate: 'your answers reflects a good basis regarding z ant t but require some improvements'
-        weak: 'your answers point substantial weaknesses regarding z ant t, significant efforts should be put to address them'
-      description: |
-        <p>This category covers items related to z and t.
-        More precisely, it measures your performance in:</p>
-        <ul>
-        <li> ... </li>
-        <li> ... </li>
-        </ul>

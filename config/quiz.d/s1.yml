@@ -41,7 +41,7 @@ groups:
           remediation: 'Option 1 must be preferred'
         - option: 'not_answered'
           helper: 'if there is no answer'
-          score: -1
+          score: -0.1
           status: not_answered
           review: 'Information about X is missing'
           remediation: 'Option 1 must be implemented'
@@ -80,7 +80,7 @@ groups:
             remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer or if the answer is non sense'
-            score: -1
+            score: -0.1
             status: not_answered
             review: 'Information about Z is missing'
             remediation: 'Z should be implemented, preferably with x in ... and y in ...'
@@ -132,7 +132,7 @@ groups:
             remediation: 'X should be completed with z element, and all elements should be configured with col2 in ...'
           - option: 'not_answered'
             helper: 'if table is not filled or element in col1 are not related to the question'
-            score: -1
+            score: -0.1
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'X should be implemented with element y and z, and preferably with col2 in ...'
@@ -181,7 +181,7 @@ groups:
             remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer or if the answer is non sense'
-            score: -1
+            score: -0.1
             status: not_answered
             review: 'Information about Z is missing'
             remediation: 'Z should be implemented, preferably with x in ... and y in ...'
@@ -219,7 +219,7 @@ groups:
             remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer or if the answer is non sense'
-            score: -1
+            score: -0.1
             status: not_answered
             review: 'Information about Z is missing'
             remediation: 'Z should be implemented, preferably with x in ... and y in ...'
@@ -264,7 +264,7 @@ groups:
             remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer'
-            score: -1
+            score: -0.1
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'Option 1 must be implemented'

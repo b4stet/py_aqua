@@ -1,4 +1,3 @@
-import copy
 from flask.views import MethodView
 
 

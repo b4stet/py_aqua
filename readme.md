@@ -1,9 +1,10 @@
 # Auditing QUiz Application
-A little web app to fill a quiz, analyze answers, score and generate a report.
+A light web app to fill a quiz, analyze answers, score and generate a report.
 
 ## Requirements
-- python3-flask >= 0.12.2
-- python3-magic >= 0.4.16
+- flask >= 0.12.2
+- matplotblib >= 3.0.3
+- pywaffle >= 0.6.1
 
 ## Usage examples
 ### User mode versus reviewer mode
@@ -11,17 +12,17 @@ The application is built to run either in `user` mode, either in `reviewer` mode
 - in `user` mode, user can start a new quiz, load a previous answers file, save its answers
 - in `reviewer` mode, user has an additional `gap analysis` menu, can enable/disable the review of answers and generate the gap analysis
 
-In both modes, nothing is stored server side (no database, no file) to avoid complexity and allow running it locally without headache.
+In both modes, nothing is stored server side (no database, no file).
 
 ### Example 1
-You want to let users fill the quiz autonomously.  
+Users can fill the quiz autonomously.  
 
-- with an additional layer (ningx/apache2), you can expose the application in user mode.  
+- with additional layers (nginx/apache2, authN), you can expose the application in user mode.  
 - users send you their answers by other mean
 - you run the application locally in reviewer mode, load their answers, review and generate the gap analysis
 
 ### Example 2
-You drive the assessment with a user.
+Assessment is driven with users.
 
 - you run the application locally in user mode, or in reviewer mode with review disabled
 - you fill and save answers with the user
@@ -51,10 +52,10 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
 - a quiz has one or multiple section(s)
 - each section has one or multiple group(s)
 - each group has
-    - a description
+    - a description, in html multines format
     - one or multiple item(s)
 - each item is a question of one of the following types, has a category and a priority:
-    - `category` will be used in the gap analysis, to group items by theme
+    - `category` will be used in the gap analysis, to group items by theme, it refers to the id defined in `analysis.categories[].id` key
     - `priority` (eg. low/medium/high) corresponds to a weight in scoring, and a remediation priority in the report
     - `qcm`: 
         - only one option can be ticked
@@ -66,8 +67,8 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
         - `nb_rows` is the primary number of rows to create, 
         - columns can be of type `text` or `qcm`,
         - `size` is the displayed width of a column, using the grid system, hence sum of sizes for a table should be 12
-- each item also has a `reviewer` part, listing accepted answers and their associated information for scoring and report:
-    - keys are rendered as `qcm`, their name being the value of options, and a default `Not Reviewed` being automatically added
+- each item also has a `reviewer` part, listing rules as a `qcm`, to deduce score and remediations from answers:
+    - `option` is the label, a default `Not Reviewed` being automatically added
     - `score` is the value assigned to the review option
     - `status` (eg. ok/ko/partial) corresponds to the class of the review option, and will be used to depict quiz performance in the report
     - `helper` is a sentence indicating in which case reviewer should select this option
@@ -80,3 +81,31 @@ Identifiers in quiz config must be unique within their category:
 - for a given section, group IDs must be unique
 - for a given group, item IDs must be unique
 - for a given table, column IDs must be unique
+
+## Gap analysis config
+Gap analysis report contains a `summary` chapter, then one for each category, and finally an appendix grouping user answers.
+
+### Scoring
+Several plots are built from scores:
+- Final and category grades 
+- Grades distribution per category
+- Grades distribution per sections
+- In each category, item distribution per status
+
+Each score comes from the sum of `priority x item_score` for category/section scores, and sum of `priority x category_score` for the final score.
+- all score range from 0 to 100
+- priorities are weights defined under `analysis.priorities` key of `quiz_default.yml`
+
+Score are then converted into a grade letter, a color, and a tag, all defined under `analysis.scoring` key for plots and summary chapter.
+Item status are also converted in a color, under `analysis.statuses` key for plots.
+
+### Summary chapter
+The text is picked up from `analysis.summary` and `analysis.categories[].summary` keys, based on the tag assigned from final and category scores respectively.  
+
+A table gathers the top 10 remediations among all categories.
+
+### Category chapters
+Each category chapter has 3 parts:
+- a description of items covered, defined under `analysis.categories[].description` key in html multlines format, and a waffle plot of item statuses
+- the list of remediations, table automatically built from review results
+- the gap analysis: a table commenting each answer
