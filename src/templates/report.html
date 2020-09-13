@@ -206,9 +206,11 @@
     <div class="tab-pane fade border border-dark" role="tabpanel" id="appendix">
         <div class="container-fluid">
             <div class="row">
-                <p class="col-12">
-                    This appendix enumerates all answers provided per sections. 
-                </p>
+                <div class="col-12 quiz-group-desc">
+                    <p>
+                        This appendix enumerates all answers provided per sections. 
+                    </p>
+                </div>
             </div>
             {% for sid, section_answers in answers_summary.items() %}
                 <div class="row">
@@ -216,16 +218,16 @@
                 </div>
                 {% for gid, group_answers in section_answers['groups'].items() %}
                     <div class="row">
-                        <h4 class="col-12">{{group_answers['name']}}</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">{{ group_answers['description'] | safe }}</div>
-                    </div>
-                    <div class="row">
                         <div class="col-10 offset-1">
                             <div class="container-fluid">
                                 <div class="row">
                                     <table class="table">
+                                        <thead>
+                                            <tr><th colspan="2">{{group_answers['name']}}</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td colspan="2">{{ group_answers['description'] | safe }}</td></tr>
+                                        </tbody>
                                         <thead>
                                             <tr>
                                                 <th class="report-table-w40">Item</th>
