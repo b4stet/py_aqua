@@ -92,7 +92,7 @@ groups:
           - title: 'Column 1'
             type: 'text'
             id: 'col1'
-            size: 8
+            size: 7
             placeholder: 'Column 1 examples'
           - title: 'Column 2'
             type: 'qcm'
@@ -116,7 +116,7 @@ groups:
             helper: 'if col1 is exhaustive but col2 never in ...'
             score: 0
             status: ko
-            review: 'X configuratin is not suitable for ...'
+            review: 'X configuration is not suitable for ...'
             remediation: 'X should be configured properly, with all col2 in ...'
           - option: 'review_3'
             helper: 'if col1 is missing y but col2 always in ...'

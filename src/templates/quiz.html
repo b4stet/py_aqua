@@ -80,6 +80,7 @@
                             {% endfor %}
 
                             <!-- group notes -->
+                            <hr/>
                             <div class="row">
                                 <fieldset form="quiz" class="form-group col-12">
                                     {% set name = section['id'] ~"-"~ group['id'] ~"-notes" %}
@@ -103,10 +104,69 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        // toggle review
         $("#switch-review").on('click', function (evt){
-            $(".review-elt").toggleClass("invisible")
-            $(".review-elt").toggleClass("d-none")
+            $(".review-elt").toggleClass('invisible')
+            $(".review-elt").toggleClass('d-none')
         })
+
+        // control to delete row in items of type 'table'
+        $(".item-table-simple").on('click', '.btn-remove-row', function (evt){
+            var row = $(evt.target).parent().parent();
+            var table = row.parent();
+            
+            // first is header, last is add button, so discard
+            var nb_rows = table.children().length -2
+
+            // ensure at least 1 row will remain
+            if (nb_rows > 1) {
+                row.remove();
+            }
+        })
+
+        // control to add row in items of type 'table'
+        $(".btn-add-row").on('click', function (evt){
+            var table = $(this).parent().parent().parent()
+            var rows = table.children()
+
+            // copy last row, update id (last div is 'add' button)
+            var last_row = $($(rows).get(-2))
+            var last_row_id = last_row.attr('id')
+
+            var new_row = last_row.clone()
+            var new_row_id = new_row.attr('id').split('-')
+            new_row_id[3] = 'l' + (rows.length - 2)
+            new_row_id = new_row_id.join('-')
+            new_row.attr('id', new_row_id)
+
+            // update input names, reset values to default (last column is trash button so discard)
+            columns = new_row.children()
+            for (var i = 0; i < columns.length -1; i++) {
+                var input = $('input', columns[i])
+
+                // nb of input tag is 1 for text, >1 for qcm
+                if (input.length==1){
+                    var name = input.attr('name').split('-')
+                    var col_id = name[name.length - 1]
+                    input.attr('name', new_row_id + '-' + col_id)
+                    input.val('')
+                }else{
+                    for (var j = 0; j < input.length; j++){
+                        option = $(input.get(j))
+                        var name = option.attr('name').split('-')
+                        var col_id = name[name.length - 1]
+                        option.attr('name', new_row_id + '-' + col_id)
+                        if (option.attr('value') === 'not_answered'){
+                            option.trigger('click')
+                        }
+                    }
+                }
+            }
+
+            // add to DOM
+            new_row.insertAfter('#' + last_row_id)
+        })
+
     })
 </script>
 

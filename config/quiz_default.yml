@@ -60,9 +60,13 @@ analysis:
       icon-fa: 'question-circle'
 
   summary:
-    strong: 'you demonstrated a good coverage in all fields'
-    average: 'you demonstrated strong foundations but some significant items are not suitable'
-    weak: 'basic expectations are not met'
+    text:
+      strong: 'you demonstrated a good coverage in all fields'
+      average: 'you demonstrated strong foundations but some significant items are not suitable'
+      weak: 'basic expectations are not met'
+    priorities:
+      - high
+      - medium
 
   categories:
     - !include quiz.d/c1.yml

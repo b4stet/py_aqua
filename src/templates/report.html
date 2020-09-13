@@ -10,6 +10,8 @@
         {% for cid, category in report_categories.items() %}
             <a class="nav-item nav-link border border-dark border-bottom-0" href="#{{cid}}" data-toggle="tab" role="tab" aria-selected="false">{{category['name']}}</a>
         {% endfor %}
+
+        <a class="nav-item nav-link border border-dark border-bottom-0" href="#appendix" data-toggle="tab" role="tab" aria-selected="false">Appendix</a>
     </div>
 </nav>
 <!-- END OF CATEGORIES NAVIGATION-->
@@ -38,7 +40,8 @@
             <hr/>
             <div class="row">
                 <p class="col-12">
-                    Figures below are distributions of answers soundness, depicted by categories, section and as a whole.
+                    Figures below represent distributions of your answers soundness, depicted by categories, section and as a whole.<br/>
+                    For details, all answers provided are reproduced in the appendix.
                 </p>
             </div>
             <div class="row">
@@ -68,10 +71,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td></td><td></td><td></td><td></td></tr>
-                                    <tr><td></td><td></td><td></td><td></td></tr>
-                                    <tr><td></td><td></td><td></td><td></td></tr>
-                                    <tr><td></td><td></td><td></td><td></td></tr>
+                                    {% for cid, category_remediations in report_summary['main_remediations'].items() %}
+                                        {% if category_remediations['remediations'] | length > 0 %}
+                                            {% for sid, remediations in category_remediations['remediations'].items() %}
+                                                <tr>
+                                                    <td class="text-center" rowspan="{{remediations | length}}">{{category_remediations['name']}}</td>
+                                                    <td class="text-center" rowspan="{{remediations | length}}">{{report_sections[sid]['name']}}</td>
+                                                    <td>{{remediations[0]['remediation']}}</td>
+                                                    <td class="text-center">{{remediations[0]['priority']}}</td>
+                                                </tr>
+                                                {% for remediation in remediations[1:] %}
+                                                    <tr>
+                                                        <td>{{remediation['remediation']}}</td>
+                                                        <td class="text-center">{{remediation['priority']}}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor%}
                                 </tbody>
                             </table>
                         </div>
@@ -97,7 +114,7 @@
                 <div class="row"><h3 class="col-12">Remediations</h3></div>
                 <div class="row">
                     <p class="col-12">
-                        As a result of the gap analysis, the table below records possible actions along the sections that would contribute to global improvements regarding "{{category['name']}}".
+                        As a result of the gap analysis, the table below records actions along the sections that would contribute to global improvements regarding "{{category['name']}}".
                     </p>
                 </div>
                 <div class="row">
@@ -139,8 +156,8 @@
                 <div class="row"><h3 class="col-12">Gap Analysis</h3></div>
                 <div class="row">
                     <p class="col-12">
-                        For each section, items assigned to the category "{{category['name']}}" are reviewed to assess answer strengths and weaknesses.
-                        While the figure summarize briefly their distribution, the table provides deeper insights.
+                        For each section, items assigned to the category "{{category['name']}}" are reviewed to assess answer strengths and weaknesses.<br/>
+                        The figure summarizes soundness distribution while the table provides deeper insights.
                     </p>
                 </div>
 
@@ -155,21 +172,22 @@
                                     <thead>
                                         <tr>
                                             <th class="col-2">Section</th>
-                                            <th class="col-10">Observation</th>
+                                            <th class="col-10">Observations</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for sid, values in report_categories[cid]['gap_analysis'].items() %}
                                             {% if values | length > 0 %}
                                                 <tr>
-                                                    <td class="text-center" rowspan="{{values | length}}">{{report_sections[sid]['name']}}</td>
-                                                    <td>{{values[0]}}</td>
+                                                    <td class="text-center">{{report_sections[sid]['name']}}</td>
+                                                    <td>
+                                                        <ul>
+                                                            {% for value in values %}
+                                                                <li>{{value}}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </td>
                                                 </tr>
-                                                {% for value in values[1:] %}
-                                                <tr>
-                                                    <td>{{value}}</td>
-                                                </tr>
-                                                {% endfor %}
                                             {% endif %}
                                         {% endfor %}
                                     </tbody>
@@ -182,6 +200,67 @@
             </div>
         </div>
     {% endfor %}
+
+
+    <!-- Appendix -->
+    <div class="tab-pane fade border border-dark" role="tabpanel" id="appendix">
+        <div class="container-fluid">
+            <div class="row">
+                <p class="col-12">
+                    This appendix enumerates all answers provided per sections. 
+                </p>
+            </div>
+            {% for sid, section_answers in answers_summary.items() %}
+                <div class="row">
+                    <h3 class="col-12">{{section_answers['name']}}</h3>
+                </div>
+                {% for gid, group_answers in section_answers['groups'].items() %}
+                    <div class="row">
+                        <h4 class="col-12">{{group_answers['name']}}</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">{{ group_answers['description'] | safe }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10 offset-1">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-6">Item</th>
+                                                <th class="col-5">Answer</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for elt in group_answers['answers'] %}
+                                                <tr>
+                                                    <td>{{elt['item']}}</td>
+                                                    <td>
+                                                        {% if elt['answer'] | length > 1%}
+                                                        <ul>
+                                                            {% for answer in elt['answer'] %}
+                                                                <li>{{answer}}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                        {% else %}
+                                                            {{ elt['answer'][0]}}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                {% endfor %}
+                <hr/>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 <!-- END OF CATEGORIES CONTENT-->
 

@@ -1,12 +1,12 @@
 # Auditing QUiz Application
-A light web app to fill a quiz, analyze answers, score and generate a report.
+A light web app to drive an audit, analyze answers, score and generate a report.
 
 ## Requirements
 - flask >= 0.12.2
 - matplotblib >= 3.0.3
 - pywaffle >= 0.6.1
 
-## Usage examples
+## Use Case examples
 ### User mode versus reviewer mode
 The application is built to run either in `user` mode, either in `reviewer` mode:
 - in `user` mode, user can start a new quiz, load a previous answers file, save its answers
@@ -17,14 +17,14 @@ In both modes, nothing is stored server side (no database, no file).
 ### Example 1
 Users can fill the quiz autonomously.  
 
-- with additional layers (nginx/apache2, authN), you can expose the application in user mode.  
-- users send you their answers by other mean
+- with additional layers (nginx/apache2, authentication), you can expose the application in `user` mode.  
+- users send you their answers by other mean (the saved json file)
 - you run the application locally in reviewer mode, load their answers, review and generate the gap analysis
 
 ### Example 2
 Assessment is driven with users.
 
-- you run the application locally in user mode, or in reviewer mode with review disabled
+- you run the application locally in `user` mode, or in `reviewer` mode (with review disabled)
 - you fill and save answers with the user
 - later, in reviewer mode, you load its answers, review and generate the gap analysis
 
@@ -100,12 +100,11 @@ Score are then converted into a grade letter, a color, and a tag, all defined un
 Item status are also converted in a color, under `analysis.statuses` key for plots.
 
 ### Summary chapter
-The text is picked up from `analysis.summary` and `analysis.categories[].summary` keys, based on the tag assigned from final and category scores respectively.  
-
-A table gathers the top 10 remediations among all categories.
+The text is picked up from `analysis.summary.text` and `analysis.categories[].summary` keys, based on the tag assigned to final and category scores respectively.  
+Then, a table gathers the main remediations among all categories, as defined by `analysis.summary.priorities[]`.
 
 ### Category chapters
 Each category chapter has 3 parts:
-- a description of items covered, defined under `analysis.categories[].description` key in html multlines format, and a waffle plot of item statuses
-- the list of remediations, table automatically built from review results
-- the gap analysis: a table commenting each answer
+- a description of items covered, defined under `analysis.categories[].description` as html multilines format, and a waffle plot of item statuses
+- the list of remediations, table automatically built from review results, ordered by priority
+- the gap analysis: a table listing strengh or weakness of each answer

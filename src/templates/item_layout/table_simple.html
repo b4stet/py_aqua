@@ -1,7 +1,7 @@
 <div class="row">
     <fieldset form="quiz" class="form-group quiz col-12">
         <legend>{{item['question']}}</legend>
-        <div class="container-fluid">
+        <div class="container-fluid item-table-simple">
             <!-- table header -->
             <div class="row">
                 {% for col in item['columns'] %}
@@ -11,20 +11,23 @@
 
             <!-- table rows -->
             {% for idx in range(0, item['nb_rows']) %}
-                <div class="row">
+                {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-l'~ idx%}
+                <div class="row" id="{{row_id}}">
                     {% for col in item['columns'] %}
-                        {% set name = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-l'~ idx ~'-'~ col['id'] %}
+                        {% set name =  row_id ~'-'~ col['id'] %}
 
                         {% if col['type'] == 'text' %}
                             {% set text = "" %}
                             {% if answers is defined and answers[name] is defined %}
                                 {% set text = answers[name] %}
                             {% endif %}
-                            <input form="quiz" type="text" class="form-control col-{{col['size']}}" name="{{name}}" placeholder="{{col['placeholder']}}" value="{{text}}"/>
+                            <div class="col-{{col['size']}}">
+                                <input form="quiz" type="text" class="form-control" name="{{name}}" placeholder="{{col['placeholder']}}" value="{{text}}"/>
+                            </div>
                         {% endif%}
 
                         {% if col['type'] == 'qcm' %}
-                            <div class="col-{{col['size']}}">
+                            <div class="col-{{col['size']}} align-self-center">
                                 {% set ns = namespace(answered="false") %}
     
                                 {% for option in col['options'] %}
@@ -50,8 +53,17 @@
                             </div>
                         {% endif%}
                     {% endfor %}
+                    <div class="col-1 text-right">
+                        <button type="button" class="btn btn-secondary btn-remove-row"></button>
+                    </div>
                 </div>
             {% endfor %}
+            <div class="row">
+                <div class="col-1 offset-11 text-right">
+                    <button type="button" class="col-12 btn btn-secondary btn-add-row">Add row</button>
+                </div>
+            </div>
+            
         </div>
     </fieldset>
 </div>

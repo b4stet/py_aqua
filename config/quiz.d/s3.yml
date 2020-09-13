@@ -32,12 +32,6 @@ groups:
             status: ko
             review: 'Option 2 is not suitable for ...'
             remediation: 'Option 1 must be implemented'
-          - option: 'review_3'
-            helper: 'if answer is option 3'
-            score: 0.5
-            status: partial
-            review: 'Option 3 is acceptable but not completely suitable for ...'
-            remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer'
             score: -0.1
@@ -76,12 +70,6 @@ groups:
             status: ko
             review: 'Option 2 is not suitable for ...'
             remediation: 'Option 1 must be implemented'
-          - option: 'review_3'
-            helper: 'if answer is option 3'
-            score: 0.5
-            status: partial
-            review: 'Option 3 is acceptable but not completely suitable for ...'
-            remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer'
             score: -0.1
@@ -120,12 +108,6 @@ groups:
             status: ko
             review: 'Option 2 is not suitable for ...'
             remediation: 'Option 1 must be implemented'
-          - option: 'review_3'
-            helper: 'if answer is option 3'
-            score: 0.5
-            status: partial
-            review: 'Option 3 is acceptable but not completely suitable for ...'
-            remediation: 'Option 1 must be preferred'
           - option: 'not_answered'
             helper: 'if there is no answer'
             score: -0.1
