@@ -204,64 +204,82 @@
 
     <!-- Appendix -->
     <div class="tab-pane fade border border-dark" role="tabpanel" id="appendix">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 quiz-group-desc">
-                    <p>
-                        This appendix enumerates all answers provided per sections. 
-                    </p>
-                </div>
+        <!-- NAVIGATION -->
+        <nav class="quiz-nav report-appendix-nav">
+            <div class="nav nav-tabs border-0" role="tablist">
+                {% for sid, section_answers in answers_summary.items() %}
+                    {% set class = "" %}
+                    {% set aria_selected = "false" %}
+                    {% if loop.first %}
+                        {% set class = "active" %}
+                        {% set aria_selected = "true" %}
+                    {% endif%}
+                    <a class="nav-item nav-link border border-dark border-bottom-0 {{class}}" href="#{{sid}}" data-toggle="tab" role="tab" aria-selected="{{aria_selected}}">{{section_answers['name']}}</a>
+                {% endfor %}
             </div>
+        </nav>
+        <!-- END OF NAVIGATION -->
+        <div class="tab-content report-nav">
             {% for sid, section_answers in answers_summary.items() %}
-                <div class="row">
-                    <h3 class="col-12">{{section_answers['name']}}</h3>
-                </div>
-                {% for gid, group_answers in section_answers['groups'].items() %}
-                    <div class="row">
-                        <div class="col-10 offset-1">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <table class="table">
-                                        <thead>
-                                            <tr><th colspan="2">{{group_answers['name']}}</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr><td colspan="2">{{ group_answers['description'] | safe }}</td></tr>
-                                        </tbody>
-                                        <thead>
-                                            <tr>
-                                                <th class="report-table-w40">Item</th>
-                                                <th class="report-table-w60">Answer</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for elt in group_answers['answers'] %}
-                                                <tr>
-                                                    <td>{{elt['item']}}</td>
-                                                    <td>
-                                                        {% if elt['answer'] | length > 1%}
-                                                        <ul>
-                                                            {% for answer in elt['answer'] %}
-                                                                <li>{{answer}}</li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                        {% else %}
-                                                            {{ elt['answer'][0]}}
-                                                        {% endif %}
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                {% set class = "" %}
+                {% if loop.first %}
+                    {% set class = "show active" %}
+                {% endif %}
+
+                <!-- SECTIONS CONTENT-->
+                <div class="tab-pane fade border border-dark {{class}}" role="tabpanel" id="{{sid}}">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 report-appendix-desc">
+                                <p>Tables below enumerate answers and comments provided for {{section_answers['name']}}.</p>
                             </div>
                         </div>
+                        {% for gid, group_answers in section_answers['groups'].items() %}
+                            <div class="row">
+                                <div class="col-10 offset-1">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr><th colspan="2">{{group_answers['name']}}</th></tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td colspan="2">{{ group_answers['description'] | safe }}</td></tr>
+                                                    <tr><td colspan="2">Client comments: {{ group_answers['notes']}}</td></tr>
+                                                </tbody>
+                                                <thead>
+                                                    <tr>
+                                                        <th class="report-table-w40">Item</th>
+                                                        <th class="report-table-w60">Answer</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for elt in group_answers['answers'] %}
+                                                        <tr>
+                                                            <td>{{elt['item']}}</td>
+                                                            <td>
+                                                                {% if elt['answer'] | length > 1%}
+                                                                <ul>
+                                                                    {% for answer in elt['answer'] %}
+                                                                        <li>{{answer}}</li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                                {% else %}
+                                                                    {{ elt['answer'][0]}}
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-    
-                {% endfor %}
-                <hr/>
+                </div>
             {% endfor %}
-        </div>
     </div>
 </div>
 <!-- END OF CATEGORIES CONTENT-->

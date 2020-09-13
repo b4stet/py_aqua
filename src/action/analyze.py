@@ -57,7 +57,8 @@ class AnalyzeAction(BaseAction):
                 answers_summary[sid]['groups'][gid] = {
                     'name': group['name'],
                     'description': group['description'],
-                    'answers': []
+                    'answers': [],
+                    'notes': answers['{}-{}-notes'.format(sid, gid)]
                 }
 
                 for item in group['items']:

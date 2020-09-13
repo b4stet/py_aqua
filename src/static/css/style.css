@@ -65,7 +65,7 @@ body {
     border-top-left-radius: 0;
 } 
 
-#content .quiz-group-desc p {
+#content .quiz-group-desc p, #content .report-appendix-desc {
     margin-top: 10px;
     margin-bottom: 30px;
 }
@@ -84,6 +84,12 @@ body {
 #content .report-nav .nav-tabs .nav-link.active {
     color: #000000;
     background-color:#E5E5E5;
+    font-weight: bold;
+}
+
+#content .report-appendix-nav .nav-tabs .nav-link:not(.active) {
+    color: #ffffff;
+    background-color: #2e424d;
     font-weight: bold;
 }
 
