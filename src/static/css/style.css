@@ -130,6 +130,27 @@ body {
     border-width: 1px 2px;
 }
 
-.report-table-w5 {
-    width: 5%
+.report-table-w10 {
+    width: 10%
+}
+
+.report-table-w15 {
+    width: 15%
+}
+
+.report-table-w40 {
+    width: 40%
+}
+
+.report-table-w60 {
+    width: 60%
+}
+
+
+.report-table-w75 {
+    width: 75%
+}
+
+.report-table-w85 {
+    width: 85%
 }
