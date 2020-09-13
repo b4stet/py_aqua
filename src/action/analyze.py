@@ -24,6 +24,8 @@ class AnalyzeAction(BaseAction):
         content_json = json.loads(content)
         answers = {k: v for k, v in content_json.items() if not k.endswith('-review')}
         review = {k: v for k, v in content_json.items() if k.endswith('-review')}
+        if len(review) == 0:
+            raise BadRequest('Cannot perform gap analysis. Uploaded file does not contain review keys.')
 
         missing_review = {k: v for k, v in review.items() if v == 'not_reviewed'}
         if len(missing_review) > 0:
