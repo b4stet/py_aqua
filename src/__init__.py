@@ -46,8 +46,8 @@ def app_from_yaml(app_config, mode):
 
 
 def yaml_include_tag(loader, node):
-    root = os.path.dirname(os.path.dirname(__file__))
-    filename = os.path.join(root, 'config', loader.construct_scalar(node))
+    root = os.path.dirname(loader.stream.name)
+    filename = os.path.join(root, loader.construct_scalar(node))
     with open(filename, mode='r') as f:
         return yaml.safe_load(f)
 

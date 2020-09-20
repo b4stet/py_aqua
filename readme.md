@@ -66,7 +66,7 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
     - `table`: 
         - `nb_rows` is the primary number of rows to create, 
         - columns can be of type `text` or `qcm`,
-        - `size` is the displayed width of a column, using the grid system, hence sum of sizes for a table should be 12
+        - `size` is the displayed width of a column, using the grid system, hence sum of sizes for a table should be 11 (1 is reserved for trash button)
 - each item also has a `reviewer` part, listing rules as a `qcm`, to deduce score and remediations from answers:
     - `option` is the label, a default `Not Reviewed` being automatically added
     - `score` is the value assigned to the review option

@@ -8,6 +8,8 @@ class BaseAction(MethodView):
     MODE_USER = 'user'
     MODE_REVIEWER = 'reviewer'
 
+    REVIEW_DISABLED = 'disabled'
+
     def __init__(self, logger, mode, title, quiz):
         self._logger = logger
         self._quiz = quiz

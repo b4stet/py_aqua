@@ -68,16 +68,27 @@ class AnalyzeAction(BaseAction):
                     full_id = '-'.join([sid, gid, iid])
                     answer = [v for k, v in answers.items() if k.startswith(full_id) and not k.endswith('-notes')]
 
-                    # it is a table: one element by row and column
-                    if len(answer) > 1:
+                    # re-format as list of lines:  'col1 title: col1 answer / col2 title: col2 answer / ...'
+                    if item['type'] == 'table_simple':
                         answer_grouped = []
                         nb_columns = len(item['columns'])
                         nb_rows = len(answer) // nb_columns
                         for i in range(0, nb_rows):
                             row = ['{}: {}'.format(item['columns'][j]['title'], answer[nb_rows*i + j]) for j in range(0, nb_columns)]
-                            print(row)
                             answer_grouped.append(' / '.join(row))
                         answer = answer_grouped
+
+                    # re-format as list of lines
+                    if item['type'] == 'table_double':
+                        answer_grouped = []
+                        nb_rows = len(item['rows'])
+                        nb_columns = len(item['columns'])
+                        for i in range(0, nb_rows):
+                            row = ['{}: {}'.format(item['columns'][0]['title'], item['rows'][i])]
+                            row += ['{}: {}'.format(item['columns'][j]['title'], answer[nb_rows*i + j]) for j in range(1, nb_columns)]
+                            answer_grouped.append(' / '.join(row))
+                        answer = answer_grouped
+
                     answers_summary[sid]['groups'][gid]['answers'].append({
                         'item': item['question'],
                         'answer': answer,
@@ -129,12 +140,13 @@ class AnalyzeAction(BaseAction):
             item_weight = priorities_map_by_label[item_priority]['weight']
             review_elt = next(elt for elt in item['reviewer'] if elt['option'] == value)
 
-            score_max_sections[sid] += item_weight * max([elt['score'] for elt in item['reviewer']])
-            analysis_sections[sid]['score'] += item_weight * review_elt['score']
+            if value != self.REVIEW_DISABLED:
+                score_max_sections[sid] += item_weight * max([elt['score'] for elt in item['reviewer']])
+                analysis_sections[sid]['score'] += item_weight * review_elt['score']
 
-            score_max_categories[cid] += item_weight * max([elt['score'] for elt in item['reviewer']])
-            analysis_categories[cid]['score'] += item_weight * review_elt['score']
-            analysis_categories[cid]['statuses'][review_elt['status']]['count'] += 1
+                score_max_categories[cid] += item_weight * max([elt['score'] for elt in item['reviewer']])
+                analysis_categories[cid]['score'] += item_weight * review_elt['score']
+                analysis_categories[cid]['statuses'][review_elt['status']]['count'] += 1
 
             analysis_categories[cid]['gap_analysis'][sid].append(review_elt['review'])
             if review_elt['remediation'] is not None:
@@ -144,7 +156,7 @@ class AnalyzeAction(BaseAction):
                     'remediation': review_elt['remediation'],
                 })
 
-        # transform (score as percentage, deduce grade/tag, sort remediation, plots)
+        # transform (score as percentage, deduce grade/tag, sort remediation, build plots)
         for sid, value in analysis_sections.items():
             percentage = value['score']/score_max_sections[sid] * 100.0
             if percentage < 0.0:

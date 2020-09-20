@@ -20,10 +20,14 @@
             </div>
 
             <!-- table rows -->
-            {% for idx in range(0, item['nb_rows']) %}
-                {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-l'~ idx%}
+            {% for row in item['rows'] %}
+                {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~ row %}
                 <div class="row" id="{{row_id}}">
-                    {% for col in item['columns'] %}
+                    <!-- first column is the second header -->
+                    <div class="col-{{item['columns'][0]['size']}}">
+                        {{row}}
+                    </div>
+                    {% for col in item['columns'][1:] %}
                         {% set name =  row_id ~'-'~ col['id'] %}
 
                         {% if col['type'] == 'text' %}
@@ -63,17 +67,8 @@
                             </div>
                         {% endif%}
                     {% endfor %}
-                    <div class="col-1 text-right">
-                        <button type="button" class="btn btn-secondary btn-remove-row"></button>
-                    </div>
                 </div>
             {% endfor %}
-            <div class="row">
-                <div class="col-1 offset-11 text-right">
-                    <button type="button" class="col-12 btn btn-secondary btn-add-row">Add row</button>
-                </div>
-            </div>
-            
         </div>
     </fieldset>
 </div>
