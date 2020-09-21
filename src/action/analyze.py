@@ -141,20 +141,25 @@ class AnalyzeAction(BaseAction):
             review_elt = next(elt for elt in item['reviewer'] if elt['option'] == value)
 
             if value != self.REVIEW_DISABLED:
+                # section score
                 score_max_sections[sid] += item_weight * max([elt['score'] for elt in item['reviewer']])
                 analysis_sections[sid]['score'] += item_weight * review_elt['score']
 
+                # category score and status distribution
                 score_max_categories[cid] += item_weight * max([elt['score'] for elt in item['reviewer']])
                 analysis_categories[cid]['score'] += item_weight * review_elt['score']
                 analysis_categories[cid]['statuses'][review_elt['status']]['count'] += 1
 
-            analysis_categories[cid]['gap_analysis'][sid].append(review_elt['review'])
-            if review_elt['remediation'] is not None:
-                analysis_categories[cid]['remediations'][sid].append({
-                    'priority': item_priority,
-                    'weight': item_weight,
-                    'remediation': review_elt['remediation'],
-                })
+                # gap analysis
+                analysis_categories[cid]['gap_analysis'][sid].append(review_elt['review'])
+
+                # remediation
+                if review_elt['remediation'] is not None:
+                    analysis_categories[cid]['remediations'][sid].append({
+                        'priority': item_priority,
+                        'weight': item_weight,
+                        'remediation': review_elt['remediation'],
+                    })
 
         # transform (score as percentage, deduce grade/tag, sort remediation, build plots)
         for sid, value in analysis_sections.items():
@@ -170,6 +175,7 @@ class AnalyzeAction(BaseAction):
                 percentage = 0.00
             value['score'] = round(percentage, 2)
             value['grade'] = self.__get_grade_from_score(value['score'])
+
             tag = scoring_map_by_grade[value['grade']]['tag']
             value['tag'] = categories_map_by_id[cid]['summary'][tag]
             value['remediations'] = {k: sorted(v, key=lambda x: x['weight'], reverse=True) for k, v in value['remediations'].items()}

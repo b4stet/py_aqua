@@ -70,6 +70,10 @@ body {
     margin-bottom: 30px;
 }
 
+#content .quiz {
+    padding-bottom: 20px;
+}
+
 #content .report-viz {
     margin-top: 10px;
     margin-bottom: 10px;
