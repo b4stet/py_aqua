@@ -11,7 +11,7 @@ groups:
       </ul>
     items:
       - question: '... question ...'
-        type: 'qcm'
+        type: 'qcm_unique'
         id: 'i1'
         options:
           - 'option_1'
@@ -95,7 +95,7 @@ groups:
             size: 7
             placeholder: 'Column 1 examples'
           - title: 'Column 2'
-            type: 'qcm'
+            type: 'qcm_unique'
             id: 'col2'
             size: 4
             options:
@@ -234,7 +234,7 @@ groups:
       </ul>
     items:
       - question: '... question ...'
-        type: 'qcm'
+        type: 'qcm_unique'
         id: 'i1'
         options:
           - 'option_1'

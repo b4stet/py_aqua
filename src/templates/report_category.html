@@ -1,0 +1,108 @@
+<!-- category result-->
+<div class="tab-pane fade border border-dark show active" role="tabpanel" id="category-result">
+    <div class="container-fluid">
+        <div class="row report-viz">
+            <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_categories[cid]['donut_single']}}"/></div>
+        </div>
+        <div class="row">
+            <div class="col-12">{{category['description'] | safe}}</div>
+        </div>
+    </div>
+</div>
+
+<!-- category remediations-->
+<div class="tab-pane fade border border-dark" role="tabpanel" id="category-remediations">
+    <div class="container-fluid">
+        <div class="row">
+            <div  class="col-12 report-margin">
+                <p>
+                    As a result of the gap analysis, the table below records actions along the sections that would contribute to global improvements regarding "{{category['name']}}".
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div  class="col-10 offset-1">
+                <div class="container-fluid">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="report-table-w15">Section</th>
+                                    <th class="report-table-w75">Remediation</th>
+                                    <th class="report-table-w10">Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sid, values in report_categories[cid]['remediations'].items() %}
+                                    {% if values | length > 0 %}
+                                        <tr>
+                                            <td class="text-center" rowspan="{{values | length}}">{{report_sections[sid]['name']}}</td>
+                                            <td>{{values[0]['remediation']}}</td>
+                                            <td class="text-center">{{values[0]['priority']}}</td>
+                                        </tr>
+                                        {% for value in values[1:] %}
+                                        <tr>
+                                            <td>{{value['remediation']}}</td>
+                                            <td class="text-center">{{value['priority']}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+
+<!-- category gap analysis-->
+<div class="tab-pane fade border border-dark" role="tabpanel" id="category-analysis">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 report-margin">
+                <p>
+                    In each section, items assigned to the category "{{category['name']}}" are reviewed to assess answer strengths and weaknesses.<br/>
+                    The figure summarizes soundness distribution while the table provides deeper insights.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_categories[cid]['waffle_items']}}"/></div>
+        </div>
+        <div class="row">
+            <div  class="col-10 offset-1">
+                <div class="container-fluid">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="report-table-w15">Section</th>
+                                    <th class="report-table-w85">Observations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sid, values in report_categories[cid]['gap_analysis'].items() %}
+                                    {% if values | length > 0 %}
+                                        <tr>
+                                            <td class="text-center">{{report_sections[sid]['name']}}</td>
+                                            <td>
+                                                <ul>
+                                                    {% for value in values %}
+                                                        <li>{{value}}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

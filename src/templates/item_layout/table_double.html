@@ -21,11 +21,11 @@
 
             <!-- table rows -->
             {% for row in item['rows'] %}
-                {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~ row %}
+                {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-'~ row %}
                 <div class="row" id="{{row_id}}">
                     <!-- first column is the second header -->
                     <div class="col-{{item['columns'][0]['size']}}">
-                        {{row}}
+                        {{row | replace('_', ' ') | capitalize}}
                     </div>
                     {% for col in item['columns'][1:] %}
                         {% set name =  row_id ~'-'~ col['id'] %}
@@ -40,7 +40,7 @@
                             </div>
                         {% endif%}
 
-                        {% if col['type'] == 'qcm' %}
+                        {% if col['type'] == 'qcm_unique' %}
                             <div class="col-{{col['size']}} align-self-center">
                                 {% set ns = namespace(answered="false") %}
     

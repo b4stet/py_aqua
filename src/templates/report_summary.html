@@ -1,0 +1,94 @@
+<!-- summary result-->
+<div class="tab-pane fade border border-dark show active" role="tabpanel" id="summary-result">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 report-margin text-center"><img src="data:image/png;base64, {{report_summary['donut_single']}}"/></div>
+        </div>
+        <div class="row">
+            <div class="col-12 report margin">
+                <p>
+                    Your final grade is {{report_summary['grade']}}: {{report_summary['tag']}} <br/>
+                    This outcome stems from the following results per category:
+                </p>
+                <ul>
+                    {% for category in report_categories.values() %}
+                        <li>{{category['name']}}: grade {{category['grade']}}, {{category['tag']}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- summary graphs-->
+<div class="tab-pane fade border border-dark" role="tabpanel" id="summary-visualization">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 report-margin">
+                <p>
+                    Figures below are a global overview of your answers soundness, depicted by categories, section and as a whole.
+                    Textual answers are reproduced in the appendix.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 report-viz text-center"><img src="data:image/png;base64, {{report_summary['donut_categories']}}"/></div>
+            <div class="col-6 report-viz text-center"><img src="data:image/png;base64, {{report_summary['lollipop_sections']}}"/></div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_summary['waffle_items']}}"/></div>
+        </div>
+    </div>
+</div>
+
+<!-- summary main remediations -->
+<div class="tab-pane fade border border-dark" role="tabpanel" id="summary-remediations">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 report-margin">
+                <p>
+                    Client is advised to apply remediations detailed in subsequent chapters, the major ones being listed in the below table.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div  class="col-10 offset-1">
+                <div class="container-fluid">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="report-table-w15">Category</th>
+                                    <th class="report-table-w15">Section</th>
+                                    <th class="report-table-w60">Remediation</th>
+                                    <th class="report-table-w10">Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cid, category_remediations in report_summary['main_remediations'].items() %}
+                                    {% if category_remediations['remediations'] | length > 0 %}
+                                        {% for sid, remediations in category_remediations['remediations'].items() %}
+                                            <tr>
+                                                <td class="text-center" rowspan="{{remediations | length}}">{{category_remediations['name']}}</td>
+                                                <td class="text-center" rowspan="{{remediations | length}}">{{report_sections[sid]['name']}}</td>
+                                                <td>{{remediations[0]['remediation']}}</td>
+                                                <td class="text-center">{{remediations[0]['priority']}}</td>
+                                            </tr>
+                                            {% for remediation in remediations[1:] %}
+                                                <tr>
+                                                    <td>{{remediation['remediation']}}</td>
+                                                    <td class="text-center">{{remediation['priority']}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

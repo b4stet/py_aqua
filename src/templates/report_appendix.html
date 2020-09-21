@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-12 report-appendix-desc">
+        <p>Tables below enumerate answers and comments provided for the section "{{section_answers['name']}}".</p>
+    </div>
+</div>
+{% for gid, group_answers in section_answers['groups'].items() %}
+    <div class="row">
+        <div class="col-10 offset-1">
+            <div class="container-fluid">
+                <div class="row">
+                    <table class="table">
+                        <thead  class="thead-dark">
+                            <tr><th colspan="2">Topic: {{group_answers['name']}}</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="2">{{ group_answers['description'] | safe }}</td></tr>
+                            <tr><td colspan="2">Client comments: {{ group_answers['notes']}}</td></tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th class="report-table-w20">Item</th>
+                                <th class="report-table-w80">Answer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for elt in group_answers['answers'] %}
+                                <tr>
+                                    <td>{{elt['item']}}</td>
+                                    <td>
+                                        {% if elt['answer'] | length > 1%}
+                                        <ul>
+                                            {% for answer in elt['answer'] %}
+                                                <li>{{answer}}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% else %}
+                                            {{ elt['answer'][0]}}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

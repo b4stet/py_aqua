@@ -11,7 +11,7 @@ groups:
       </ul>
     items:
       - question: '... question ...'
-        type: 'qcm'
+        type: 'qcm_unique'
         id: 'i1'
         options:
           - 'option_1'
@@ -49,7 +49,7 @@ groups:
       </ul>
     items:
       - question: '... question ...'
-        type: 'qcm'
+        type: 'qcm_unique'
         id: 'i1'
         options:
           - 'option_1'
@@ -87,7 +87,7 @@ groups:
       </ul>
     items:
       - question: '... question ...'
-        type: 'qcm'
+        type: 'qcm_unique'
         id: 'i1'
         options:
           - 'option_1'

@@ -2,8 +2,8 @@
 {% block content %}
 <div class="row"><h2 id="subtitle" class="col-12">Gap Analysis Report</h2></div>
 
-<!-- CATEGORIES NAVIGATION -->
-<nav class="report-nav report-category-nav">
+<!-- REPORT NAVIGATION -->
+<nav class="report-nav report-chapter-nav">
     <div class="nav nav-tabs border-0" role="tablist">
         <a class="nav-item nav-link border border-dark border-bottom-0 active" href="#summary" data-toggle="tab" role="tab" aria-selected="true">Summary</a>
 
@@ -14,198 +14,53 @@
         <a class="nav-item nav-link border border-dark border-bottom-0" href="#appendix" data-toggle="tab" role="tab" aria-selected="false">Appendix</a>
     </div>
 </nav>
-<!-- END OF CATEGORIES NAVIGATION-->
 
-<!-- CATEGORIES CONTENT-->
+<!-- REPORT TAB CONTENT-->
 <div class="tab-content report-nav">
-    <!-- Summary -->
-    <div class="tab-pane fade border border-dark show active" role="tabpanel" id="summary">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_summary['donut_single']}}"/></div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p>
-                        Your final grade is {{report_summary['grade']}}: {{report_summary['tag']}}.
-                        This outcome stems from the following results per category:
-                    </p>
-                    <ul>
-                        {% for category in report_categories.values() %}
-                            <li>{{category['name']}}: grade {{category['grade']}}, {{category['tag']}}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <hr/>
-            <div class="row">
-                <p class="col-12">
-                    Figures below represent distributions of your answers soundness, depicted by categories, section and as a whole.<br/>
-                    For details, all answers provided are reproduced in the appendix.
-                </p>
-            </div>
-            <div class="row">
-                <div class="col-6 report-viz text-center"><img src="data:image/png;base64, {{report_summary['donut_categories']}}"/></div>
-                <div class="col-6 report-viz text-center"><img src="data:image/png;base64, {{report_summary['lollipop_sections']}}"/></div>
-            </div>
-            <div class="row">
-                <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_summary['waffle_items']}}"/></div>
-            </div>
-            <hr/>
-            <div class="row">
-                <p class="col-12">
-                    Client is advised to apply remediations detailed in subsequent chapters, the major ones being listed in the below table.
-                </p>
-            </div>
-            <div class="row">
-                <div  class="col-10 offset-1">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="report-table-w15">Category</th>
-                                        <th class="report-table-w15">Section</th>
-                                        <th class="report-table-w60">Remediation</th>
-                                        <th class="report-table-w10">Priority</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for cid, category_remediations in report_summary['main_remediations'].items() %}
-                                        {% if category_remediations['remediations'] | length > 0 %}
-                                            {% for sid, remediations in category_remediations['remediations'].items() %}
-                                                <tr>
-                                                    <td class="text-center" rowspan="{{remediations | length}}">{{category_remediations['name']}}</td>
-                                                    <td class="text-center" rowspan="{{remediations | length}}">{{report_sections[sid]['name']}}</td>
-                                                    <td>{{remediations[0]['remediation']}}</td>
-                                                    <td class="text-center">{{remediations[0]['priority']}}</td>
-                                                </tr>
-                                                {% for remediation in remediations[1:] %}
-                                                    <tr>
-                                                        <td>{{remediation['remediation']}}</td>
-                                                        <td class="text-center">{{remediation['priority']}}</td>
-                                                    </tr>
-                                                {% endfor %}
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endfor%}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
 
+    <!-- SUMMARY -->
+    <div class="tab-pane fade border border-dark show active" role="tabpanel" id="summary">
+
+        <!-- SUMMARY NAVIGATION -->
+        <nav class="quiz-nav report-paragraph-nav">
+            <div class="nav nav-tabs border-0" role="tablist">
+                    <a class="nav-item nav-link border border-dark border-bottom-0 active" href="#summary-result" data-toggle="tab" role="tab" aria-selected="true">Result</a>
+                    <a class="nav-item nav-link border border-dark border-bottom-0" href="#summary-visualization" data-toggle="tab" role="tab" aria-selected="false">Visual Overview</a>
+                    <a class="nav-item nav-link border border-dark border-bottom-0" href="#summary-remediations" data-toggle="tab" role="tab" aria-selected="false">Main Remediations</a>
             </div>
+        </nav>
+
+        <!-- SUMMARY TAB CONTENT -->
+        <div class="tab-content report-nav">
+            {% include './report_summary.html' %}
         </div>
     </div>
 
-    <!-- Categories -->
+    <!-- CATEGORIES -->
     {% for category in analysis['categories'] %}
         {% set cid = category['id'] %}
         <div class="tab-pane fade border border-dark" role="tabpanel" id="{{cid}}">
-            <div class="container-fluid">
-                <div class="row report-viz">
-                    <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_categories[cid]['donut_single']}}"/></div>
+            <!-- CATEGORY NAVIGATION -->
+            <nav class="quiz-nav report-paragraph-nav">
+                <div class="nav nav-tabs border-0" role="tablist">
+                        <a class="nav-item nav-link border border-dark border-bottom-0 active" href="#category-result" data-toggle="tab" role="tab" aria-selected="true">Result</a>
+                        <a class="nav-item nav-link border border-dark border-bottom-0" href="#category-remediations" data-toggle="tab" role="tab" aria-selected="false">Remediations</a>
+                        <a class="nav-item nav-link border border-dark border-bottom-0" href="#category-analysis" data-toggle="tab" role="tab" aria-selected="false">Gap Analysis</a>
                 </div>
-                <div class="row">
-                    <div class="col-12">{{category['description'] | safe}}</div>
-                </div>
-                <hr/>
-                <div class="row"><h3 class="col-12">Remediations</h3></div>
-                <div class="row">
-                    <p class="col-12">
-                        As a result of the gap analysis, the table below records actions along the sections that would contribute to global improvements regarding "{{category['name']}}".
-                    </p>
-                </div>
-                <div class="row">
-                    <div  class="col-10 offset-1">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="report-table-w15">Section</th>
-                                            <th class="report-table-w75">Remediation</th>
-                                            <th class="report-table-w10">Priority</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for sid, values in report_categories[cid]['remediations'].items() %}
-                                            {% if values | length > 0 %}
-                                                <tr>
-                                                    <td class="text-center" rowspan="{{values | length}}">{{report_sections[sid]['name']}}</td>
-                                                    <td>{{values[0]['remediation']}}</td>
-                                                    <td class="text-center">{{values[0]['priority']}}</td>
-                                                </tr>
-                                                {% for value in values[1:] %}
-                                                <tr>
-                                                    <td>{{value['remediation']}}</td>
-                                                    <td class="text-center">{{value['priority']}}</td>
-                                                </tr>
-                                                {% endfor %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>    
-                </div>
+            </nav>
 
-                <hr/>
-                <div class="row"><h3 class="col-12">Gap Analysis</h3></div>
-                <div class="row">
-                    <p class="col-12">
-                        For each section, items assigned to the category "{{category['name']}}" are reviewed to assess answer strengths and weaknesses.<br/>
-                        The figure summarizes soundness distribution while the table provides deeper insights.
-                    </p>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_categories[cid]['waffle_items']}}"/></div>
-                </div>
-                <div class="row">
-                    <div  class="col-10 offset-1">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="report-table-w15">Section</th>
-                                            <th class="report-table-w85">Observations</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for sid, values in report_categories[cid]['gap_analysis'].items() %}
-                                            {% if values | length > 0 %}
-                                                <tr>
-                                                    <td class="text-center">{{report_sections[sid]['name']}}</td>
-                                                    <td>
-                                                        <ul>
-                                                            {% for value in values %}
-                                                                <li>{{value}}</li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- CATEGORY CONTENT -->
+            <div class="tab-content report-nav">
+                {% include './report_category.html' %}
             </div>
         </div>
     {% endfor %}
 
 
-    <!-- Appendix -->
+    <!-- APPENDIX -->
     <div class="tab-pane fade border border-dark" role="tabpanel" id="appendix">
-        <!-- NAVIGATION -->
-        <nav class="quiz-nav report-appendix-nav">
+        <!-- APPENDIX NAVIGATION -->
+        <nav class="quiz-nav report-paragraph-nav">
             <div class="nav nav-tabs border-0" role="tablist">
                 {% for sid, section_answers in answers_summary.items() %}
                     {% set class = "" %}
@@ -218,70 +73,23 @@
                 {% endfor %}
             </div>
         </nav>
-        <!-- END OF NAVIGATION -->
+
+        <!-- APPENDIX TAB CONTENT -->
         <div class="tab-content report-nav">
             {% for sid, section_answers in answers_summary.items() %}
                 {% set class = "" %}
                 {% if loop.first %}
                     {% set class = "show active" %}
                 {% endif %}
-
-                <!-- SECTIONS Answers -->
+                <!-- answers for the section -->            
                 <div class="tab-pane fade border border-dark {{class}}" role="tabpanel" id="{{sid}}">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12 report-appendix-desc">
-                                <p>Tables below enumerate answers and comments provided for {{section_answers['name']}}.</p>
-                            </div>
-                        </div>
-                        {% for gid, group_answers in section_answers['groups'].items() %}
-                            <div class="row">
-                                <div class="col-10 offset-1">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr><th colspan="2">{{group_answers['name']}}</th></tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr><td colspan="2">{{ group_answers['description'] | safe }}</td></tr>
-                                                    <tr><td colspan="2">Client comments: {{ group_answers['notes']}}</td></tr>
-                                                </tbody>
-                                                <thead>
-                                                    <tr>
-                                                        <th class="report-table-w40">Item</th>
-                                                        <th class="report-table-w60">Answer</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for elt in group_answers['answers'] %}
-                                                        <tr>
-                                                            <td>{{elt['item']}}</td>
-                                                            <td>
-                                                                {% if elt['answer'] | length > 1%}
-                                                                <ul>
-                                                                    {% for answer in elt['answer'] %}
-                                                                        <li>{{answer}}</li>
-                                                                    {% endfor %}
-                                                                </ul>
-                                                                {% else %}
-                                                                    {{ elt['answer'][0]}}
-                                                                {% endif %}
-                                                            </td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
+                        {% include './report_appendix.html' %}
                     </div>
                 </div>
             {% endfor %}
+        </div>
     </div>
 </div>
-<!-- END OF CATEGORIES CONTENT-->
 
 {% endblock %}

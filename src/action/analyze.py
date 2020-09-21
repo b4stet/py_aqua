@@ -68,24 +68,26 @@ class AnalyzeAction(BaseAction):
                     full_id = '-'.join([sid, gid, iid])
                     answer = [v for k, v in answers.items() if k.startswith(full_id) and not k.endswith('-notes')]
 
-                    # re-format as list of lines:  'col1 title: col1 answer / col2 title: col2 answer / ...'
-                    if item['type'] == 'table_simple':
+                    # for one entry tables, re-assemble rows
+                    if item['type'] == self.ITEM_TABLE_SIMPLE:
                         answer_grouped = []
                         nb_columns = len(item['columns'])
                         nb_rows = len(answer) // nb_columns
+                        print(gid, sid, iid, answer)
+                        print(nb_rows, nb_columns)
                         for i in range(0, nb_rows):
                             row = ['{}: {}'.format(item['columns'][j]['title'], answer[nb_rows*i + j]) for j in range(0, nb_columns)]
                             answer_grouped.append(' / '.join(row))
                         answer = answer_grouped
 
-                    # re-format as list of lines
-                    if item['type'] == 'table_double':
+                    # for double entry tables, re-assemble rows, first column is fixed
+                    if item['type'] == self.ITEM_TABLE_DOUBLE:
                         answer_grouped = []
                         nb_rows = len(item['rows'])
                         nb_columns = len(item['columns'])
                         for i in range(0, nb_rows):
                             row = ['{}: {}'.format(item['columns'][0]['title'], item['rows'][i])]
-                            row += ['{}: {}'.format(item['columns'][j]['title'], answer[nb_rows*i + j]) for j in range(1, nb_columns)]
+                            row += ['{}: {}'.format(item['columns'][j]['title'], answer[nb_rows*i + j-1]) for j in range(1, nb_columns)]
                             answer_grouped.append(' / '.join(row))
                         answer = answer_grouped
 
@@ -142,11 +144,11 @@ class AnalyzeAction(BaseAction):
 
             if value != self.REVIEW_DISABLED:
                 # section score
-                score_max_sections[sid] += item_weight * max([elt['score'] for elt in item['reviewer']])
+                score_max_sections[sid] += item_weight * max([elt['score'] for elt in item['reviewer'] if elt['option'] != self.REVIEW_DISABLED])
                 analysis_sections[sid]['score'] += item_weight * review_elt['score']
 
                 # category score and status distribution
-                score_max_categories[cid] += item_weight * max([elt['score'] for elt in item['reviewer']])
+                score_max_categories[cid] += item_weight * max([elt['score'] for elt in item['reviewer'] if elt['option'] != self.REVIEW_DISABLED])
                 analysis_categories[cid]['score'] += item_weight * review_elt['score']
                 analysis_categories[cid]['statuses'][review_elt['status']]['count'] += 1
 
