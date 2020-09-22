@@ -1,5 +1,6 @@
 <div class="row">
     <fieldset form="quiz" class="form-group quiz col-12">
+        <!-- question and comment if any -->
         <legend>
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark-plus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M4 0a2 2 0 0 0-2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4zm4.5 4.5a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5V4.5z"/>
@@ -27,9 +28,12 @@
                     <div class="col-{{item['columns'][0]['size']}}">
                         {{row | replace('_', ' ') | capitalize}}
                     </div>
+
+                    <!-- other columns -->
                     {% for col in item['columns'][1:] %}
                         {% set name =  row_id ~'-'~ col['id'] %}
 
+                        <!-- column type is text -->
                         {% if col['type'] == 'text' %}
                             {% set text = "" %}
                             {% if answers is defined and answers[name] is defined %}
@@ -40,10 +44,12 @@
                             </div>
                         {% endif%}
 
+                        <!-- column type is qcm_unique -->
                         {% if col['type'] == 'qcm_unique' %}
                             <div class="col-{{col['size']}} align-self-center">
                                 {% set ns = namespace(answered="false") %}
     
+                                <!-- options from config -->
                                 {% for option in col['options'] %}
                                     {% set checked = "" %}
                                     {% if answers is defined and answers[name] is defined and answers[name] == option %}
@@ -56,12 +62,48 @@
                                     </div>
                                 {% endfor %}
 
+                                <!-- default option to always have a value -->
                                 {% set checked = "" %}
                                 {% if ns.answered == "false" %}
                                     {% set checked = "checked" %}
                                 {% endif %}
                                 <div class="form-check form-check-inline ">
                                     <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="not_answered" {{checked}}/>
+                                    <label class="form-check-label">Not Answered</label>
+                                </div>
+                            </div>
+                        {% endif%}
+
+                        <!-- column type is qcm_multiple -->
+                        {% if col['type'] == 'qcm_multiple' %}
+                            <div class="col-{{col['size']}} align-self-center">
+                                {% set ns = namespace(answered="false") %}
+
+                                <!-- options from config -->
+                                {% for option in col['options'] %}
+                                    {% set checked = "" %}
+                                    {% if answers is defined and answers[name] is defined and answers[name] == option %}
+                                        {% set checked = "checked" %}
+                                        {% set ns.answered = "true" %}
+                                    {% endif %}
+                                    <div class="form-check form-check-inline">
+                                        <input form="quiz" class="form-check-input" type="checkbox" name="{{name}}" value="{{option}}" {{checked}}/>
+                                        <label class="form-check-label">{{option | replace('_', ' ') | capitalize}}</label>
+                                    </div>
+                                {% endfor %}
+
+                                <!-- default options to always have a value -->
+                                <div class="form-check form-check-inline ">
+                                    <input  form="quiz" class="form-check-input" type="checkbox" name="{{name}}" value="none"/>
+                                    <label class="form-check-label">none</label>
+                                </div>
+
+                                {% set checked = "" %}
+                                {% if ns.answered == "false" %}
+                                    {% set checked = "checked" %}
+                                {% endif %}
+                                <div class="form-check form-check-inline ">
+                                    <input  form="quiz" class="form-check-input" type="checkbox" name="{{name}}" value="not_answered" {{checked}}/>
                                     <label class="form-check-label">Not Answered</label>
                                 </div>
                             </div>

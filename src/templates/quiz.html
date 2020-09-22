@@ -35,8 +35,8 @@
 <!-- END OF SECTIONS NAVIGATION -->
 
 <div class="tab-content quiz-nav">
+    <!-- SECTION CONTENT -->
     {% for section in quiz['sections'] %}
-        <!-- SECTION CONTENT -->
         {% set class = "" %}
         {% if loop.first %}
             {% set class = "show active" %}
@@ -59,8 +59,8 @@
             <!-- END OF GROUPS NAVIGATION -->
 
             <div class="tab-content quiz-nav">
+                <!-- GROUP CONTENT -->
                 {% for group in section['groups'] %}
-                    <!-- GROUP CONTENT -->
                     {% set class = "" %}
                     {% if loop.first %}
                         {% set class = "show active" %}
@@ -76,7 +76,9 @@
                             <!-- group items -->
                             {% for item in group['items'] %}
                                 {% include './item_layout/' ~ item['type'] ~ '.html' %}
-                                {% include './review_layout.html' %}
+                                {% if review is defined %}
+                                    {% include './review_layout.html' %}
+                                {% endif %}
                             {% endfor %}
 
                             <!-- group notes -->
@@ -94,12 +96,12 @@
                             </div>
                         </div>
                     </div>
-                    <!-- END OF GROUP CONTENT -->
                 {% endfor %}
+                <!-- END OF GROUP CONTENT -->
             </div>
         </div>
-        <!-- END OF SECTION CONTENT -->
     {% endfor %}
+    <!-- END OF SECTION CONTENT -->
 </div>
 
 <script type="text/javascript">

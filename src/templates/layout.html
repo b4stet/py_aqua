@@ -17,6 +17,7 @@
   </head>
   <body class="container-fluid">
     <div class="row">
+      <!-- menu-->
       <div id="menu" class="col-2">
         <div class="container-fluid">
           <div class="row"><a role="button" class="col-8 offset-2 btn" href="/">Home</a></div>
@@ -28,9 +29,11 @@
         </div>
       </div>
 
+      <!-- main -->
       <div id="content" class="col-10">
         <div class="container-fluid">
           <div class="row"><h1 id="title" class="col-12">{{title['long']}}</h1></div>
+          <!-- if error -->
           {% if message is defined %}
             <div class="row">
               <div class="col-12 alert alert-{{message['type']}}" role="alert">
@@ -40,6 +43,8 @@
               </div>
             </div>
           {% endif %}
+
+          <!-- content -->
           {% block content %}{% endblock %}
         </div>
       </div>

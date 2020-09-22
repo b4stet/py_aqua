@@ -1,42 +1,44 @@
-{% if review is defined %}
-    <div class="review-elt invisible d-none alert alert-warning">
-        <div class="row">
-            <fieldset form="quiz" class="form-group quiz col-12">
-                {% set name = section['id'] ~"-"~ group['id'] ~"-"~ item['id'] ~"-review" %}
-                {% set ns = namespace(reviewed="false") %}
+<div class="review-elt invisible d-none alert alert-warning">
+    <!-- review qcm -->
+    <div class="row">
+        <fieldset form="quiz" class="form-group quiz col-12">
+            {% set name = section['id'] ~"-"~ group['id'] ~"-"~ item['id'] ~"-review" %}
+            {% set ns = namespace(reviewed="false") %}
 
-                {% for review_elt in item['reviewer'] %}
-                    {% set option_review = review_elt['option'] %}
-                    {% set checked = "" %}
-                    {% if answers is defined and answers[name] is defined and answers[name] == option_review %}
-                        {% set checked = "checked" %}
-                        {% set ns.reviewed = "true" %}
-                    {% endif %}
-                    <div class="form-check form-check-inline ">
-                        <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="{{option_review}}" {{checked}}/>
-                        <label class="form-check-label">{{option_review | replace('_', ' ') | capitalize}}</label>
-                    </div>
-                {% endfor %}
+            <!-- options from config -->
+            {% for review_elt in item['reviewer'] %}
+                {% set option_review = review_elt['option'] %}
                 {% set checked = "" %}
-                {% if ns.reviewed == "false" %}
+                {% if answers is defined and answers[name] is defined and answers[name] == option_review %}
                     {% set checked = "checked" %}
+                    {% set ns.reviewed = "true" %}
                 {% endif %}
                 <div class="form-check form-check-inline ">
-                    <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="not_reviewed" {{checked}}/>
-                    <label class="form-check-label">Not Reviewed</label>
+                    <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="{{option_review}}" {{checked}}/>
+                    <label class="form-check-label">{{option_review | replace('_', ' ') | capitalize}}</label>
                 </div>
-            </fieldset>
-        </div>
-        <div class="row">
-            <p class="col-12">
-                <strong>Helper</strong>
-                <ul>
-                    {% for review_elt in item['reviewer'] %}
-                        <li>{{review_elt['option'] | replace('_', ' ') | capitalize}}: {{ review_elt['helper'] }}</li>
-                    {% endfor %}
-                </ul>
-            </p>
-        </div>
-    </div>
+            {% endfor %}
 
-{% endif %}
+            <!-- default option to always have a value -->
+            {% set checked = "" %}
+            {% if ns.reviewed == "false" %}
+                {% set checked = "checked" %}
+            {% endif %}
+            <div class="form-check form-check-inline ">
+                <input  form="quiz" class="form-check-input" type="radio" name="{{name}}" value="not_reviewed" {{checked}}/>
+                <label class="form-check-label">Not Reviewed</label>
+            </div>
+        </fieldset>
+    </div>
+    <!-- helper -->
+    <div class="row">
+        <p class="col-12">
+            <strong>Helper</strong>
+            <ul>
+                {% for review_elt in item['reviewer'] %}
+                    <li>{{review_elt['option'] | replace('_', ' ') | capitalize}}: {{ review_elt['helper'] }}</li>
+                {% endfor %}
+            </ul>
+        </p>
+    </div>
+</div>
