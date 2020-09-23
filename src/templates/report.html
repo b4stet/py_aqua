@@ -62,7 +62,7 @@
         <!-- APPENDIX NAVIGATION -->
         <nav class="quiz-nav report-paragraph-nav">
             <div class="nav nav-tabs border-0" role="tablist">
-                {% for sid, section_answers in answers_summary.items() %}
+                {% for sid, section_answers in appendix.items() %}
                     {% set class = "" %}
                     {% set aria_selected = "false" %}
                     {% if loop.first %}
@@ -76,7 +76,7 @@
 
         <!-- APPENDIX TAB CONTENT -->
         <div class="tab-content report-nav">
-            {% for sid, section_answers in answers_summary.items() %}
+            {% for sid, section_answers in appendix.items() %}
                 {% set class = "" %}
                 {% if loop.first %}
                     {% set class = "show active" %}

@@ -8,7 +8,7 @@ class GetIndexAction(BaseAction):
     def get(self):
         # validate quiz config
         try:
-            self.__check_item_ids()
+            self.__check_item_ids_unicity()
         except ValueError as err:
             raise BadRequest('Invalid quiz config. {}'.format(str(err)))
 
@@ -23,7 +23,7 @@ class GetIndexAction(BaseAction):
         self._data['message'] = message
         return render_template('layout.html', **self._data), 200
 
-    def __check_item_ids(self):
+    def __check_item_ids_unicity(self):
         ids = []
         for section in self._quiz['sections']:
             sid = section['id']

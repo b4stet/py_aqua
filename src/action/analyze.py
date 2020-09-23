@@ -22,25 +22,30 @@ class AnalyzeAction(BaseAction):
         f = request.files['file']
         content = f.read()
         content_json = json.loads(content)
+
+        # extract answers and review
         answers = {k: v for k, v in content_json.items() if not k.endswith('-review')}
         review = {k: v for k, v in content_json.items() if k.endswith('-review')}
         if len(review) == 0:
             raise BadRequest('Cannot perform gap analysis. Uploaded file does not contain review keys.')
 
+        # verify all items are reviewed
         missing_review = {k: v for k, v in review.items() if v == 'not_reviewed'}
         if len(missing_review) > 0:
             items = [k.strip('-review') for k in missing_review.keys()]
             raise BadRequest('Cannot perform gap analysis. Items not reviewed: {}'.format(', '.join(items)))
 
+        # analyze and build report
         scoring_map_by_grade = self.__get_map(self.__analysis['scoring'], 'grade')
         analysis_sections, analysis_categories = self.__get_analysis_from_review(review, scoring_map_by_grade)
 
+        # data to render
         self._data.update({
             'analysis': self.__analysis,
             'report_sections': analysis_sections,
             'report_categories': analysis_categories,
             'report_summary': self.__get_summary_from_analysis(analysis_sections, analysis_categories, scoring_map_by_grade),
-            'answers_summary': self.__get_answers_summary(answers),
+            'appendix': self.__get_answers_summary(answers),
         })
 
         return render_template('report.html', **self._data), 200
@@ -73,11 +78,10 @@ class AnalyzeAction(BaseAction):
                         answer_grouped = []
                         nb_columns = len(item['columns'])
                         nb_rows = len(answer) // nb_columns
-                        print(gid, sid, iid, answer)
-                        print(nb_rows, nb_columns)
-                        for i in range(0, nb_rows):
-                            row = ['{}: {}'.format(item['columns'][j]['title'], answer[nb_rows*i + j]) for j in range(0, nb_columns)]
-                            answer_grouped.append(' / '.join(row))
+                        rows = [answer[nb_columns*i:nb_columns*(i+1)] for i in range(0, nb_rows)]
+                        for row in rows:
+                            row_formatted = ['{}: {}'.format(item['columns'][i]['title'], row[i]) for i in range(0, nb_columns)]
+                            answer_grouped.append(', '.join(row_formatted))
                         answer = answer_grouped
 
                     # for double entry tables, re-assemble rows, first column is fixed
@@ -85,10 +89,11 @@ class AnalyzeAction(BaseAction):
                         answer_grouped = []
                         nb_rows = len(item['rows'])
                         nb_columns = len(item['columns'])
-                        for i in range(0, nb_rows):
-                            row = ['{}: {}'.format(item['columns'][0]['title'], item['rows'][i])]
-                            row += ['{}: {}'.format(item['columns'][j]['title'], answer[nb_rows*i + j-1]) for j in range(1, nb_columns)]
-                            answer_grouped.append(' / '.join(row))
+                        rows = [answer[(nb_columns-1)*i:(nb_columns-1)*(i+1)] for i in range(0, nb_rows)]
+                        for i, row in enumerate(rows):
+                            row_formatted = ['{}: {}'.format(item['columns'][j]['title'], row[j-1]) for j in range(1, nb_columns)]
+                            row_formatted = '{}: {}'.format(item['rows'][i], ', '.join(row_formatted))
+                            answer_grouped.append(row_formatted)
                         answer = answer_grouped
 
                     answers_summary[sid]['groups'][gid]['answers'].append({
@@ -98,10 +103,11 @@ class AnalyzeAction(BaseAction):
         return answers_summary
 
     def __get_analysis_from_review(self, review, scoring_map_by_grade):
-        # init structures
+        # mapping
         priorities_map_by_label = self.__get_map(self.__analysis['priorities'], 'label')
         categories_map_by_id = self.__get_map(self.__analysis['categories'], 'id')
 
+        # sections analysis initialization (score, grade)
         analysis_sections = {}
         score_max_sections = {}
         for section in self._quiz['sections']:
@@ -112,6 +118,7 @@ class AnalyzeAction(BaseAction):
             }
             score_max_sections[section['id']] = 0.0
 
+        # categories analysis initialization (score, grade, status distribution, gap analysis per sections, remediations per sections)
         analysis_categories = {}
         score_max_categories = {}
         for category in self.__analysis['categories']:
@@ -134,12 +141,15 @@ class AnalyzeAction(BaseAction):
 
         # fill
         for review_id, value in review.items():
+            # get item from id, and retrieve section/category id
             item = self.__get_item_from_review_id(review_id)
             sid = review_id.split('-')[0]
             cid = item['analysis']['category']
 
             item_priority = item['analysis']['priority']
             item_weight = priorities_map_by_label[item_priority]['weight']
+
+            # get config for the review
             review_elt = next(elt for elt in item['reviewer'] if elt['option'] == value)
 
             if value != self.REVIEW_DISABLED:
@@ -163,7 +173,7 @@ class AnalyzeAction(BaseAction):
                         'remediation': review_elt['remediation'],
                     })
 
-        # transform (score as percentage, deduce grade/tag, sort remediation, build plots)
+        # transform score as percentage, deduce grade for sections
         for sid, value in analysis_sections.items():
             percentage = value['score']/score_max_sections[sid] * 100.0
             if percentage < 0.0:
@@ -171,17 +181,21 @@ class AnalyzeAction(BaseAction):
             value['score'] = round(percentage, 2)
             value['grade'] = self.__get_grade_from_score(value['score'])
 
+        # transform score as percentage, deduce grade and tag, sort remediation, build plots for categories
         for cid, value in analysis_categories.items():
+            # deduce percentage, grade, tag
             percentage = value['score']/score_max_categories[cid] * 100.0
             if percentage < 0.0:
                 percentage = 0.00
             value['score'] = round(percentage, 2)
             value['grade'] = self.__get_grade_from_score(value['score'])
-
             tag = scoring_map_by_grade[value['grade']]['tag']
             value['tag'] = categories_map_by_id[cid]['summary'][tag]
+
+            # sort remediations
             value['remediations'] = {k: sorted(v, key=lambda x: x['weight'], reverse=True) for k, v in value['remediations'].items()}
 
+            # grade and status distribution plots
             donut_title = 'Grade: {}'.format(value['grade'])
             analysis_categories[cid]['donut_single'] = plot.get_donut(value, donut_title, scoring_map_by_grade)
             analysis_categories[cid]['waffle_items'] = plot.get_waffle(value['statuses'], 'Answers to items by status')
@@ -201,33 +215,37 @@ class AnalyzeAction(BaseAction):
         grade = self.__get_grade_from_score(score)
         tag = scoring_map_by_grade[grade]['tag']
 
+        # final grade data to plot
         donut_data = {
             'score': score,
             'grade': grade,
         }
         donut_title = 'Final Grade: {}'.format(grade)
 
-        # global status counts
+        # global status distribution
         statuses = self.__get_map(self.__analysis['statuses'], 'label')
         for key, value in statuses.items():
             counts = [elt['statuses'][key]['count'] for elt in analysis_categories.values()]
             value['name'] = key.capitalize().replace('_', ' ')
             value['count'] = sum(counts)
 
-        # main remediations
+        # main remediations per categories and sections
         main_remediations = {}
-
         for cid, analysis in analysis_categories.items():
             main_remediations[cid] = {
                 'name': analysis['name'],
                 'remediations': {},
             }
             category_remediations = analysis['remediations']
+
+            # loop on remediation for part of section covered by the category
             for sid, remediations in category_remediations.items():
+                # 'top' defined by set of priority in config
                 top_remediations = [remediation for remediation in remediations if remediation['priority'] in self.__analysis['summary']['priorities']]
                 if len(top_remediations) > 0:
                     main_remediations[cid]['remediations'][sid] = top_remediations
 
+        # grade, tag, remediations and plots (final grade, grade per categories, grade per sections, status distribution)
         summary = {
             'grade': grade,
             'tag': self.__analysis['summary']['text'][tag],
