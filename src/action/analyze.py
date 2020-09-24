@@ -21,7 +21,7 @@ class AnalyzeAction(BaseAction):
     def post(self):
         f = request.files['file']
         content = f.read()
-        content_json = json.loads(content)
+        content_json = self._validate_and_get_json(content)
 
         # extract answers and review
         answers = {k: v for k, v in content_json.items() if not k.endswith('-review')}

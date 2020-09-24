@@ -4,6 +4,7 @@
     <div class="col-2 offset-5">
         <form id="quiz" action="/quiz/save" method="POST">
             <input type="hidden" name="quiz-version" value="{{quiz['version']}}"/>
+            <input type="hidden" name="quiz-name" value="{{title['short']}}"/>
             <input type="submit" class="btn col-12" value="Save"/>
         </form>
     </div>

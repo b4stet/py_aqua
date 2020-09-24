@@ -1,5 +1,6 @@
 {
   "quiz-version": "1.0",
+  "quiz-name": "AQUA",
   "s1-g1-i1": "option_1",
   "s1-g1-i2": "foo",
   "s1-g1-i3-l0-col1": "col 1a",
