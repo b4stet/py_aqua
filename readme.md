@@ -38,42 +38,58 @@ To run with your own quiz config:
 ```
 $ bash bin/web.sh <user|reviewer> path/to/quiz_config.yml
 ```
-Application config can be customized following structure of `config/app_default.yml` (explained below).  
-If you plan to use `!include` tag, your main config and their parts must be in `config/` folder.
+Application config can also be customized following structure of `config/app_default.yml`.  
 
-With default config
+With default config:
 - user mode is available at `http://localhost:5000`.  
 - reviewer mode is available at `http://localhost:8080`.  
 
 
+
+
 ## Quiz config 
+__WARNING:__ do not expose the quiz configuration. Indeed, some parts are in html format (pointed below), and therefore not escaped by rendering.
+
 ### Structure
 The application renders the quiz from a yaml file as defined in the sample `quiz_default.yml`.  
 - a quiz has one or multiple section(s)
 - each section has one or multiple group(s)
 - each group has
-    - a description, in html multines format
+    - a `description`, in html format
     - one or multiple item(s)
-- each item is a question of one of the following types, has a category and a priority:
-    - `category` will be used in the gap analysis, to group items by theme, it refers to the id defined in `analysis.categories[].id` key
-    - `priority` (eg. low/medium/high) corresponds to a weight in scoring, and a remediation priority in the report
-    - `qcm`: 
+- each item is a question of one of the following types, with required parameters:
+    - `comment` (the only one optional) aims to support the question, in html format
+    - `id` alphanumeric, should not contain '-'.
+    - `qcm_unique`: 
         - only one option can be ticked
         - `options` are the list of content received when form is posted, labels displayed are automatically deduced by replacing `_` with space, 
         - `Not Answered` option is automatically added and selected for new quiz, so that all items have a value when posting
+    - `qcm_multiple`: 
+        - several options can be ticked
+        - `options` are the list of content received when form is posted, labels displayed are automatically deduced by replacing `_` with space, 
+        - `None` and `Not Answered` option is automatically added and selected for new quiz, so that all items have a value when posting
     - `text`: 
         - `placeholder`, if not empty string, is the text written by default in the text area
-    - `table`: 
+    - `table_simple` (first row is header): 
         - `nb_rows` is the primary number of rows to create, 
         - columns can be of type `text` or `qcm`,
         - `size` is the displayed width of a column, using the grid system, hence sum of sizes for a table should be 11 (1 is reserved for trash button)
-- each item also has a `reviewer` part, listing rules as a `qcm`, to deduce score and remediations from answers:
+    - `table_double` (first row and first column are headers): 
+        - `rows` is the list of first column header, 
+        - columns can be of type `text`, `qcm_multiple` or `qcm_unique`,
+        - `size` is the displayed width of a column, using the grid system, hence sum of sizes for a table should be 12
+- each item also has `analysis` part, to mark its weight and the theme to be attached to for the category score:
+    - `category` will be used in the gap analysis, to group items by theme, it refers to the id defined in `analysis.categories[].id` key
+    - `priority` (eg. low/medium/high) corresponds to a weight in scoring, and a remediation priority in the report
+- each item, last, has a `reviewer` part, listing rules as a `qcm`, to deduce score and remediations from answers:
     - `option` is the label, a default `Not Reviewed` being automatically added
     - `score` is the value assigned to the review option
     - `status` (eg. ok/ko/partial) corresponds to the class of the review option, and will be used to depict quiz performance in the report
     - `helper` is a sentence indicating in which case reviewer should select this option
     - `review` is a sentence interpreting the review option and will appear in the report
     - `remediation` is a sentence indicating remediation when needed and will appear in the report
+
+
 
 ### Identifiers unicity
 Identifiers in quiz config must be unique within their category:
@@ -83,13 +99,14 @@ Identifiers in quiz config must be unique within their category:
 - for a given table, column IDs must be unique
 
 ## Gap analysis config
-Gap analysis report contains a `summary` chapter, then one for each category, and finally an appendix grouping user answers.
+Gap analysis report contains a `summary` chapter, then one for each category, and finally an appendix reproducing user answers.
 
 ### Scoring
 Several plots are built from scores:
 - Final and category grades 
 - Grades distribution per category
 - Grades distribution per sections
+- Items distribution per status, as whole
 - In each category, item distribution per status
 
 Each score comes from the sum of `priority x item_score` for category/section scores, and sum of `priority x category_score` for the final score.
@@ -105,6 +122,6 @@ Then, a table gathers the main remediations among all categories, as defined by 
 
 ### Category chapters
 Each category chapter has 3 parts:
-- a description of items covered, defined under `analysis.categories[].description` as html multilines format, and a waffle plot of item statuses
+- a description of items covered, defined under `analysis.categories[].description` in html format, and a waffle plot of item statuses
 - the list of remediations, table automatically built from review results, ordered by priority
-- the gap analysis: a table listing strengh or weakness of each answer
+- the gap analysis: a table pointing strengh or weakness of each answer
