@@ -30,11 +30,11 @@
                                         {% if elt['answer'] | length > 1%}
                                         <ul>
                                             {% for answer in elt['answer'] %}
-                                                <li>{{answer}}</li>
+                                                <li>{{answer | replace('_', ' ') | capitalize}}</li>
                                             {% endfor %}
                                         </ul>
                                         {% else %}
-                                            {{ elt['answer'][0]}}
+                                            {{ elt['answer'][0] | replace('_', ' ') | capitalize}}
                                         {% endif %}
                                     </td>
                                 </tr>

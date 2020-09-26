@@ -22,12 +22,10 @@
 
             <!-- table rows -->
             {% for row in item['rows'] %}
-                {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-'~ row %}
+                {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-'~ (row | replace(' ', '_') | lower) %}
                 <div class="row" id="{{row_id}}">
                     <!-- first column is the second header -->
-                    <div class="col-{{item['columns'][0]['size']}}">
-                        {{row | replace('_', ' ') | capitalize}}
-                    </div>
+                    <div class="col-{{item['columns'][0]['size']}}">{{row}}</div>
 
                     <!-- other columns -->
                     {% for col in item['columns'][1:] %}

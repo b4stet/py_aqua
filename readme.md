@@ -59,14 +59,13 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
     - one or multiple item(s)
 - each item is a question of one of the following types, with required parameters:
     - `comment` (the only one optional) aims to support the question, in html format
-    - `id` alphanumeric, should not contain '-'.
     - `qcm_unique`: 
         - only one option can be ticked
-        - `options` are the list of content received when form is posted, labels displayed are automatically deduced by replacing `_` with space, 
+        - `options` are the list of possible answers 
         - `Not Answered` option is automatically added and selected for new quiz, so that all items have a value when posting
     - `qcm_multiple`: 
         - several options can be ticked
-        - `options` are the list of content received when form is posted, labels displayed are automatically deduced by replacing `_` with space, 
+        - `options` are the list of possible answers 
         - `None` and `Not Answered` option is automatically added and selected for new quiz, so that all items have a value when posting
     - `text`: 
         - `placeholder`, if not empty string, is the text written by default in the text area
@@ -82,14 +81,17 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
     - `category` will be used in the gap analysis, to group items by theme, it refers to the id defined in `analysis.categories[].id` key
     - `priority` (eg. low/medium/high) corresponds to a weight in scoring, and a remediation priority in the report
 - each item, last, has a `reviewer` part, listing rules as a `qcm`, to deduce score and remediations from answers:
-    - `option` is the label, a default `Not Reviewed` being automatically added
+    - `option` is the label, a default `Not Reviewed` being automatically added. The keyword `disabled` discard the question in scoring
     - `score` is the value assigned to the review option
     - `status` (eg. ok/ko/partial) corresponds to the class of the review option, and will be used to depict quiz performance in the report
     - `helper` is a sentence indicating in which case reviewer should select this option
     - `review` is a sentence interpreting the review option and will appear in the report
     - `remediation` is a sentence indicating remediation when needed and will appear in the report
 
-
+Also, due to `id` and qcm `option` being used as keys in answers and review files, some constraints should be followed:
+- no white space (for qcm options, '_' are replaced by white space on rendering),
+- no '-',
+- keyword `review` is forbidden.
 
 ### Identifiers unicity
 Identifiers in quiz config must be unique within their category:

@@ -37,7 +37,8 @@ class AnalyzeAction(BaseAction):
 
         # analyze and build report
         scoring_map_by_grade = self.__get_map(self.__analysis['scoring'], 'grade')
-        analysis_sections, analysis_categories = self.__get_analysis_from_review(review, scoring_map_by_grade)
+        item_map_by_full_id = self.__get_map_items()
+        analysis_sections, analysis_categories = self.__get_analysis_from_review(review, item_map_by_full_id, scoring_map_by_grade)
 
         # data to render
         self._data.update({
@@ -80,7 +81,7 @@ class AnalyzeAction(BaseAction):
                         nb_rows = len(answer) // nb_columns
                         rows = [answer[nb_columns*i:nb_columns*(i+1)] for i in range(0, nb_rows)]
                         for row in rows:
-                            row_formatted = ['{}: {}'.format(item['columns'][i]['title'], row[i]) for i in range(0, nb_columns)]
+                            row_formatted = ['{}: {}'.format(item['columns'][i]['title'], row[i].replace('_', ' ')) for i in range(0, nb_columns)]
                             answer_grouped.append(', '.join(row_formatted))
                         answer = answer_grouped
 
@@ -91,7 +92,7 @@ class AnalyzeAction(BaseAction):
                         nb_columns = len(item['columns'])
                         rows = [answer[(nb_columns-1)*i:(nb_columns-1)*(i+1)] for i in range(0, nb_rows)]
                         for i, row in enumerate(rows):
-                            row_formatted = ['{}: {}'.format(item['columns'][j]['title'], row[j-1]) for j in range(1, nb_columns)]
+                            row_formatted = ['{}: {}'.format(item['columns'][j]['title'], row[j-1].replace('_', ' ')) for j in range(1, nb_columns)]
                             row_formatted = '{}: {}'.format(item['rows'][i], ', '.join(row_formatted))
                             answer_grouped.append(row_formatted)
                         answer = answer_grouped
@@ -102,7 +103,7 @@ class AnalyzeAction(BaseAction):
                     })
         return answers_summary
 
-    def __get_analysis_from_review(self, review, scoring_map_by_grade):
+    def __get_analysis_from_review(self, review, item_map_by_full_id, scoring_map_by_grade):
         # mapping
         priorities_map_by_label = self.__get_map(self.__analysis['priorities'], 'label')
         categories_map_by_id = self.__get_map(self.__analysis['categories'], 'id')
@@ -142,7 +143,9 @@ class AnalyzeAction(BaseAction):
         # fill
         for review_id, value in review.items():
             # get item from id, and retrieve section/category id
-            item = self.__get_item_from_review_id(review_id)
+            full_id = review_id[:-len('-review')]
+            print(review_id, full_id)
+            item = item_map_by_full_id[full_id]
             sid = review_id.split('-')[0]
             cid = item['analysis']['category']
 
@@ -167,10 +170,15 @@ class AnalyzeAction(BaseAction):
 
                 # remediation
                 if review_elt['remediation'] is not None:
+                    # for list of top remediations in summary
+                    is_top = False
+                    if review_elt['score'] < 0.5:
+                        is_top = True
                     analysis_categories[cid]['remediations'][sid].append({
                         'priority': item_priority,
                         'weight': item_weight,
                         'remediation': review_elt['remediation'],
+                        'is_top': is_top,
                     })
 
         # transform score as percentage, deduce grade for sections
@@ -240,8 +248,11 @@ class AnalyzeAction(BaseAction):
 
             # loop on remediation for part of section covered by the category
             for sid, remediations in category_remediations.items():
-                # 'top' defined by set of priority in config
-                top_remediations = [remediation for remediation in remediations if remediation['priority'] in self.__analysis['summary']['priorities']]
+                # 'top' defined by set of priority and flag
+                top_remediations = []
+                for remediation in remediations:
+                    if remediation['priority'] in self.__analysis['summary']['priorities'] and remediation['is_top'] is True:
+                        top_remediations.append(remediation)
                 if len(top_remediations) > 0:
                     main_remediations[cid]['remediations'][sid] = top_remediations
 
@@ -265,13 +276,16 @@ class AnalyzeAction(BaseAction):
 
         return mapping
 
-    def __get_item_from_review_id(self, review_id):
-        sid, gid, iid, _ = review_id.split('-')
-        section = next((s for s in self._quiz['sections'] if s['id'] == sid))
-        group = next((g for g in section['groups'] if g['id'] == gid))
-        item = next((i for i in group['items'] if i['id'] == iid))
-
-        return item
+    def __get_map_items(self):
+        item_mapping = {}
+        for section in self._quiz['sections']:
+            sid = section['id']
+            for group in section['groups']:
+                gid = group['id']
+                for item in group['items']:
+                    full_id = '-'.join([sid, gid, item['id']])
+                    item_mapping[full_id] = item
+        return item_mapping
 
     def __get_grade_from_score(self, score):
         scoring_sorted = sorted(self.__analysis['scoring'], key=lambda k: k['max'], reverse=True)
