@@ -74,29 +74,38 @@ class AnalyzeAction(BaseAction):
                     full_id = '-'.join([sid, gid, iid])
                     answer = [v for k, v in answers.items() if k.startswith(full_id) and not k.endswith('-notes')]
 
-                    # for one entry tables, re-assemble rows
+                    # for one entry tables, re-assemble header and rows
                     if item['type'] == self.ITEM_TABLE_SIMPLE:
-                        answer_grouped = []
+                        # answer_grouped = []
+                        header = [column['title'] for column in item['columns']]
                         nb_columns = len(item['columns'])
                         nb_rows = len(answer) // nb_columns
                         rows = [answer[nb_columns*i:nb_columns*(i+1)] for i in range(0, nb_rows)]
-                        for row in rows:
-                            row_formatted = ['{}: {}'.format(item['columns'][i]['title'], row[i].replace('_', ' ')) for i in range(0, nb_columns)]
-                            answer_grouped.append(', '.join(row_formatted))
-                        answer = answer_grouped
+                        # for row in rows:
+                        #     row_formatted = ['{}: {}'.format(item['columns'][i]['title'], row[i].replace('_', ' ')) for i in range(0, nb_columns)]
+                        #     answer_grouped.append(', '.join(row_formatted))
+                        # answer = answer_grouped
+                        answer = [header] + rows
 
-                    # for double entry tables, re-assemble rows, first column is fixed
+                    # for double entry tables, re-assemble header and rows, first column is second header
                     if item['type'] == self.ITEM_TABLE_DOUBLE:
-                        answer_grouped = []
+                        # answer_grouped = []
+                        header = [column['title'] for column in item['columns']]
                         nb_rows = len(item['rows'])
                         nb_columns = len(item['columns'])
-                        rows = [answer[(nb_columns-1)*i:(nb_columns-1)*(i+1)] for i in range(0, nb_rows)]
-                        for i, row in enumerate(rows):
-                            row_formatted = ['{}: {}'.format(item['columns'][j]['title'], row[j-1].replace('_', ' ')) for j in range(1, nb_columns)]
-                            row_formatted = '{}: {}'.format(item['rows'][i], ', '.join(row_formatted))
-                            answer_grouped.append(row_formatted)
-                        answer = answer_grouped
+                        rows = []
+                        for i in range(0, nb_rows):
+                            row = [item['rows'][i]] + answer[(nb_columns-1)*i:(nb_columns-1)*(i+1)]
+                            rows.append(row)
+                        # rows = [answer[(nb_columns-1)*i:(nb_columns-1)*(i+1)] for i in range(0, nb_rows)]
+                        # for i, row in enumerate(rows):
+                        #     row_formatted = ['{}: {}'.format(item['columns'][j]['title'], row[j-1].replace('_', ' ')) for j in range(1, nb_columns)]
+                        #     row_formatted = '{}: {}'.format(item['rows'][i], ', '.join(row_formatted))
+                        #     answer_grouped.append(row_formatted)
+                        # answer = answer_grouped
+                        answer = [header] + rows
 
+                    print(answer)
                     answers_summary[sid]['groups'][gid]['answers'].append({
                         'item': item['question'],
                         'answer': answer,
@@ -172,7 +181,7 @@ class AnalyzeAction(BaseAction):
                 if review_elt['remediation'] is not None:
                     # for list of top remediations in summary
                     is_top = False
-                    if review_elt['score'] < 0.5:
+                    if review_elt['score'] < self.__analysis['summary']['score_min']:
                         is_top = True
                     analysis_categories[cid]['remediations'][sid].append({
                         'priority': item_priority,
@@ -191,7 +200,8 @@ class AnalyzeAction(BaseAction):
 
         # transform score as percentage, deduce grade and tag, sort remediation, build plots for categories
         for cid, value in analysis_categories.items():
-            # deduce percentage, grade, tag
+            # deduce percentage, grade
+            print(cid, score_max_categories[cid])
             percentage = value['score']/score_max_categories[cid] * 100.0
             if percentage < 0.0:
                 percentage = 0.00
@@ -206,7 +216,7 @@ class AnalyzeAction(BaseAction):
             # grade and status distribution plots
             donut_title = 'Grade: {}'.format(value['grade'])
             analysis_categories[cid]['donut_single'] = plot.get_donut(value, donut_title, scoring_map_by_grade)
-            analysis_categories[cid]['waffle_items'] = plot.get_waffle(value['statuses'], 'Answers to items by status')
+            analysis_categories[cid]['waffle_items'] = plot.get_waffle(value['statuses'], 'Items distribution by status')
 
         return analysis_sections, analysis_categories
 
@@ -264,7 +274,7 @@ class AnalyzeAction(BaseAction):
             'donut_single': plot.get_donut(donut_data, donut_title, scoring_map_by_grade),
             'donut_categories': plot.get_donuts_concentric(analysis_categories.values(), 'Grades achieved by categories', scoring_map_by_grade),
             'lollipop_sections': plot.get_lollipop(analysis_sections.values(), 'Grades achieved by section', scoring_map_by_grade),
-            'waffle_items': plot.get_waffle(statuses, 'Item answers by status'),
+            'waffle_items': plot.get_waffle(statuses, 'Items distribution by status'),
         }
         return summary
 

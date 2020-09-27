@@ -14,7 +14,7 @@
                         </thead>
                         <tbody>
                             <tr><td colspan="2">{{ group_answers['description'] | safe }}</td></tr>
-                            <tr><td colspan="2">Client comments: {{ group_answers['notes']}}</td></tr>
+                            <tr><td colspan="2"><strong>Client comments:</strong> {{ group_answers['notes']}}</td></tr>
                         </tbody>
                         <thead>
                             <tr>
@@ -27,12 +27,28 @@
                                 <tr>
                                     <td>{{elt['item']}}</td>
                                     <td>
+                                        <!-- item is a table -->
                                         {% if elt['answer'] | length > 1%}
-                                        <ul>
-                                            {% for answer in elt['answer'] %}
-                                                <li>{{answer | replace('_', ' ') | capitalize}}</li>
-                                            {% endfor %}
-                                        </ul>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    {% for col_title in elt['answer'][0] %}
+                                                        <th>{{col_title}}</th>
+                                                    {% endfor %}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for row in elt['answer'][1:] %}
+                                                <tr>
+                                                    {% for col_value in row%}
+                                                        <td>{{col_value}}</td>
+                                                    {% endfor %}
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                        <!-- item is a qcm or a text -->
                                         {% else %}
                                             {{ elt['answer'][0] | replace('_', ' ') | capitalize}}
                                         {% endif %}
