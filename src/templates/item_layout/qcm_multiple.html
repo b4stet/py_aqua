@@ -20,6 +20,7 @@
             {% set name_option = name ~"-"~ option %}
             {% if answers is defined and answers[name_option] is defined and answers[name_option] == "ticked" %}
                 {% set checked = "checked" %}
+                {% set ns.answered = "true" %}
             {% endif %}
             <div class="form-check form-check-inline ">
                 <input  form="quiz" class="form-check-input" type="checkbox" name="{{name_option}}" value="ticked" {{checked}}/>

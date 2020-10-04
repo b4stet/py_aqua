@@ -5,7 +5,7 @@
             <div class="col-12 report-margin text-center"><img src="data:image/png;base64, {{report_summary['donut_single']}}"/></div>
         </div>
         <div class="row">
-            <div class="col-12 report margin">
+            <div class="col-12 report-margin">
                 <p>
                     Your final grade is {{report_summary['grade']}}: {{report_summary['tag']}} <br/>
                     This outcome stems from the following results per category:
@@ -32,11 +32,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6 report-viz text-center"><img src="data:image/png;base64, {{report_summary['donut_categories']}}"/></div>
-            <div class="col-6 report-viz text-center"><img src="data:image/png;base64, {{report_summary['lollipop_sections']}}"/></div>
+            <div class="col-6 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['donut_categories']}}"/></div>
+            <div class="col-6 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['lollipop_sections']}}"/></div>
         </div>
         <div class="row">
-            <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_summary['waffle_items']}}"/></div>
+            <div class="col-12 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['waffle_items']}}"/></div>
         </div>
     </div>
 </div>

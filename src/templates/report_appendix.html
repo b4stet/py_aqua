@@ -28,7 +28,7 @@
                                     <td>{{elt['item']}}</td>
                                     <td>
                                         <!-- item is a table -->
-                                        {% if elt['answer'] | length > 1%}
+                                        {% if 'table' in elt['type'] %}
                                         <table class="table">
                                             <thead>
                                                 <tr>
@@ -41,16 +41,34 @@
                                                 {% for row in elt['answer'][1:] %}
                                                 <tr>
                                                     {% for col_value in row%}
-                                                        <td>{{col_value}}</td>
+                                                        <td>
+                                                            {% if col_value is string %}
+                                                                {{col_value}}
+                                                            {% else %}
+                                                                <ul>
+                                                                    {% for value in col_value %}
+                                                                        <li>{{value}}</li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            {% endif %}
+                                                        </td>
                                                     {% endfor %}
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
 
-                                        <!-- item is a qcm or a text -->
+                                        <!-- item is a qcm -->
+                                        {% elif 'qcm' in elt['type'] %}
+                                            <ul>
+                                            {% for answer in elt['answer'] %}
+                                                <li>{{answer}}</li>
+                                            {% endfor %}
+                                            </ul>
+
+                                        <!-- item is a text -->
                                         {% else %}
-                                            {{ elt['answer'][0] | replace('_', ' ') | capitalize}}
+                                            {{ elt['answer']}}
                                         {% endif %}
                                     </td>
                                 </tr>

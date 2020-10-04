@@ -10,8 +10,8 @@ class BaseAction(MethodView):
     MODE_USER = 'user'
     MODE_REVIEWER = 'reviewer'
 
-    ITEM_QCM_UNIQUE = 'qcm'
-    ITEM_QCM_MULTIPLE = 'list'
+    ITEM_QCM_UNIQUE = 'qcm_unique'
+    ITEM_QCM_MULTIPLE = 'qcm_multiple'
     ITEM_TABLE_SIMPLE = 'table_simple'
     ITEM_TABLE_DOUBLE = 'table_double'
     ITEM_FREE_TEXT = 'text'
