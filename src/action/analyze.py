@@ -81,10 +81,6 @@ class AnalyzeAction(BaseAction):
                         nb_columns = len(item['columns'])
                         nb_rows = len(answer) // nb_columns
                         rows = [answer[nb_columns*i:nb_columns*(i+1)] for i in range(0, nb_rows)]
-                        # for row in rows:
-                        #     row_formatted = ['{}: {}'.format(item['columns'][i]['title'], row[i].replace('_', ' ')) for i in range(0, nb_columns)]
-                        #     answer_grouped.append(', '.join(row_formatted))
-                        # answer = answer_grouped
                         answer = [header] + rows
 
                     # for double entry tables, re-assemble header and rows, first column is second header
@@ -97,15 +93,8 @@ class AnalyzeAction(BaseAction):
                         for i in range(0, nb_rows):
                             row = [item['rows'][i]] + answer[(nb_columns-1)*i:(nb_columns-1)*(i+1)]
                             rows.append(row)
-                        # rows = [answer[(nb_columns-1)*i:(nb_columns-1)*(i+1)] for i in range(0, nb_rows)]
-                        # for i, row in enumerate(rows):
-                        #     row_formatted = ['{}: {}'.format(item['columns'][j]['title'], row[j-1].replace('_', ' ')) for j in range(1, nb_columns)]
-                        #     row_formatted = '{}: {}'.format(item['rows'][i], ', '.join(row_formatted))
-                        #     answer_grouped.append(row_formatted)
-                        # answer = answer_grouped
                         answer = [header] + rows
 
-                    print(answer)
                     answers_summary[sid]['groups'][gid]['answers'].append({
                         'item': item['question'],
                         'answer': answer,

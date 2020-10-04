@@ -10,7 +10,7 @@
         {% if item['comment'] is defined %}
             <div class="col-12">{{item['comment'] | safe}}</div>
         {% endif %}
-        <div class="container-fluid item-table-simple">
+        <div class="container-fluid item-table">
             <!-- table header -->
             <div class="row">
                 {% for col in item['columns'] %}
@@ -44,7 +44,7 @@
 
                         <!-- column type is qcm_unique -->
                         {% if col['type'] == 'qcm_unique' %}
-                            <div class="col-{{col['size']}} align-self-center">
+                            <div class="col-{{col['size']}} align-self-center text-center">
                                 {% set ns = namespace(answered="false") %}
     
                                 <!-- options from config -->
@@ -74,7 +74,7 @@
 
                         <!-- column type is qcm_multiple -->
                         {% if col['type'] == 'qcm_multiple' %}
-                            <div class="col-{{col['size']}} align-self-center">
+                            <div class="col-{{col['size']}} align-self-center text-center">
                                 {% set ns = namespace(answered="false") %}
 
                                 <!-- options from config -->

@@ -107,6 +107,21 @@ body {
     border-top-left-radius: 0;
 } 
 
+#content .item-table .col-1, 
+#content .item-table .col-2,
+#content .item-table .col-3,
+#content .item-table .col-4,
+#content .item-table .col-5,
+#content .item-table .col-6,
+#content .item-table .col-7,
+#content .item-table .col-8,
+#content .item-table .col-9,
+#content .item-table .col-10,
+#content .item-table .col-11,
+#content .item-table .col-12 {
+    padding-right: 2px;
+    padding-left: 2px;
+}
 
 .btn-add-row, .btn-remove-row {
     margin-top: 0px;
