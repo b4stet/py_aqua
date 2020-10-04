@@ -142,7 +142,6 @@ class AnalyzeAction(BaseAction):
         for review_id, value in review.items():
             # get item from id, and retrieve section/category id
             full_id = review_id[:-len('-review')]
-            print(review_id, full_id)
             item = item_map_by_full_id[full_id]
             sid = review_id.split('-')[0]
             cid = item['analysis']['category']
@@ -154,6 +153,7 @@ class AnalyzeAction(BaseAction):
             review_elt = next(elt for elt in item['reviewer'] if elt['option'] == value)
 
             if value != self.REVIEW_DISABLED:
+                print(full_id, value)
                 # section score
                 score_max_sections[sid] += item_weight * max([elt['score'] for elt in item['reviewer'] if elt['option'] != self.REVIEW_DISABLED])
                 analysis_sections[sid]['score'] += item_weight * review_elt['score']

@@ -80,28 +80,39 @@
                                 <!-- options from config -->
                                 {% for option in col['options'] %}
                                     {% set checked = "" %}
-                                    {% if answers is defined and answers[name] is defined and answers[name] == option %}
+                                    {% set name_option = name ~"-"~ option %}
+                                    {% if answers is defined and answers[name_option] is defined and answers[name_option] == "ticked" %}
                                         {% set checked = "checked" %}
                                         {% set ns.answered = "true" %}
                                     {% endif %}
                                     <div class="form-check form-check-inline">
-                                        <input form="quiz" class="form-check-input" type="checkbox" name="{{name}}" value="{{option}}" {{checked}}/>
+                                        <input form="quiz" class="form-check-input" type="checkbox" name="{{name_option}}" value="ticked" {{checked}}/>
                                         <label class="form-check-label">{{option | replace('_', ' ') | capitalize}}</label>
                                     </div>
                                 {% endfor %}
 
-                                <!-- default options to always have a value -->
+                                <!-- default option to always have a value -->
+                                {% set checked = "" %}
+                                {% set name_option = name ~"-none" %}
+                                {% if answers is defined and answers[name_option] is defined and answers[name_option] == "ticked" %}
+                                    {% set checked = "checked" %}
+                                    {% set ns.answered = "true" %}
+                                {% endif %}
                                 <div class="form-check form-check-inline ">
-                                    <input  form="quiz" class="form-check-input" type="checkbox" name="{{name}}" value="none"/>
-                                    <label class="form-check-label">none</label>
+                                    <input  form="quiz" class="form-check-input" type="checkbox" name="{{name_option}}" value="ticked" {{checked}}/>
+                                    <label class="form-check-label">None</label>
                                 </div>
 
                                 {% set checked = "" %}
+                                {% set name_option = name ~"-not_answered" %}
+                                {% if answers is defined and answers[name_option] is defined and answers[name_option] == "ticked" %}
+                                    {% set checked = "checked" %}
+                                {% endif %}
                                 {% if ns.answered == "false" %}
                                     {% set checked = "checked" %}
                                 {% endif %}
                                 <div class="form-check form-check-inline ">
-                                    <input  form="quiz" class="form-check-input" type="checkbox" name="{{name}}" value="not_answered" {{checked}}/>
+                                    <input  form="quiz" class="form-check-input" type="checkbox" name="{{name_option}}" value="ticked" {{checked}}/>
                                     <label class="form-check-label">Not Answered</label>
                                 </div>
                             </div>
