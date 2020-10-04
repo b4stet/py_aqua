@@ -153,7 +153,6 @@ class AnalyzeAction(BaseAction):
             review_elt = next(elt for elt in item['reviewer'] if elt['option'] == value)
 
             if value != self.REVIEW_DISABLED:
-                print(full_id, value)
                 # section score
                 score_max_sections[sid] += item_weight * max([elt['score'] for elt in item['reviewer'] if elt['option'] != self.REVIEW_DISABLED])
                 analysis_sections[sid]['score'] += item_weight * review_elt['score']
@@ -201,6 +200,7 @@ class AnalyzeAction(BaseAction):
 
             # sort remediations
             value['remediations'] = {k: sorted(v, key=lambda x: x['weight'], reverse=True) for k, v in value['remediations'].items()}
+            value['remediations'] = {k: sorted(v, key=lambda x: x['is_top'], reverse=True) for k, v in value['remediations'].items()}
 
             # grade and status distribution plots
             donut_title = 'Grade: {}'.format(value['grade'])

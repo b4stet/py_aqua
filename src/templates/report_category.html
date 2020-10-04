@@ -38,12 +38,20 @@
                                         <tr>
                                             <td class="text-center" rowspan="{{values | length}}">{{report_sections[sid]['name']}}</td>
                                             <td>{{values[0]['remediation']}}</td>
-                                            <td class="text-center">{{values[0]['priority']}}</td>
+                                            {% if values[0]['is_top'] is sameas true %}
+                                                <td class="text-center">{{values[0]['priority']}}</td>
+                                            {% else %} 
+                                                <td class="text-center">low</td>
+                                            {% endif %}
                                         </tr>
                                         {% for value in values[1:] %}
                                         <tr>
                                             <td>{{value['remediation']}}</td>
-                                            <td class="text-center">{{value['priority']}}</td>
+                                            {% if value['is_top'] is sameas true %}
+                                                <td class="text-center">{{value['priority']}}</td>
+                                            {% else %} 
+                                                <td class="text-center">low</td>
+                                            {% endif %}
                                         </tr>
                                         {% endfor %}
                                     {% endif %}
