@@ -32,7 +32,7 @@ class AnalyzeAction(BaseAction):
         # verify all items are reviewed
         missing_review = {k: v for k, v in review.items() if v == 'not_reviewed'}
         if len(missing_review) > 0:
-            items = [k.strip('-review') for k in missing_review.keys()]
+            items = [k for k in missing_review.keys()]
             raise BadRequest('Cannot perform gap analysis. Items not reviewed: {}'.format(', '.join(items)))
 
         # analyze and build report
@@ -253,7 +253,7 @@ class AnalyzeAction(BaseAction):
                 if review_elt['remediation'] is not None:
                     # for list of top remediations in summary
                     is_top = False
-                    if review_elt['score'] < self.__analysis['summary']['score_min']:
+                    if review_elt['score'] <= self.__analysis['summary']['score_min']:
                         is_top = True
                     analysis_categories[cid]['remediations'][sid].append({
                         'priority': item_priority,
