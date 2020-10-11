@@ -33,8 +33,8 @@
                             {% if answers is defined and answers[name] is defined %}
                                 {% set text = answers[name] %}
                             {% endif %}
-                            <div class="col-{{col['size']}}">
-                                <input form="quiz" type="text" class="form-control" name="{{name}}" placeholder="{{col['placeholder']}}" value="{{text}}"/>
+                            <div class="col-{{col['size']}} align-self-center">
+                                    <input form="quiz" type="text" class="form-control" name="{{name}}" placeholder="{{col['placeholder']}}" value="{{text}}"/>
                             </div>
                         {% endif%}
 
@@ -116,7 +116,7 @@
 
                     {% endfor %}
                     <!-- button to remove the row -->
-                    <div class="col-1 text-right">
+                    <div class="col-1 align-self-center text-right">
                         <button type="button" class="btn btn-secondary btn-remove-row"></button>
                     </div>
                 </div>

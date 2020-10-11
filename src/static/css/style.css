@@ -123,9 +123,14 @@ body {
     padding-left: 2px;
 }
 
-.btn-add-row, .btn-remove-row {
+#content .item-table .row {
     margin-top: 0px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-add-row, .btn-remove-row {
+    margin-top: 2px;
+    margin-bottom: 2px;
     margin-left: 0px;
     margin-right: 0px;
 }

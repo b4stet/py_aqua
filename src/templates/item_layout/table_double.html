@@ -25,7 +25,7 @@
                 {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-'~ (row | replace(' ', '_') | lower) %}
                 <div class="row" id="{{row_id}}">
                     <!-- first column is the second header -->
-                    <div class="col-{{item['columns'][0]['size']}}">{{row}}</div>
+                    <div class="col-{{item['columns'][0]['size']}} align-self-center">{{row}}</div>
 
                     <!-- other columns -->
                     {% for col in item['columns'][1:] %}
@@ -37,7 +37,7 @@
                             {% if answers is defined and answers[name] is defined %}
                                 {% set text = answers[name] %}
                             {% endif %}
-                            <div class="col-{{col['size']}}">
+                            <div class="col-{{col['size']}} align-self-center">
                                 <input form="quiz" type="text" class="form-control" name="{{name}}" placeholder="{{col['placeholder']}}" value="{{text}}"/>
                             </div>
                         {% endif%}
