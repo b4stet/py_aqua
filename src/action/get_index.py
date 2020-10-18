@@ -20,6 +20,7 @@ class GetIndexAction(BaseAction):
             ],
         }
 
+        # render
         self._data['message'] = message
         return render_template('layout.html', **self._data), 200
 

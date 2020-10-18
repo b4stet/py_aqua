@@ -2,7 +2,7 @@
 <div class="tab-pane fade border border-dark show active" role="tabpanel" id="{{cid}}-result">
     <div class="container-fluid">
         <div class="row report-viz">
-            <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_categories[cid]['donut_single']}}"/></div>
+            <div class="col-12 report-viz text-center"><img src="data:image/png;base64, {{report_categories[cid]['donut_result']}}"/></div>
         </div>
         <div class="row">
             <div class="col-12">{{category['description'] | safe}}</div>
@@ -36,7 +36,7 @@
                                 {% for sid, values in report_categories[cid]['remediations'].items() %}
                                     {% if values | length > 0 %}
                                         <tr>
-                                            <td class="text-center" rowspan="{{values | length}}">{{report_sections[sid]['name']}}</td>
+                                            <td class="text-center" rowspan="{{values | length}}">{{values[0]['section_name']}}</td>
                                             <td>{{values[0]['remediation']}}</td>
                                             {% if values[0]['is_top'] is sameas true %}
                                                 <td class="text-center">{{values[0]['priority']}}</td>
@@ -95,11 +95,11 @@
                                 {% for sid, values in report_categories[cid]['gap_analysis'].items() %}
                                     {% if values | length > 0 %}
                                         <tr>
-                                            <td class="text-center">{{report_sections[sid]['name']}}</td>
+                                            <td class="text-center">{{values[0]['section_name']}}</td>
                                             <td>
                                                 <ul>
                                                     {% for value in values %}
-                                                        <li>{{value}}</li>
+                                                        <li>{{value['analysis']}}</li>
                                                     {% endfor %}
                                                 </ul>
                                             </td>

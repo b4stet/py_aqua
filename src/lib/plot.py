@@ -110,7 +110,7 @@ def get_lollipop(data, title, color_conditions):
     ax.set_ylim(0, 100)
     plt.grid(which='major', axis='both', color='#7c7c7c', linestyle='dotted', linewidth=0.5)
     for grade, condition in color_conditions.items():
-        plt.text(len(data_sorted)-0.5, (condition['min'] + condition['max'])/2, grade, ha='center', va='center', color=condition['color'])
+        plt.text(len(data_sorted)-0.3, (condition['min'] + condition['max'])/2, grade, ha='center', va='center', color=condition['color'])
         ax.axhline(y=condition['max'], color='#363636', linestyle='-.', linewidth=1, zorder=1)
     xlabels = ax.get_xticklabels()
     plt.setp(xlabels, rotation=20, horizontalalignment='right')

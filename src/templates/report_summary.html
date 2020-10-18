@@ -2,7 +2,7 @@
 <div class="tab-pane fade border border-dark show active" role="tabpanel" id="summary-result">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 report-margin text-center"><img src="data:image/png;base64, {{report_summary['donut_single']}}"/></div>
+            <div class="col-12 report-margin text-center"><img src="data:image/png;base64, {{report_summary['donut_result']}}"/></div>
         </div>
         <div class="row">
             <div class="col-12 report-margin">
@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-12 report-margin">
                 <p>
-                    Figures below are a global overview of your answers soundness, depicted by categories, section and as a whole.
+                    Figures below provide a global overview of your answers soundness, depicted by categories, section and as a whole.
                     Textual answers are reproduced in the appendix.
                 </p>
             </div>
@@ -66,15 +66,33 @@
                             </thead>
                             <tbody>
                                 {% for cid, category_remediations in report_summary['main_remediations'].items() %}
-                                    {% if category_remediations['remediations'] | length > 0 %}
-                                        {% for sid, remediations in category_remediations['remediations'].items() %}
+                                    {% if category_remediations['count'] > 0 %}
+                                        <!-- first row for the category -->
+                                        {% set first_section = category_remediations['remediations'][0] %}
+                                        {% set first_remediation = first_section['remediations'][0] %}
+                                        <tr>
+                                            <td class="text-center" rowspan="{{category_remediations['count']}}">{{category_remediations['category_name']}}</td>
+                                            <td class="text-center" rowspan="{{first_section['remediations'] | length}}">{{first_section['section_name']}}</td>
+                                            <td>{{first_remediation['remediation']}}</td>
+                                            <td class="text-center">{{first_remediation['priority']}}</td>
+                                        </tr>
+
+                                        <!-- rest of first section -->
+                                        {% for remediation in first_section['remediations'][1:] %}
                                             <tr>
-                                                <td class="text-center" rowspan="{{remediations | length}}">{{category_remediations['name']}}</td>
-                                                <td class="text-center" rowspan="{{remediations | length}}">{{report_sections[sid]['name']}}</td>
-                                                <td>{{remediations[0]['remediation']}}</td>
-                                                <td class="text-center">{{remediations[0]['priority']}}</td>
+                                                <td>{{remediation['remediation']}}</td>
+                                                <td class="text-center">{{remediation['priority']}}</td>
                                             </tr>
-                                            {% for remediation in remediations[1:] %}
+                                        {% endfor %}
+
+                                        <!-- other sections in the category -->
+                                        {% for section_remediations in category_remediations['remediations'][1:] %}
+                                            <tr>
+                                                <td class="text-center" rowspan="{{section_remediations['remediations'] | length}}">{{section_remediations['section_name']}}</td>
+                                                <td>{{section_remediations['remediations'][0]['remediation']}}</td>
+                                                <td class="text-center">{{section_remediations['remediations'][0]['priority']}}</td>
+                                            </tr>
+                                            {% for remediation in section_remediations['remediations'][1:] %}
                                                 <tr>
                                                     <td>{{remediation['remediation']}}</td>
                                                     <td class="text-center">{{remediation['priority']}}</td>
