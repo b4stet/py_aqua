@@ -11,6 +11,22 @@ class GapAnalysisBo():
     def get_analysis_config(self):
         return self.__analysis
 
+    def extract_review(self, data):
+        # extract answers and review
+        answers = {k: v for k, v in data.items() if not k.endswith('-review')}
+        review = {k: v for k, v in data.items() if k.endswith('-review')}
+
+        # verify all items are reviewed
+        if len(review) == 0:
+            raise ValueError('Uploaded file does not contain review keys.')
+
+        missing_review = {k: v for k, v in review.items() if v == 'not_reviewed'}
+        if len(missing_review) > 0:
+            items = [k for k in missing_review.keys()]
+            raise ValueError('Items not reviewed: {}'.format(', '.join(items)))
+
+        return answers, review
+
     def analyze(self, review, mapping):
         # sections analysis initialization (score, grade)
         analysis_sections = {}
@@ -124,7 +140,7 @@ class GapAnalysisBo():
     def summarize(self, analysis_sections, analysis_categories, mapping):
         summary = {}
 
-        # final score/grade/tag/data plot
+        # final score/grade/tag
         score = 0.0
         score_max = 0.0
         for category in analysis_categories.values():
@@ -133,11 +149,6 @@ class GapAnalysisBo():
         score = round(score/score_max * 100.0, 2)
         grade = self.convert_score2grade(score)
         tag = mapping['scoring_by_grade'][grade]['tag']
-        donut_data = {
-            'score': score,
-            'grade': grade,
-        }
-        donut_title = 'Final Grade: {}'.format(grade)
 
         # global status distribution
         statuses = {}
@@ -174,6 +185,12 @@ class GapAnalysisBo():
                     main_remediations[cid]['count'] += len(top_remediations)
 
         # grade, tag, remediations and plots (final grade, grade per categories, grade per sections, status distribution)
+        donut_data = {
+            'score': score,
+            'grade': grade,
+        }
+        donut_title = 'Final Grade: {}'.format(grade)
+
         summary = {
             'grade': grade,
             'tag': self.__analysis['summary']['text'][tag],
@@ -183,6 +200,7 @@ class GapAnalysisBo():
             'lollipop_sections': plot.get_lollipop(analysis_sections.values(), 'Grades achieved by section', mapping['scoring_by_grade']),
             'waffle_items': plot.get_waffle(statuses, 'Items distribution by status'),
         }
+
         return summary
 
     def convert_score2grade(self, score):

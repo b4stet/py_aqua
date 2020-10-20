@@ -4,6 +4,7 @@ from werkzeug.exceptions import BadRequest
 
 from src.action.base import BaseAction
 from src.lib import plot
+from src.lib import validate_json
 
 
 class AnalyzeAction(BaseAction):
@@ -23,25 +24,19 @@ class AnalyzeAction(BaseAction):
     def post(self):
         f = request.files['file']
         content = f.read()
-        content_json = self._validate_and_get_json(content)
+        content_json = json.loads(content)
 
-        # extract answers and review
-        answers = {k: v for k, v in content_json.items() if not k.endswith('-review')}
-        review = {k: v for k, v in content_json.items() if k.endswith('-review')}
-
-        # verify all items are reviewed
-        if len(review) == 0:
-            raise BadRequest('Cannot perform gap analysis. Uploaded file does not contain review keys.')
-
-        missing_review = {k: v for k, v in review.items() if v == 'not_reviewed'}
-        if len(missing_review) > 0:
-            items = [k for k in missing_review.keys()]
-            raise BadRequest('Cannot perform gap analysis. Items not reviewed: {}'.format(', '.join(items)))
+        # validate input
+        try:
+            validate_json.validate(content_json, self._title['short'], self._quiz['version'])
+            answers, review = self.__analysis_bo.extract_review(content_json)
+        except ValueError as err:
+            raise BadRequest('Cannot perform gap analysis. {}'.format(str(err)))
 
         # analyze
         mapping = {
             'sections_id_name': {section['id']: section['name'] for section in self._quiz['sections']},
-            'items_by_full_id': self.__mapping_bo.map_items_by_full_id(self._quiz),
+            'items_by_full_id': self.__mapping_bo.map_items_by_full_id(),
             'scoring_by_grade': self.__mapping_bo.map_by_key('scoring', 'grade'),
             'statuses_by_label': self.__mapping_bo.map_by_key('statuses', 'label'),
             'priorities_by_label': self.__mapping_bo.map_by_key('priorities', 'label'),
@@ -50,7 +45,7 @@ class AnalyzeAction(BaseAction):
 
         analysis_sections, analysis_categories = self.__analysis_bo.analyze(review, mapping)
         summary = self.__analysis_bo.summarize(analysis_sections, analysis_categories, mapping)
-        appendix = self.__answers_bo.assemble(self._quiz, answers)
+        appendix = self.__answers_bo.assemble(answers)
 
         # data to render
         self._data.update({

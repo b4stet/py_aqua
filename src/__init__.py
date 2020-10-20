@@ -3,15 +3,13 @@ import yaml
 from flask import Flask, Blueprint, g
 
 from src.include.services import services
+from src.include.clis import clis
 from src.include.routing import routing
 
 
-def bootstrap(app_config, quiz_config, mode):
+def bootstrap_core(app_config, quiz_config, mode):
     app_root = os.path.dirname(os.path.dirname(__file__))
-    app = Flask(
-        __name__,
-        instance_path=app_root,
-    )
+    app = Flask(__name__, instance_path=app_root)
 
     # set config
     app_config = app_from_yaml(app_config, mode)
@@ -23,10 +21,26 @@ def bootstrap(app_config, quiz_config, mode):
     app.quiz = config_quiz['quiz']
     app.gap_analysis = config_quiz['analysis']
 
+    return app
+
+
+def bootstrap_web(app_config, quiz_config, mode):
+    app = bootstrap_core(app_config, quiz_config, mode)
+
     # register components and return app
     with app.app_context():
         register_services(app)
         register_routes(app, g.di_container)
+        return app
+
+
+def bootstrap_cli(app_config, quiz_config):
+    app = bootstrap_core(app_config, quiz_config, 'reviewer')
+
+    # register components and return app
+    with app.app_context():
+        register_services(app)
+        register_commands(app, g.di_container)
         return app
 
 
@@ -68,3 +82,8 @@ def register_routes(app, di_container):
             blueprint.add_url_rule(route['uri'], view_func=di_container[route['action']], methods=route['methods'])
 
         app.register_blueprint(blueprint)
+
+
+def register_commands(app, di_container):
+    for cli in clis:
+        di_container[cli].init_app(app)

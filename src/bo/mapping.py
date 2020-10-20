@@ -1,6 +1,7 @@
 class MappingBo():
-    def __init__(self, logger, analysis):
+    def __init__(self, logger, quiz, analysis):
         self._logger = logger
+        self.__quiz = quiz
         self.__analysis = analysis
 
     def map_by_key(self, data, key):
@@ -11,9 +12,9 @@ class MappingBo():
 
         return mapping
 
-    def map_items_by_full_id(self, quiz):
+    def map_items_by_full_id(self):
         item_mapping = {}
-        for section in quiz['sections']:
+        for section in self.__quiz['sections']:
             sid = section['id']
             for group in section['groups']:
                 gid = group['id']

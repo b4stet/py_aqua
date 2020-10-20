@@ -4,24 +4,59 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 cd "${DIR}/../"
 
-# usage
-if [ "$#" -lt 1 ] || [ "$#" -gt 2 ];
-then
-    echo "Usage: $0 <mode> [path/to/quiz_config.yml]"
+die() {
+    printf 'Error: Invalid argument for %s\n' "$1" >&2
+    usage
     exit 1
-fi
+}
 
-# set mode
-test_mode=$(echo 'user reviewer' | grep -Fw "$1")
-if [ -z "${test_mode}" ];
-then
-    echo "Unknown mode. Should be 'user' or 'reviewer'."
-    exit 1
-fi
-export AQUA_MODE="$1"
 
-# set quiz config if provided
-if [ "$#" -eq 2 ];
-then
-    export AQUA_QUIZ="$2"
-fi
+PARAMS=""
+while (( "$#" )); do
+  case "$1" in
+    -h|--help)
+      usage
+      exit
+      ;;
+    -m|--mode)
+      if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+        export AQUA_MODE=$2
+        shift 2
+      else
+        die $1
+      fi
+      ;;
+    -q|--quiz)
+      if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+        export AQUA_QUIZ=$2
+        shift 2
+      else
+        die $1
+      fi
+      ;;
+    -a|--app)
+      if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+        export AQUA_APP=$2
+        shift 2
+      else
+        die $1
+      fi
+      ;;
+
+    # unsupported flags
+    -*|--*=) 
+      echo "Error: Unsupported flag $1" >&2
+      usage
+      exit 1
+      ;;
+
+    # preserve positional arguments
+    *) 
+      PARAMS="$@"
+      break
+      ;;
+  esac
+done
+
+# set positional arguments in their proper place
+eval set -- "$PARAMS"

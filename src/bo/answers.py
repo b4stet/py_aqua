@@ -5,12 +5,13 @@ class AnswersBo():
     ITEM_TABLE_DOUBLE = 'table_double'
     ITEM_FREE_TEXT = 'text'
 
-    def __init__(self, logger):
+    def __init__(self, logger, quiz):
         self.__logger = logger
+        self.__quiz = quiz
 
-    def assemble(self, quiz, answers):
+    def assemble(self, answers):
         answers_summary = {}
-        for section in quiz['sections']:
+        for section in self.__quiz['sections']:
             sid = section['id']
             answers_summary[sid] = {
                 'name': section['name'],
