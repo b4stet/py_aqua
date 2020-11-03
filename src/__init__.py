@@ -21,6 +21,10 @@ def bootstrap_core(app_config, quiz_config, mode):
     app.quiz = config_quiz['quiz']
     app.gap_analysis = config_quiz['analysis']
 
+    # convert to absolute path for the template
+    template_root = os.path.dirname(quiz_config)
+    app.gap_analysis['docx_template'] = os.path.join(template_root, app.gap_analysis['docx_template'])
+
     return app
 
 

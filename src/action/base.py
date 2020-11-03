@@ -1,6 +1,4 @@
 from flask.views import MethodView
-from werkzeug.exceptions import BadRequest
-import json
 
 
 class BaseAction(MethodView):

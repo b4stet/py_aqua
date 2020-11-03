@@ -58,6 +58,8 @@ class GapAnalysisBo():
                 'tag': None,
                 'weight': mapping['priorities_by_label'][category['priority']]['weight'],
                 'statuses': statuses,
+                'donut_result': None,
+                'waffle_items': None,
                 'gap_analysis': {sid: [] for sid in mapping['sections_id_name'].keys()},
                 'remediations': {sid: [] for sid in mapping['sections_id_name'].keys()},
             }
@@ -97,13 +99,16 @@ class GapAnalysisBo():
                 if review_elt['remediation'] is not None:
                     # for list of top remediations in summary
                     is_top = False
-                    if review_elt['score'] <= self.__analysis['summary']['score_min']:
+                    if review_elt['score'] <= self.__analysis['item_soundness']['score_min']:
                         is_top = True
+                    if is_top is False:
+                        item_priority = self.__analysis['item_soundness']['priority_min']
                     analysis_categories[cid]['remediations'][sid].append({
                         'section_name': mapping['sections_id_name'][sid],
                         'priority': item_priority,
                         'weight': item_weight,
                         'remediation': review_elt['remediation'],
+                        'remediation_short': review_elt['short'],
                         'is_top': is_top,
                     })
 
@@ -132,8 +137,8 @@ class GapAnalysisBo():
 
             # grade and status distribution plots
             donut_title = 'Grade: {}'.format(value['grade'])
-            analysis_categories[cid]['donut_result'] = plot.get_donut(value, donut_title, mapping['scoring_by_grade'])
-            analysis_categories[cid]['waffle_items'] = plot.get_waffle(value['statuses'], 'Items distribution by status')
+            value['donut_result'] = plot.get_donut(value, donut_title, mapping['scoring_by_grade'])
+            value['waffle_items'] = plot.get_waffle(value['statuses'], 'Items distribution by status')
 
         return analysis_sections, analysis_categories
 

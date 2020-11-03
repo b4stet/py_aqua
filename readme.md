@@ -1,8 +1,16 @@
 # Auditing QUiz Application
 A light web app to drive an audit, analyze answers, score and generate a report.
 
+The application itself is just a templating rendering the quiz and the gap analysis defined in `config/quiz_default.yml`.
+It allows to:
+- fill or complete the quiz
+- review the soundness of answers
+- deduce the gap analysis
+- generate a report (in html and/or docx)
+
 ## Requirements
 - flask >= 0.12.2
+- bs4 >= 4.7.1
 - matplotblib >= 3.0.3
 - pywaffle >= 0.6.1
 
@@ -18,7 +26,7 @@ In both modes, nothing is stored server side (no database, no file).
 Users can fill the quiz autonomously.  
 
 - with additional layers (nginx/apache2, authentication), you can expose the application in `user` mode.  
-- users send you their answers by other mean (the saved json file)
+- users fill, save their answers as json and send you the json file by other mean
 - you run the application locally in reviewer mode, load their answers, review and generate the gap analysis
 
 ### Example 2
@@ -26,25 +34,37 @@ Assessment is driven with users.
 
 - you run the application locally in `user` mode, or in `reviewer` mode (with review disabled)
 - you fill and save answers with the user
-- later, in reviewer mode, you load its answers, review and generate the gap analysis
+- later, in reviewer mode, you load answers, review and generate the gap analysis (docx and/or html)
 
 ## Run
+### Web
 From root of application:
 ```
-$ bash bin/web.sh <user|reviewer>
+$ bash bin/web.sh  --mode <user|reviewer>
 ```
 
-To run with your own quiz config:
+To run with your own quiz config and/or app config:
 ```
-$ bash bin/web.sh <user|reviewer> path/to/quiz_config.yml
+$ bash bin/web.sh --mode <user|reviewer> --quiz path/to/quiz_config.yml --app path/to/app_config.yml
 ```
-Application config can also be customized following structure of `config/app_default.yml`.  
 
-With default config:
+With default configs (`config/app_default.yml` and `config/quiz_default.yml`):
 - user mode is available at `http://localhost:5000`.  
 - reviewer mode is available at `http://localhost:8080`.  
 
+### CLI
+A CLI command is also available to generate the report in docx format from the json file of answers and their review.
+The path to the docx template is defined in `analysis.docx_template` key of `quiz_config.yml`.
 
+To generate the document:
+```
+bash bin/cli.sh generate_report --review path/to/review.json --output filename.docx
+```
+
+To generate with your own quiz config:
+```
+bash bin/cli.sh --quiz path/to/quiz_config.yml generate_report --review path/to/review.json --output filename.docx
+```
 
 
 ## Quiz config 
@@ -55,7 +75,7 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
 - a quiz has one or multiple section(s)
 - each section has one or multiple group(s)
 - each group has
-    - a `description`, in html format
+    - a `description`, in html format (only `<p>` and `<ul>/<li>` tags are supported for docx generation)
     - one or multiple item(s)
 - each item is a question of one of the following types, with required parameters:
     - `comment` (the only one optional) aims to support the question, in html format
@@ -87,21 +107,25 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
     - `helper` is a sentence indicating in which case reviewer should select this option
     - `review` is a sentence interpreting the review option and will appear in the report
     - `remediation` is a sentence indicating remediation when needed and will appear in the report
+    - `short` is a short version of the remediation that will be used in the executive summary of the docx version of the report
 
-Also, due to `id` and qcm `option` being used as keys in answers and review files, some constraints should be followed:
+### Constraints
+Due to `id` and qcm `option` being used as keys in answers and review files, some constraints should be followed for their values:
 - no white space (for qcm options, '_' are replaced by white space on rendering),
 - no '-',
 - keyword `review` is forbidden.
 
-### Identifiers unicity
-Identifiers in quiz config must be unique within their category:
+Also, identifiers in quiz config must be unique within their category:
 - section IDs must be uniques
 - for a given section, group IDs must be unique
 - for a given group, item IDs must be unique
 - for a given table, column IDs must be unique
 
 ## Gap analysis config
-Gap analysis report contains a `summary` chapter, then one for each category, and finally an appendix reproducing user answers.
+Gap analysis report contains several chapters:
+- a `summary` chapter, 
+- one chapter for each category, 
+- an appendix reproducing user answers.
 
 ### Scoring
 Several plots are built from scores:
@@ -112,7 +136,7 @@ Several plots are built from scores:
 - In each category, item distribution per status
 
 Each score comes from the sum of `priority x item_score` for category/section scores, and sum of `priority x category_score` for the final score.
-- all score range from 0 to 100
+- all scores in the gap analysis range from 0 to 100
 - priorities are weights defined under `analysis.priorities` key of `quiz_default.yml`
 
 Score are then converted into a grade letter, a color, and a tag, all defined under `analysis.scoring` key for plots and summary chapter.
@@ -124,6 +148,6 @@ Then, a table gathers the main remediations among all categories, as defined by 
 
 ### Category chapters
 Each category chapter has 3 parts:
-- a description of items covered, defined under `analysis.categories[].description` in html format, and a waffle plot of item statuses
+- a description of items covered, defined under `analysis.categories[].description` in html format  (only `<p>` and `<ul>/<li>` tags are supported for docx generation) 
 - the list of remediations, table automatically built from review results, ordered by priority
-- the gap analysis: a table pointing strengh or weakness of each answer
+- the gap analysis: a waffle plot of item statuses and a table pointing strengh or weakness of each answer

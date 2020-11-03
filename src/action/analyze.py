@@ -3,7 +3,6 @@ from flask import request, render_template
 from werkzeug.exceptions import BadRequest
 
 from src.action.base import BaseAction
-from src.lib import plot
 from src.lib import validate_json
 
 

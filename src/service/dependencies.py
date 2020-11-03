@@ -37,7 +37,7 @@ class DependenciesService():
                 OpenQuizAction: OpenQuizAction.as_view('open_quiz', self.__logger, self.__mode, self.__title, self.__quiz),
                 SaveQuizAction: SaveQuizAction.as_view('save_quiz', self.__logger, self.__mode, self.__title, self.__quiz),
                 AnalyzeAction: AnalyzeAction.as_view('analyze', self.__logger, mapping_bo, analysis_bo, answers_bo, self.__mode, self.__title, self.__quiz),
-                ReportGeneratorCli: ReportGeneratorCli(self.__logger, mapping_bo, analysis_bo, answers_bo),
+                ReportGeneratorCli: ReportGeneratorCli(self.__logger, mapping_bo, analysis_bo, answers_bo, self.__title, self.__quiz),
             }
 
         return g.di_container
