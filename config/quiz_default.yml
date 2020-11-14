@@ -45,6 +45,10 @@ analysis:
     - label: 'high'
       weight: 4
 
+  remediation_thresholds:
+    score_min: 0.5
+    priority_min: 'low'
+
   statuses:
     - label: 'ok'
       color: '#577a00'
@@ -62,14 +66,14 @@ analysis:
   summary:
     text:
       strong: 'you demonstrated a good coverage in all fields'
-      average: 'you demonstrated strong foundations but some significant items are not suitable'
+      average: 'you demonstrated strong foundations but some significant items  '
       weak: 'basic expectations are not met'
     priorities:
       - high
       - medium
-    score_min: 0.5
 
   categories:
     - !include quiz.d/c1.yml
     - !include quiz.d/c2.yml
 
+  docx_template: quiz.d/template.docx

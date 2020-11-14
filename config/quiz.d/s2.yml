@@ -32,18 +32,21 @@ groups:
             status: ko
             review: 'Option 2 is not suitable for ...'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
           - option: 'review_3'
             helper: 'if answer is option 3'
             score: 0.5
             status: partial
             review: 'Option 3 is acceptable but not completely suitable for ...'
             remediation: 'Option 1 must be preferred'
+            short: 'Implement Option 1'
           - option: 'not_answered'
             helper: 'if there is no answer'
             score: -0.2
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
 
   - name: Group 2
     id: 'g2'
@@ -77,18 +80,21 @@ groups:
             status: ko
             review: 'Option 2 is not suitable for ...'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
           - option: 'review_3'
             helper: 'if answer is option 3'
             score: 0.5
             status: partial
             review: 'Option 3 is acceptable but not completely suitable for ...'
             remediation: 'Option 1 must be preferred'
+            short: 'Implement Option 1'
           - option: 'not_answered'
             helper: 'if there is no answer'
             score: -0.2
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
 
       - question: '... question ...'
         type: 'table_simple'
@@ -124,22 +130,26 @@ groups:
             status: ko
             review: 'X configuratin is not suitable for ...'
             remediation: 'X should be configured properly, with all col2 in ...'
+            short: 'Configuration of X should be reviewed'
           - option: 'review_3'
             helper: 'if col1 is missing y but col2 always in ...'
             score: 0.6
             status: partial
             review: 'X is properly configured with col2 in ..., but is missing y'
             remediation: 'X should be completed with y element, and configured with col2 in ...'
+            short: 'Complete X with Y'
           - option: 'review_4'
             helper: 'if col1 is missing z and/or col2 not always in ...'
             score: 0.3
             status: partial
             review: 'X is deployed but not properly configured: z is not in the list, and some col2 are not in ...'
             remediation: 'X should be completed with z element, and all elements should be configured with col2 in ...'
+            short: 'Complete X with Z'
           - option: 'not_answered'
             helper: 'if table is not filled or element in col1 are not related to the question'
             score: -0.1
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'X should be implemented with element y and z, and preferably with col2 in ...'
+            short: 'Configure X with y and Z'
 

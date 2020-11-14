@@ -32,12 +32,14 @@ groups:
             status: ko
             review: 'Option 2 is not suitable for ...'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
           - option: 'not_answered'
             helper: 'if there is no answer'
             score: -0.1
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
 
   - name: Group 2
     id: 'g2'
@@ -70,12 +72,14 @@ groups:
             status: ko
             review: 'Option 2 is not suitable for ...'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
           - option: 'not_answered'
             helper: 'if there is no answer'
             score: -0.1
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
 
   - name: Group 3
     id: 'g3'
@@ -108,9 +112,11 @@ groups:
             status: ko
             review: 'Option 2 is not suitable for ...'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'
           - option: 'not_answered'
             helper: 'if there is no answer'
             score: -0.1
             status: not_answered
             review: 'Information about X is missing'
             remediation: 'Option 1 must be implemented'
+            short: 'Implement Option 1'

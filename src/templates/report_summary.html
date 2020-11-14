@@ -2,7 +2,7 @@
 <div class="tab-pane fade border border-dark show active" role="tabpanel" id="summary-result">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 report-margin text-center"><img src="data:image/png;base64, {{report_summary['donut_result']}}"/></div>
+            <div class="col-12 report-margin text-center"><img src="data:image/png;base64, {{report_summary['plot_grade_final']}}"/></div>
         </div>
         <div class="row">
             <div class="col-12 report-margin">
@@ -26,17 +26,16 @@
         <div class="row">
             <div class="col-12 report-margin">
                 <p>
-                    Figures below provide a global overview of your answers soundness, depicted by categories, section and as a whole.
-                    Textual answers are reproduced in the appendix.
+                    Figures below provide a global overview of answers soundness, depicted by categories, section and as a whole.
                 </p>
             </div>
         </div>
         <div class="row">
-            <div class="col-6 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['donut_categories']}}"/></div>
-            <div class="col-6 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['lollipop_sections']}}"/></div>
+            <div class="col-6 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['plot_grades_categories']}}"/></div>
+            <div class="col-6 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['plot_grades_sections']}}"/></div>
         </div>
         <div class="row">
-            <div class="col-12 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['waffle_items']}}"/></div>
+            <div class="col-12 report-viz text-center report-margin"><img src="data:image/png;base64, {{report_summary['plot_soundness_items']}}"/></div>
         </div>
     </div>
 </div>

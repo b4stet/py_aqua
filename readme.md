@@ -75,7 +75,7 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
 - a quiz has one or multiple section(s)
 - each section has one or multiple group(s)
 - each group has
-    - a `description`, in html format (only `<p>` and `<ul>/<li>` tags are supported for docx generation)
+    - a `description`, in html format (only `<p>/<br>` and `<ul>/<li>` tags are supported for docx generation)
     - one or multiple item(s)
 - each item is a question of one of the following types, with required parameters:
     - `comment` (the only one optional) aims to support the question, in html format
@@ -109,7 +109,7 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
     - `remediation` is a sentence indicating remediation when needed and will appear in the report
     - `short` is a short version of the remediation that will be used in the executive summary of the docx version of the report
 
-### Constraints
+### Unicity constraints
 Due to `id` and qcm `option` being used as keys in answers and review files, some constraints should be followed for their values:
 - no white space (for qcm options, '_' are replaced by white space on rendering),
 - no '-',
@@ -148,6 +148,6 @@ Then, a table gathers the main remediations among all categories, as defined by 
 
 ### Category chapters
 Each category chapter has 3 parts:
-- a description of items covered, defined under `analysis.categories[].description` in html format  (only `<p>` and `<ul>/<li>` tags are supported for docx generation) 
+- a description of items covered, defined under `analysis.categories[].description` in html format  (only `<p>/<br>` and `<ul>/<li>` tags are supported for docx generation) 
 - the list of remediations, table automatically built from review results, ordered by priority
 - the gap analysis: a waffle plot of item statuses and a table pointing strengh or weakness of each answer
