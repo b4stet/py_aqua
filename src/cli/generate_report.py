@@ -73,24 +73,29 @@ class ReportGeneratorCli():
         }
 
         analysis_config = self.__analysis_bo.get_analysis_config()
-        analysis_sections, analysis_categories = self.__analysis_bo.analyze(review, mapping)
-        summary = self.__analysis_bo.summarize(analysis_sections, analysis_categories, mapping)
+        analysis_sections, analysis_categories = self.__analysis_bo.analyze(review, mapping, waffle_borders=True)
+        summary = self.__analysis_bo.summarize(analysis_sections, analysis_categories, mapping, waffle_borders=True)
         appendix = self.__answers_bo.assemble(answers)
 
         # convert b64 plots to docx stream
         document = DocxTemplate(analysis_config['docx_template'])
-        summary['donut_result'] = self.__b64_to_image(summary['donut_result'], document, 5)
-        summary['donut_categories'] = self.__b64_to_image(summary['donut_categories'], document, 7)
-        summary['lollipop_sections'] = self.__b64_to_image(summary['lollipop_sections'], document, 15)
-        summary['waffle_items'] = self.__b64_to_image(summary['waffle_items'], document, 15)
+        summary['plot_grade_final'] = self.__b64_to_image(summary['plot_grade_final'], document, 5)
+        summary['plot_grades_categories'] = self.__b64_to_image(summary['plot_grades_categories'], document, 7)
+        summary['plot_grades_sections'] = self.__b64_to_image(summary['plot_grades_sections'], document, 7)
+        summary['plot_soundness_items'] = self.__b64_to_image(summary['plot_soundness_items'], document, 10)
 
         for category in analysis_categories.values():
-            category['donut_result'] = self.__b64_to_image(category['donut_result'], document, 5)
-            category['waffle_items'] = self.__b64_to_image(category['waffle_items'], document, 15)
+            category['plot_grade'] = self.__b64_to_image(category['plot_grade'], document, 4)
+            category['plot_soundness'] = self.__b64_to_image(category['plot_soundness'], document, 10)
 
-        # convert category descriptions (html) to rich text
+        # convert category descriptions (html) to text
         for category in analysis_config['categories']:
             category['description'] = self.__html_to_paragraph(category['description'])
+
+        # convert group description (html) to text
+        for sid, section_answers in appendix.items():
+            for gid, group_answers in section_answers['groups'].items():
+                group_answers['description'] = self.__html_to_paragraph(group_answers['description'])
 
         # fill docx
         print('[+] Filling docx report ...')
@@ -113,17 +118,44 @@ class ReportGeneratorCli():
         return InlineImage(document, buffer, width=Cm(width))
 
     def __html_to_paragraph(self, html):
-        soup = BeautifulSoup(html, 'html.parser').find_all()
+        # because bs4 is crap with br tags
+        html_cleaned = html.replace('<br/>', '')
+        soup = BeautifulSoup(html_cleaned, 'html.parser').find_all(recursive=False)
+
         result = []
         for tag in soup:
-            if tag.name == 'p' and tag.parent.name != 'p':
-                result.append({
-                    'type': 'paragraph',
-                    'content': tag.text,
-                })
-            elif tag.name == 'li' and tag.parent.name != 'li':
-                result.append({
-                    'type': 'list',
-                    'content': tag.text,
-                })
+            result += self.__process_tag(tag)
         return result
+
+    def __process_tag(self, tag, depth=0):
+        next_depth = depth
+        if tag.name == 'ul':
+            next_depth += 1
+
+        children = tag.findChildren(recursive=False)
+        result = []
+
+        text = tag.find(text=True)
+        if text is not None and text != '\n':
+            result.append({
+                'type': tag.name,
+                'depth': depth,
+                'content': text,
+            })
+
+        for child in children:
+            result += self.__process_tag(child, next_depth)
+        return result
+
+
+# '•'
+# {%- if elt[‘type’] == ‘paragraph’ %}
+# {{ elt[‘content’] }}
+# {%- elif elt[‘type’] == ‘list’ %}
+# {%- if elt[‘level’] == 0 %}
+#     • {{ elt[‘content’] }}
+# {%- else %}
+
+# {%- endif %}
+# {%- endif%}
+# {%- endfor %}

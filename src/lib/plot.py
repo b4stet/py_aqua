@@ -127,31 +127,41 @@ def get_lollipop(data, title, color_conditions):
     return b64
 
 
-def get_waffle(data, title):
+def get_waffle(data, title, border=False):
+    nb_columns = 20
+    nb_rows = max(sum([v['count'] for v in data.values()]) // nb_columns + 1, 2)
+    labels = ['{} ({})'.format(v['name'], v['count']) for v in data.values()]
+    values = [v['count'] for v in data.values()]
+    colors = [v['color'] for v in data.values()]
+    icons = [v['icon-fa'] for v in data.values()]
+
     # plot
     fig = plt.figure(
-        figsize=(6, 4),
+        figsize=(6, nb_rows/2),
+        linewidth=2,
         FigureClass=Waffle,
         tight=False,
-        # rows=5,
-        columns=20,
-        # rounding_rule='floor',
+        columns=nb_columns,
         vertical=True,
         block_arranging_style='normal',
         starting_location='NW',
         plot_anchor='S',
-        labels=['{} ({})'.format(v['name'], v['count']) for v in data.values()],
-        values=[v['count'] for v in data.values()],
-        colors=[v['color'] for v in data.values()],
-        icons=[v['icon-fa'] for v in data.values()],
+        interval_ratio_x=0.2,
+        interval_ratio_y=0.2,
+        values=values,
+        colors=colors,
+        icons=icons,
         icon_size=10, icon_legend=True,
-        title={'label': title, 'loc': 'center', 'fontstyle': 'italic', 'fontsize': 'medium'},
-        legend={'loc': 'upper right', 'bbox_to_anchor': (1.4, 0.9), 'framealpha': 0.0, 'fontsize': 'small'},
+        legend={'loc': 'lower center', 'labels': labels, 'ncol': len(labels), 'bbox_to_anchor': (0.5, 1), 'framealpha': 0.0, 'fontsize': 'small'},
     )
+    fig.suptitle(title, y=0.88, ha='center', va='center', fontstyle='italic', fontsize='medium')
 
     # encode in base64
     memory = io.BytesIO()
-    plt.savefig(memory, format='png', transparent=True, bbox_inches='tight')
+    if border is True:
+        plt.savefig(memory, format='png', edgecolor='black', transparent=True)
+    else:
+        plt.savefig(memory, format='png', transparent=True)
     memory.seek(0)
     b64 = base64.b64encode(memory.read()).decode('utf-8')
     plt.close()
