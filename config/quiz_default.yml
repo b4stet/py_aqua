@@ -75,5 +75,3 @@ analysis:
   categories:
     - !include quiz.d/c1.yml
     - !include quiz.d/c2.yml
-
-  docx_template: quiz.d/template.docx

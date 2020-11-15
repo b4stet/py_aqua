@@ -28,6 +28,10 @@ class ReportGeneratorCli():
                 help='[required] Review file, in json format.'
             ),
             click.Option(
+                ['--template', '-t'],
+                help='[required] Docx template to use.'
+            ),
+            click.Option(
                 ['--output', '-o'],
                 help='[required] Output docx file name.'
             ),
@@ -40,7 +44,7 @@ class ReportGeneratorCli():
             help='Generate docx report from a review file.',
         ))
 
-    def generate(self, review=None, output=None):
+    def generate(self, review=None, template=None, output=None):
         # validate inputs
         print('[+] Validating json file ...')
         if review is None:
@@ -49,6 +53,10 @@ class ReportGeneratorCli():
 
         if output is None:
             print('Missing argument --output.')
+            sys.exit(1)
+
+        if template is None:
+            print('Missing argument --template.')
             sys.exit(1)
 
         try:
@@ -78,7 +86,7 @@ class ReportGeneratorCli():
         appendix = self.__answers_bo.assemble(answers)
 
         # convert b64 plots to docx stream
-        document = DocxTemplate(analysis_config['docx_template'])
+        document = DocxTemplate(template)
         summary['plot_grade_final'] = self.__b64_to_image(summary['plot_grade_final'], document, 5)
         summary['plot_grades_categories'] = self.__b64_to_image(summary['plot_grades_categories'], document, 7)
         summary['plot_grades_sections'] = self.__b64_to_image(summary['plot_grades_sections'], document, 7)
@@ -146,16 +154,3 @@ class ReportGeneratorCli():
         for child in children:
             result += self.__process_tag(child, next_depth)
         return result
-
-
-# '•'
-# {%- if elt[‘type’] == ‘paragraph’ %}
-# {{ elt[‘content’] }}
-# {%- elif elt[‘type’] == ‘list’ %}
-# {%- if elt[‘level’] == 0 %}
-#     • {{ elt[‘content’] }}
-# {%- else %}
-
-# {%- endif %}
-# {%- endif%}
-# {%- endfor %}
