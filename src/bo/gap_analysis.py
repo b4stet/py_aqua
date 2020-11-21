@@ -1,11 +1,10 @@
 from src.lib import plot
+from src.bo.base import BaseBO
 
 
-class GapAnalysisBo():
-    REVIEW_DISABLED = 'disabled'
-
+class GapAnalysisBo(BaseBO):
     def __init__(self, logger, analysis):
-        self._logger = logger
+        super().__init__(logger)
         self.__analysis = analysis
 
     def get_analysis_config(self):
@@ -106,8 +105,8 @@ class GapAnalysisBo():
                 })
 
                 # remediation
-                if review_elt['remediation'] is not None:
-                    # for list of top remediations in summary
+                if review_elt.get('remediation', None) is not None:
+                    # to list of top remediations in summary
                     is_top = False
                     if review_elt['score'] <= self.__analysis['remediation_thresholds']['score_min']:
                         is_top = True

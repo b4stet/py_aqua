@@ -1,12 +1,9 @@
-class AnswersBo():
-    ITEM_QCM_UNIQUE = 'qcm_unique'
-    ITEM_QCM_MULTIPLE = 'qcm_multiple'
-    ITEM_TABLE_SIMPLE = 'table_simple'
-    ITEM_TABLE_DOUBLE = 'table_double'
-    ITEM_FREE_TEXT = 'text'
+from src.bo.base import BaseBO
 
+
+class AnswersBo(BaseBO):
     def __init__(self, logger, quiz):
-        self.__logger = logger
+        super().__init__(logger)
         self.__quiz = quiz
 
     def assemble(self, answers):
