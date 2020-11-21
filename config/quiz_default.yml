@@ -63,6 +63,11 @@ analysis:
       color: '#363636'
       icon-fa: 'question-circle'
 
+  best:
+    grade: 'A'
+    status: 'ok'
+    priority: 'high'
+
   summary:
     text:
       strong: 'you demonstrated a good coverage in all fields'
