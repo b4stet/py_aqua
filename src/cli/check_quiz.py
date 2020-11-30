@@ -10,6 +10,8 @@ class QuizCheckerCli():
     KEYS_SECTION = ['name', 'id', 'groups']
     KEYS_GROUP = ['name', 'id', 'description', 'items']
     KEYS_ITEM = ['question', 'id', 'type', 'analysis', 'reviewer']
+    KEYS_TABLE_FULL = ['title', 'type', 'id', 'size']
+    KEYS_TABLE_HEADER = ['title', 'size']
     KEYS_ANALYSIS = ['category', 'priority']
     KEYS_REVIEWER_FULL = ['option', 'helper', 'status', 'score', 'review', 'remediation', 'short']
     KEYS_REVIEWER_BEST = ['option', 'helper', 'status', 'score', 'review']
@@ -46,29 +48,29 @@ class QuizCheckerCli():
         score_ranges = {status: [] for status in statuses}
 
         for section in self.__quiz['sections']:
-            print('[+] Checking section \'{}\' has (name, id, groups) keys ... '.format(section.get('id')), end='')
+            print('[+] Checking section \'{}\' has ({}) keys ... '.format(section.get('id'), ', '.join(self.KEYS_SECTION)), end='')
             errors = [key for key in self.KEYS_SECTION if key not in section]
             self.__print_errors(errors, 'missing key(s): ')
 
             for group in section['groups']:
-                print(' | Checking group \'{}\' has (name, id, description, items) keys ... '.format(group.get('id')), end='')
+                print(' | Checking group \'{}\' has ({}) keys ... '.format(group.get('id'), ', '.join(self.KEYS_GROUP)), end='')
                 errors = [key for key in self.KEYS_GROUP if key not in group]
                 self.__print_errors(errors, 'missing key(s): ')
 
                 for item in group['items']:
-                    print(' |   Checking item \'{}\' has (question, type, id, analysis, reviewer) keys ... '.format(item.get('id')), end='')
+                    print(' |   Checking item \'{}\' has ({}) keys ... '.format(item.get('id'), ', '.join(self.KEYS_ITEM)), end='')
                     errors = [key for key in self.KEYS_ITEM if key not in item]
                     self.__print_errors(errors, 'missing key(s): ')
 
-                    print(' |     Checking the analysis has (category, priority) keys ... ', end='')
+                    print(' |     Checking the analysis has ({}) keys ... '.format(', '.join(self.KEYS_ANALYSIS)), end='')
                     analysis = item['analysis']
                     errors = [key for key in self.KEYS_ANALYSIS if key not in analysis]
                     self.__print_errors(errors, 'missing key(s): ')
 
-                    print(' |     Checking reviewer options always have (option, helper, status, score, review, remediation, short) keys ')
+                    print(' |     Checking reviewer options always have ({}) keys'.format(', '.join(self.KEYS_REVIEWER_FULL)))
                     reviewer = item['reviewer']
                     for review in reviewer:
-                        print(' |       Checking option \'{}\' ... '.format(review['option']), end='')
+                        print(' |       Checking option \'{}\' ... '.format(review.get('option')), end='')
                         expected = self.KEYS_REVIEWER_FULL
                         if review.get('status') == self.__analysis['best']['status']:
                             expected = self.KEYS_REVIEWER_BEST
@@ -88,6 +90,26 @@ class QuizCheckerCli():
                     if item['type'] not in self.ITEM_TYPES:
                         errors.append(item['type'])
                     self.__print_errors(errors, 'unknown type: ')
+
+                    if 'table' in item['type']:
+                        print(' |     Checking table has a columns key ... '.format(', '.join(self.KEYS_TABLE_FULL)), end='')
+                        errors = []
+                        columns = item.get('columns')
+                        if columns is None:
+                            errors.append('columns')
+                        self.__print_errors(errors, 'missing key(s): ')
+
+                        print(' |     Checking table columns always have ({}) keys ... '.format(', '.join(self.KEYS_TABLE_FULL)))
+                        errors = []
+                        for column in columns:
+                            print(' |       Checking column \'{}\' ... '.format(column.get('title')), end='')
+                            expected = self.KEYS_TABLE_FULL
+
+                            if item['type'] == BaseBO.ITEM_TABLE_DOUBLE:
+                                expected = self.KEYS_TABLE_HEADER
+
+                            errors = [key for key in expected if key not in column]
+                            self.__print_errors(errors, 'missing key(s): ')
 
                     print(' |     Checking analysis category is in ({}) ... '.format(', '.join(categories)), end='')
                     errors = []
@@ -124,6 +146,7 @@ class QuizCheckerCli():
         for status, ranges in score_ranges.items():
             print(' | status \'{}\': {}'.format(status, ', '.join(set(ranges))))
 
+        print('')
         print('All good, quiz config is valid.')
 
     def __print_errors(self, errors, prefix):
