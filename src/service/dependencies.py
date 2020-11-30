@@ -7,6 +7,7 @@ from src.action.open_quiz import OpenQuizAction
 from src.action.save_quiz import SaveQuizAction
 from src.cli.generate_report import ReportGeneratorCli
 from src.cli.check_quiz import QuizCheckerCli
+from src.cli.list_quiz import QuizListerCli
 from src.action.analyze import AnalyzeAction
 from src.bo.mapping import MappingBo
 from src.bo.gap_analysis import GapAnalysisBo
@@ -40,6 +41,7 @@ class DependenciesService():
                 AnalyzeAction: AnalyzeAction.as_view('analyze', self.__logger, mapping_bo, analysis_bo, answers_bo, self.__mode, self.__title, self.__quiz),
                 ReportGeneratorCli: ReportGeneratorCli(self.__logger, mapping_bo, analysis_bo, answers_bo, self.__title, self.__quiz),
                 QuizCheckerCli: QuizCheckerCli(self.__logger, mapping_bo, self.__title, self.__quiz, self.__analysis),
+                QuizListerCli: QuizListerCli(self.__logger, self.__title, self.__quiz),
             }
 
         return g.di_container

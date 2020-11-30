@@ -53,19 +53,29 @@ With default configs (`config/app_default.yml` and `config/quiz_default.yml`):
 - reviewer mode is available at `http://localhost:8080`.  
 
 ### CLI
-A CLI command is also available to generate the report in docx format from the json file of answers and their review.
-The path to the docx template is defined in `analysis.docx_template` key of `quiz_config.yml`.
+Several CLI commands are available to generate the report in docx format from the json file and to analyse the quiz.
 
-To generate the document:
-```
-bash bin/cli.sh generate_report --review path/to/review.json --output filename.docx
-```
+1. Docx report generation:  
+  The path to the docx template is defined in `analysis.docx_template` key of `quiz_config.yml`.  
+  Then, to generate the document (with default config, or with your own):
+    ```
+    bash bin/cli.sh generate_report --review path/to/review.json --output filename.docx
+    bash bin/cli.sh --quiz path/to/quiz_config.yml generate_report --review path/to/review.json --output filename.docx
+    ```
 
-To generate with your own quiz config:
-```
-bash bin/cli.sh --quiz path/to/quiz_config.yml generate_report --review path/to/review.json --output filename.docx
-```
+2. Check validity of quiz config (all keys are present, ID unicity, ...):  
+  Script stops at the first error: fix it and rerun until you get 'All good, quiz config is valid.'
+    ```
+    bash bin/cli.sh check_quiz
+    bash bin/cli.sh --quiz path/to/quiz_config.yml check_quiz
+    ```
 
+3. Analyze items in your quiz (section, group, category and priority of each item):
+  An `--output` option prints either as json (default), or as csv.
+    ```
+    bash bin/cli.sh list_quiz
+    bash bin/cli.sh --quiz path/to/quiz_config.yml list_quiz --output csv
+    ```
 
 ## Quiz config 
 __WARNING:__ do not expose the quiz configuration. Indeed, some parts are in html format (pointed below), and therefore not escaped by rendering.

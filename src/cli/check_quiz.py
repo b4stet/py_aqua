@@ -101,12 +101,13 @@ class QuizCheckerCli():
                         errors.append(analysis['priority'])
                     self.__print_errors(errors, 'unknown priority: ')
 
+                    except_disabled = [review for review in reviewer if review['option'] != self.REVIEW_DISABLED]
                     print(' |     Checking reviewer status are in ({}) ... '.format(', '.join(statuses)), end='')
-                    errors = [review['status'] for review in reviewer if review['option'] != self.REVIEW_DISABLED and review['status'] not in statuses]
+                    errors = [review['status'] for review in except_disabled if review['status'] not in statuses]
                     self.__print_errors(errors, 'unknown status: ')
 
                     print(' |     Checking reviewer score are float numbers ... ', end='')
-                    errors = [str(type(review['score'])) for review in reviewer if review['option'] != self.REVIEW_DISABLED and not isinstance(review['score'], float)]
+                    errors = [str(type(review['score'])) for review in except_disabled if not isinstance(review['score'], float)]
                     self.__print_errors(errors, 'invalid type: ')
 
             print('')
@@ -123,10 +124,7 @@ class QuizCheckerCli():
         for status, ranges in score_ranges.items():
             print(' | status \'{}\': {}'.format(status, ', '.join(set(ranges))))
 
-        # display ok score range
-        # display ko score range
-        # display partial score range
-        # check not_answered score range
+        print('All good, quiz config is valid.')
 
     def __print_errors(self, errors, prefix):
         if len(errors) == 0:
