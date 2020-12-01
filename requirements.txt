@@ -1,0 +1,5 @@
+bs4==0.0.1
+docxtpl==0.10.5
+Flask==0.12.2
+matplotlib==3.0.3
+pywaffle==0.6.1

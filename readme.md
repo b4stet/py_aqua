@@ -9,10 +9,11 @@ It allows to:
 - generate a report (in html and/or docx)
 
 ## Requirements
-- flask >= 0.12.2
-- bs4 >= 4.7.1
-- matplotblib >= 3.0.3
-- pywaffle >= 0.6.1
+```
+$ python3 -m venv aqua_env
+$ source ./aqua_env/bin/activate
+$ pip3 install -r requirements.txt
+```
 
 ## Use Case examples
 ### User mode versus reviewer mode
@@ -59,22 +60,22 @@ Several CLI commands are available to generate the report in docx format from th
   The path to the docx template is defined in `analysis.docx_template` key of `quiz_config.yml`.  
   Then, to generate the document (with default config, or with your own):
     ```
-    bash bin/cli.sh generate_report --review path/to/review.json --output filename.docx
-    bash bin/cli.sh --quiz path/to/quiz_config.yml generate_report --review path/to/review.json --output filename.docx
+    $ bash bin/cli.sh generate_report --review path/to/review.json --output filename.docx
+    $ bash bin/cli.sh --quiz path/to/quiz_config.yml generate_report --review path/to/review.json --output filename.docx
     ```
 
 2. Check validity of quiz config (all keys are present, ID unicity, ...):  
   Script stops at the first error: fix it and rerun until you get 'All good, quiz config is valid.'
     ```
-    bash bin/cli.sh check_quiz
-    bash bin/cli.sh --quiz path/to/quiz_config.yml check_quiz
+    $ bash bin/cli.sh check_quiz
+    $ bash bin/cli.sh --quiz path/to/quiz_config.yml check_quiz
     ```
 
 3. Analyze items in your quiz (section, group, category and priority of each item):
   An `--output` option prints either as json (default), or as csv.
     ```
-    bash bin/cli.sh list_quiz
-    bash bin/cli.sh --quiz path/to/quiz_config.yml list_quiz --output csv
+    $ bash bin/cli.sh list_quiz
+    $ bash bin/cli.sh --quiz path/to/quiz_config.yml list_quiz --output csv
     ```
 
 ## Quiz config 
