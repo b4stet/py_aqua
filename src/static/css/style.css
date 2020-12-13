@@ -65,9 +65,8 @@ body {
     border-top-left-radius: 0;
 } 
 
-#content .quiz-group-desc p, #content .report-appendix-desc {
-    margin-top: 10px;
-    margin-bottom: 30px;
+#content .quiz-group-desc{
+    margin-top: 30px;
 }
 
 #content .quiz {

@@ -69,8 +69,11 @@
                     <div class="tab-pane fade border border-dark {{class}}" role="tabpanel" id="{{section['id']}}-{{group['id']}}">
                         <div class="container-fluid">
                             <!-- group description -->
-                            <div class="row quiz-group-desc">
-                                <div class="col-12">{{ group['description'] | safe }}</div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="quiz-group-desc">Items Description</h3>
+                                    {{ group['description'] | safe }}
+                                </div>
                             </div>
                             <hr/>
 
