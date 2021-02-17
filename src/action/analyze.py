@@ -28,7 +28,7 @@ class AnalyzeAction(BaseAction):
         # validate input
         try:
             validate_json.validate(content_json, self._title['short'], self._quiz['version'])
-            answers, review = self.__analysis_bo.extract_review(content_json)
+            answers, review, texts_gap, texts_remediation = self.__analysis_bo.extract_review(content_json)
         except ValueError as err:
             raise BadRequest('Cannot perform gap analysis. {}'.format(str(err)))
 
@@ -42,7 +42,7 @@ class AnalyzeAction(BaseAction):
             'categories_by_id': self.__mapping_bo.map_by_key('categories', 'id'),
         }
 
-        analysis_sections, analysis_categories = self.__analysis_bo.analyze(review, mapping)
+        analysis_sections, analysis_categories = self.__analysis_bo.analyze(review, texts_gap, texts_remediation, mapping)
         summary = self.__analysis_bo.summarize(analysis_sections, analysis_categories, mapping)
         appendix = self.__answers_bo.assemble(answers)
 

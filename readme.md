@@ -128,7 +128,7 @@ The application renders the quiz from a yaml file as defined in the sample `quiz
 Due to `id` and qcm `option` being used as keys in answers and review files, some constraints should be followed for their values:
 - no white space (for qcm options, do use '_' that are replaced by white space on rendering),
 - no '-',
-- keyword `review` is forbidden.
+- keywords `review`, `gap` and `remediation` are forbidden.
 
 Also, identifiers in quiz config must be unique within their category:
 - section IDs must be uniques

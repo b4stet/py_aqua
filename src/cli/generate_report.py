@@ -64,7 +64,7 @@ class ReportGeneratorCli():
                 content = json.load(f)
 
             validate_json.validate(content, self.__title['short'], self.__quiz['version'])
-            answers, review = self.__analysis_bo.extract_review(content)
+            answers, review, texts_gap, texts_remediation = self.__analysis_bo.extract_review(content)
         except Exception as err:
             raise
             sys.exit(1)
@@ -81,7 +81,7 @@ class ReportGeneratorCli():
         }
 
         analysis_config = self.__analysis_bo.get_analysis_config()
-        analysis_sections, analysis_categories = self.__analysis_bo.analyze(review, mapping, waffle_borders=True)
+        analysis_sections, analysis_categories = self.__analysis_bo.analyze(review, texts_gap, texts_remediation, mapping, waffle_borders=True)
         summary = self.__analysis_bo.summarize(analysis_sections, analysis_categories, mapping, waffle_borders=True)
         appendix = self.__answers_bo.assemble(answers)
 

@@ -12,8 +12,26 @@ class GapAnalysisBo(BaseBO):
 
     def extract_review(self, data):
         # extract answers and review
-        answers = {k: v for k, v in data.items() if not k.endswith('-review')}
-        review = {k: v for k, v in data.items() if k.endswith('-review')}
+        answers = {}
+        review = {}
+        texts_gap = {}
+        texts_remediation = {}
+        for key, value in data.items():
+            is_answer = True
+            if key.endswith('-review'):
+                review.update({key: value})
+                is_answer = False
+
+            if key.endswith('-gap'):
+                texts_gap.update({key: value})
+                is_answer = False
+
+            if key.endswith('-remediation'):
+                texts_remediation.update({key: value})
+                is_answer = False
+
+            if is_answer is True:
+                answers.update({key: value})
 
         # verify all items are reviewed
         if len(review) == 0:
@@ -24,9 +42,9 @@ class GapAnalysisBo(BaseBO):
             items = [k for k in missing_review.keys()]
             raise ValueError('Items not reviewed: {}'.format(', '.join(items)))
 
-        return answers, review
+        return answers, review, texts_gap, texts_remediation
 
-    def analyze(self, review, mapping, waffle_borders=False):
+    def analyze(self, review, texts_gap, texts_remediation, mapping, waffle_borders=False):
         # sections analysis initialization (score, grade)
         analysis_sections = {}
         score_max_sections = {}
@@ -101,7 +119,7 @@ class GapAnalysisBo(BaseBO):
                 # gap analysis
                 analysis_categories[cid]['gap_analysis'][sid].append({
                     'section_name': mapping['sections_id_name'][sid],
-                    'analysis': review_elt['review'],
+                    'analysis': texts_gap[full_id + '-gap'],
                 })
 
                 # remediation
@@ -116,7 +134,7 @@ class GapAnalysisBo(BaseBO):
                         'section_name': mapping['sections_id_name'][sid],
                         'priority': item_priority,
                         'weight': item_weight,
-                        'remediation': review_elt['remediation'],
+                        'remediation': texts_remediation[full_id + '-remediation'],
                         'remediation_short': review_elt['short'],
                         'is_top': is_top,
                     })

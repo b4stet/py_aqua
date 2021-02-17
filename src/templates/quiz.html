@@ -110,12 +110,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        // toggle review
-        $("#switch-review").on('click', function (evt){
-            $(".review-elt").toggleClass('invisible')
-            $(".review-elt").toggleClass('d-none')
-        })
-
         // control to delete row in items of type 'table'
         $(".item-table").on('click', '.btn-remove-row', function (evt){
             var row = $(evt.target).parent().parent();
@@ -172,8 +166,51 @@
             // add to DOM
             new_row.insertAfter('#' + last_row_id)
         })
+    });
 
-    })
 </script>
+
+
+{% if review is defined %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        // toggle review
+        $("#switch-review").on('click', function (evt){
+            $(".review-elt").toggleClass('invisible')
+            $(".review-elt").toggleClass('d-none')
+        })
+        
+        // display gap analysis and remediation texts from config
+        var texts_gap = {}
+        var texts_remediation = {}
+        {% for section in quiz['sections'] %}
+            {% for group in section['groups'] %}
+                {% for item in group['items'] %}
+                    var full_id = "{{section['id']}}" + '-' + "{{group['id']}}" + '-' + "{{item['id']}}"
+                    var gap_key = full_id + '-gap'
+                    var remediation_key = full_id + '-remediation'
+                    var gap_value = {}
+                    var remediation_value = {}
+                    {% for review in item['reviewer'] %}
+                        gap_value["{{review['option']}}"] = `{{review['review']}}`
+                        remediation_value["{{review['option']}}"] = `{{review['remediation']}}`
+                    {% endfor %}
+                    texts_gap[gap_key] = gap_value
+                    texts_remediation[remediation_key] = remediation_value
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+
+        $(".review_selector").on('click', function(evt){
+            var selected = $(this).attr('value')
+            var gap_id = this.name.replace('review', 'gap')
+            var remediation_id = this.name.replace('review', 'remediation')
+            $("#" + gap_id).val(texts_gap[gap_id][selected])
+            $("#" + remediation_id).val(texts_remediation[remediation_id][selected])
+        })
+
+    });
+</script>
+{% endif %}
 
 {% endblock %}
