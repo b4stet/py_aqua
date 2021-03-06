@@ -21,8 +21,16 @@
             </div>
 
             <!-- table rows -->
-            {% for idx in range(0, item['nb_rows']) %}
-                {% set row_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-l'~ idx%}
+            {% set ns_table = namespace(nb_rows=item['nb_rows']) %}
+            {% set full_id = section['id'] ~'-'~ group['id'] ~'-'~ item['id'] ~'-l' %}
+            {% if answers is defined %}
+                {% for key, value in answers.items() if full_id in key %}
+                    {% set ns_table.nb_rows = key.split('-')[3][1:] | int %}
+                {% endfor %}
+                {% set ns_table.nb_rows = ns_table.nb_rows + 1 %}
+            {% endif %}
+            {% for idx in range(0, ns_table.nb_rows) %}
+                {% set row_id =  full_id ~ idx%}
                 <div class="row" id="{{row_id}}">
                     {% for col in item['columns'] %}
                         {% set name =  row_id ~'-'~ col['id'] %}
