@@ -121,10 +121,39 @@
             // ensure at least 1 row will remain
             if (nb_rows > 1) {
                 row.remove();
+
+                // re-index row and columns ids to ensure sequential numbering starting from 0
+                var rows = table.children()
+                var base_row_id = $($(rows).get(1)).attr('id')
+                for (var i = 1; i < nb_rows ; i++) {
+                    new_row_id = base_row_id.split('-')
+                    new_row_id[3] = 'l' + (i - 1)
+                    new_row_id = new_row_id.join('-')
+                    $($(rows).get(i)).attr('id', new_row_id)
+        
+                    columns = $($(rows).get(i)).children()
+                    for (var j = 0; j < columns.length -1; j++) {
+                        var input = $('input', columns[j])
+
+                        // nb of input tag is 1 for text, >1 for qcm
+                        if (input.length==1){
+                            var name = input.attr('name').split('-')
+                            var col_id = name[name.length - 1]
+                            input.attr('name', new_row_id + '-' + col_id)
+                        }else{
+                            for (var k = 0; k < input.length; k++){
+                                option = $(input.get(k))
+                                var name = option.attr('name').split('-')
+                                var col_id = name[name.length - 1]
+                                option.attr('name', new_row_id + '-' + col_id)
+                            }
+                        }
+                    }
+                }
             }
         })
 
-        // control to add row in items of type 'table'
+        // control to add row in items of type 'table_simple'
         $(".btn-add-row").on('click', function (evt){
             var table = $(this).parent().parent().parent()
             var rows = table.children()
