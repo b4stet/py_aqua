@@ -15,7 +15,7 @@
                     {% set ns.reviewed = "true" %}
                 {% endif %}
                 <div class="form-check form-check-inline ">
-                    <input form="quiz" class="form-check-input review_selector" type="radio" name="{{name}}" value="{{option_review}}" {{checked}}/>
+                    <input form="quiz" class="form-check-input review-selector" type="radio" name="{{name}}" value="{{option_review}}" {{checked}}/>
                     <label class="form-check-label">{{option_review | replace('_', ' ') | capitalize}}</label>
                 </div>
             {% endfor %}
@@ -30,12 +30,17 @@
                 <label class="form-check-label">Not Reviewed</label>
             </div>
 
-            <!-- review sentences -->
+            <!-- gap/remediation texts -->
             <div class="row">
                 <p class="col-12">
                     <strong>Gap Analysis</strong>
                     {% set name_gap = full_id ~ "-gap"%}
-                    <textarea id="{{name_gap}}" form="quiz" class="form-control" rows="1" name="{{name_gap}}" placeholder=""></textarea>
+                    {% set text = ""%}
+                    {% if ns.reviewed == "true" %}
+                        {% set text = answers[name_gap] %}
+                    {% endif %}
+
+                    <textarea id="{{name_gap}}" form="quiz" class="form-control" rows="1" name="{{name_gap}}" placeholder="">{{text}}</textarea>
                 </p>
             </div>
 
@@ -43,7 +48,11 @@
                 <p class="col-12">
                     <strong>Remediation</strong>
                     {% set name_remediation = full_id ~ "-remediation"%}
-                    <textarea id="{{name_remediation}}" form="quiz" class="form-control" rows="1" name="{{name_remediation}}" placeholder=""></textarea>
+                    {% set text = ""%}
+                    {% if ns.reviewed == "true" %}
+                        {% set text = answers[name_remediation] %}
+                    {% endif %}
+                    <textarea id="{{name_remediation}}" form="quiz" class="form-control" rows="1" name="{{name_remediation}}" placeholder="">{{text}}</textarea>
                 </p>
             </div>
         </fieldset>
